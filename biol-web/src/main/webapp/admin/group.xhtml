@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/edititemtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.itemgroup}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{GroupBean}"/>
+		
+		<ui:define name="viewParams">
+			<f:metadata>
+				<f:viewParam name="id" value="#{GroupBean.itemId}">
+					<f:convertNumber type="number" />
+				</f:viewParam>
+			</f:metadata>
+			<f:event type="preRenderView" listener="#{GroupBean.preRenderView}"/>
+		</ui:define>
+		
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		<ui:define name="itemcontent">
+			<h:inputHidden value="#{GroupBean.item.version}" />
+			<h:panelGrid columns="3">
+				<h:outputText value="* #{msgs.nameen}" />
+				<h:inputText id="nameen" 
+							 size="30"
+							 maxlength="50"
+							 value="#{GroupBean.item.nameen}"
+							 required="true">
+				</h:inputText>
+				<h:message for="nameen" styleClass="errorText"/>
+				
+				<h:outputText value="* #{msgs.namebg}" />
+				<h:inputText id="namebg"
+							 size="30" 
+							 maxlength="50"
+							 value="#{GroupBean.item.namebg}"
+							 required="true">
+				</h:inputText>
+				<h:message for="namebg" styleClass="errorText"/>
+				
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

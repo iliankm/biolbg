@@ -1,0 +1,8 @@
+emailNotValid=Невалиден email адрес
+groupNotValid=Невалидна група
+producerNotValid=Невалиден производител
+orderStatusNotValid=Невалиден статус
+javax.faces.component.UIInput.REQUIRED=Задължително поле. Моля въведете
+javax.faces.converter.NumberConverter.NUMBER="{0}" не е число
+javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE=Въведената стойност трябва да е между {0} и {1}
+javax.faces.converter.DateTimeConverter.DATE="{0}" не е валидна дата/час. Пример: {1}

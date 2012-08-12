@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+<ui:composition template="/templates/apptemplate.xhtml">
+	<ui:param name="title" value="#{msgs.homepagetitle}"/>
+	<ui:param name="sidebarWidth" value="20%"/>
+	<ui:param name="viewBean" value="#{HomeBean}"/>
+	<ui:define name="viewClasses">
+	</ui:define>
+	
+	<ui:define name="sidebar">
+		<div class="boxHeaderDiv">
+			<h:outputText value="#{msgs.itemgroups}"/>
+			
+		</div>
+		<div class="boxContentDiv">
+			<ul>
+				<ui:repeat value="#{HomeBean.groups}" var="group">
+					<li>
+						<h:outputLink value="#{AppBean.appPath}/articles.jsf" styleClass="blocka">
+							<f:param name="group" value="#{group.id}"/>
+							<h:outputText value="#{group.nameen}" rendered="#{AppBean.appLocale == 'en'}"/>
+							<h:outputText value="#{group.namebg}" rendered="#{AppBean.appLocale == 'bg'}"/>
+						</h:outputLink>
+					</li>	
+				</ui:repeat>
+			</ul>	
+		</div>
+		<br/>
+		<div class="boxHeaderDiv">
+			<h:outputText value="#{msgs.producers}"/>
+		</div>
+		<div class="boxContentDiv">
+			<ul>
+				<ui:repeat value="#{HomeBean.producers}" var="producer">
+					<li>
+						<h:outputLink value="#{AppBean.appPath}/articles.jsf" styleClass="blocka">
+							<f:param name="producer" value="#{producer.id}"/>
+							<h:outputText value="#{producer.nameen}" rendered="#{AppBean.appLocale == 'en'}"/>
+							<h:outputText value="#{producer.namebg}" rendered="#{AppBean.appLocale == 'bg'}"/>
+						</h:outputLink>
+					</li>	
+				</ui:repeat>
+			</ul>	
+		</div>	
+	</ui:define>
+	<ui:define name="content">
+		<div id="homeInfoDiv">
+			<ul>
+				<ui:repeat value="#{HomeBean.homeinfos}" var="homeinfo">
+					<li>
+						<div id="homeInfoHeaderDiv">
+							<h:outputText value="#{homeinfo.headertexten}" rendered="#{AppBean.appLocale == 'en'}"/>
+							<h:outputText value="#{homeinfo.headertextbg}" rendered="#{AppBean.appLocale == 'bg'}"/>
+						</div>
+						<div id="homeInfoContentDiv">
+							<h:outputText value="#{homeinfo.infotexten}" rendered="#{AppBean.appLocale == 'en'}" escape="false" />
+							<h:outputText value="#{homeinfo.infotextbg}" rendered="#{AppBean.appLocale == 'bg'}" escape="false"/>
+						</div>
+					</li>	
+				</ui:repeat>
+			</ul>
+			
+			<script type="text/javascript" src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
+			</script>
+
+			<h:panelGrid columns="2" >
+				<h:outputText value="#{msgs.bgmapsLocation}"/>
+				<h:outputText value="#{msgs.skypeContact}"/>
+				<h:outputLink value="http://bgmaps.com/services/maps/redir.asp" rendered="#{AppBean.appLocale == 'bg'}">
+					<f:param name="redir" value="2"/>
+					<f:param name="key" value="61fcc6d054548b30e571b849e3cbb0ef"/>
+					<h:outputText value="bgmaps.com" />
+				</h:outputLink> 
+				<h:outputLink value="http://bgmaps.com/services/maps/redir.asp" rendered="#{AppBean.appLocale == 'en'}">
+					<f:param name="redir" value="2"/>
+					<f:param name="key" value="801ef4371e5b5550b85355bead27dbaf"/>
+					<h:outputText value="bgmaps.com" />
+				</h:outputLink> 
+				
+				<h:outputLink value="skype:lili.at.ilieva?call" >
+					<h:graphicImage value="http://mystatus.skype.com/smallclassic/lili%2Eat.ilieva" />
+				</h:outputLink>
+
+			</h:panelGrid>
+			<br/>
+			<h:panelGrid columns="3">
+				<h:panelGroup rendered="#{NewArticlesBean.dataItemsCount>0}" >
+					<div class="boxHeaderDiv">
+						<h:outputText value="#{msgs.newArticles}"/>
+					</div>
+					<div class="boxContentDiv">
+						<ez:fiveTabbedPanel id="fiveTabbedNewArticles"
+											baseListBean="#{NewArticlesBean}"
+											orderArticleControllerBean="#{OrderArticleController}"
+											appBean="#{AppBean}" />
+					</div>					
+				</h:panelGroup>	
+				<h:panelGroup rendered="#{CheapArticlesBean.dataItemsCount>0}" >
+					<div class="boxHeaderDiv">
+						<h:outputText value="#{msgs.cheapesArticles}"/>
+					</div>
+					<div class="boxContentDiv">
+						<ez:fiveTabbedPanel id="fiveTabbedCheapArticles"
+											baseListBean="#{CheapArticlesBean}"
+											orderArticleControllerBean="#{OrderArticleController}"
+											appBean="#{AppBean}"
+											rendered="#{CheapArticlesBean.dataItemsCount>0}" />
+					</div>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{BestSellArticlesBean.dataItemsCount>0}" >
+					<div class="boxHeaderDiv">
+						<h:outputText value="#{msgs.bestSellArticles}"/>
+					</div>
+					<div class="boxContentDiv">
+						<ez:fiveTabbedPanel id="fiveTabbedBestSellArticles"
+											baseListBean="#{BestSellArticlesBean}"
+											orderArticleControllerBean="#{OrderArticleController}"
+											appBean="#{AppBean}"
+											rendered="#{BestSellArticlesBean.dataItemsCount>0}" />	
+					</div>
+				</h:panelGroup>	
+			</h:panelGrid>
+									
+		</div>
+		<div id="homeRightSidebarDiv">
+			<ui:include src="templates/promotions.xhtml"/>
+		</div> 
+	</ui:define>
+	
+</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/listtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.orders}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{OrdersListBean}"/>
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		<ui:define name="viewClasses">
+	    	.c1 {width: 15px; text-align: center;}
+	    	.c2 {width: 40px;}
+		</ui:define>
+		<ui:param name="columnClasses" value="c1,c2"/>
+		
+		<ui:define name="paramsPanel">
+			<h:panelGrid columns="3">
+				<h:outputText value="#{msgs.fromdate}" />
+				<h:inputText id="fromDate" value="#{OrdersListBean.fromDate}"
+							 size="15"
+							 maxlength="10"
+							 required="true">
+					<f:convertDateTime type="date" dateStyle="medium" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:inputText>
+				<h:message for="fromDate" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.todate}" />
+				<h:inputText id="toDate" value="#{OrdersListBean.toDate}"
+							 size="15"
+							 maxlength="10"	
+							 required="true">
+					<f:convertDateTime type="date" dateStyle="medium" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:inputText>
+				<h:message for="toDate" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.username}" />
+				<h:inputText id="username" 
+							 size="30"
+							 maxlength="30"
+							 value="#{OrdersListBean.username}" >
+				</h:inputText>
+				<h:message for="username" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.organisation}" />
+				<h:inputText id="organisation" 
+							 size="60"
+							 maxlength="100"
+							 value="#{OrdersListBean.organisation}">
+				</h:inputText>
+				<h:message for="organisation" styleClass="errorText"/>
+				
+			</h:panelGrid>	
+		</ui:define>
+		
+		<ui:define name="dataTableColumns">
+			<h:column> 
+				<f:facet name="header">
+					<h:selectBooleanCheckbox readonly="true" onclick="return check_uncheck_all_in_document(this)"/>
+				</f:facet>
+				<h:selectBooleanCheckbox value="#{rowData.checked}" />
+				<h:inputHidden value="#{rowData.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="idSort" basecrudbean="#{OrdersListBean}" fieldName="o.id" textValue="#{msgs.id}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/admin/order.jsf">
+					<f:param name="#{OrdersListBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:graphicImage value="/img/edit_inline.gif"/>					
+					<h:outputText value=" #{rowData.id}"/>
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="postDateTimeSort" basecrudbean="#{OrdersListBean}" fieldName="o.postdate" textValue="#{msgs.postdate}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.postdate}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}">
+					<f:convertDateTime type="date" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:outputText>
+				<br/>
+				<h:outputText value="#{rowData.posttime}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}">
+					<f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="#{AppBean.timeZone}"/>
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="forDateTimeSort" basecrudbean="#{OrdersListBean}" fieldName="o.fordate" textValue="#{msgs.fordate}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.fordate}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}">
+					<f:convertDateTime type="date" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:outputText>
+				<br/>
+				<h:outputText value="#{rowData.fortime}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}">
+					<f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="#{AppBean.timeZone}"/>
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="usernameSort" basecrudbean="#{OrdersListBean}" fieldName="o.user.username" textValue="#{msgs.username}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.user.username}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="organisationSort" basecrudbean="#{OrdersListBean}" fieldName="o.user.organisation" textValue="#{msgs.organisation}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.user.organisation}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="delivaddrSort" basecrudbean="#{OrdersListBean}" fieldName="o.deliveryAddress" textValue="#{msgs.delivAddress}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.deliveryAddress}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="statusSort" basecrudbean="#{OrdersListBean}" fieldName="o.status.id" textValue="#{msgs.status}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.status.nameen}" rendered="#{AppBean.appLocale=='en'}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}"/>
+				<h:outputText value="#{rowData.status.namebg}" rendered="#{AppBean.appLocale=='bg'}" styleClass="#{OrdersListBean.textStyleClass[rowData.seenbyadmin]}"/>
+			</h:column>
+			
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

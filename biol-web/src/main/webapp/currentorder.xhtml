@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/apptemplate.xhtml">
+		<ui:param name="title" value="#{msgs.order}"/>
+		<ui:param name="sidebarWidth" value="0px"/>
+		<ui:param name="viewBean" value="#{CurrentOrderBean}"/>
+		<ui:define name="viewClasses">
+	    	.cNumber {width: 15px; text-align: center;}
+	    	.cQuantity {text-align: right;}
+	    	.cPrice {text-align: right;}
+	    	.cValue {text-align: right;}
+	    	.tableFooter {text-align: right; font-weight: bold;}
+	    	#subtableDiv {display: block; width: 100%; text-align: right; font-weight: bold;}
+		</ui:define>
+		
+		<ui:define name="content">
+		
+			<h:panelGrid columns="3">
+				<h:outputText value="* #{msgs.delivAddress}" />
+				<h:inputText id="delivAddr" value="#{CurrentOrderBean.order.deliveryAddress}" size="35" maxlength="50" required="true"/>
+				<h:message for="delivAddr" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.delivdate}" />
+				<h:inputText id="delivDate" value="#{CurrentOrderBean.fordate}"
+							 size="15"
+							 maxlength="10" >
+					<f:convertDateTime type="date" dateStyle="medium" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:inputText>
+				<h:message for="delivDate" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.delivtime}" />
+				<h:inputText id="delivTime" value="#{CurrentOrderBean.fortime}"
+							 size="15"
+							 maxlength="10" >
+					<f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="#{AppBean.timeZone}"/>
+				</h:inputText>
+				<h:message for="delivTime" styleClass="errorText"/>
+				                 
+				<h:outputText value="* #{msgs.enterRegCode}" />
+				<h:inputText id="regcode"
+				  			size="10"
+	    					maxlength="4"
+		    				required="true"
+		    				redisplay="false"				 
+    						value="#{CurrentOrderBean.regcode}" />
+				<h:messages for="regcode" styleClass="errorText"/>
+				
+				<h:outputText value="" />
+				<h:outputText value="#{msgs.regCodeHintText}" />
+				<h:outputText value="" />
+				
+				<h:outputText value="" />
+				<h:graphicImage id="regcodeImage" value="/RegCodeImage?p=#{CurrentOrderBean.randomStringParam}"/>
+				<h:outputText value="" />
+				
+				<h:commandButton value="#{msgs.ordernow}" 
+								 onclick="return confirm('#{msgs.confirmpostorder}');"
+				                 actionListener="#{CurrentOrderBean.saveData}" 
+				                 rendered="#{CurrentOrderBean.haveOrderedArticles}"/>
+				<h:outputText value="" rendered="#{CurrentOrderBean.haveOrderedArticles}"/>                
+				<h:outputText value="" rendered="#{CurrentOrderBean.haveOrderedArticles}"/> 
+				                 
+			</h:panelGrid>
+			<br/>
+			<h:dataTable binding="#{ComponentLookup.components.orderRowsDataTable}"
+						 value="#{CurrentOrderBean.order.rows}" 
+						 var="rowData"
+						 styleClass="listDataTable"
+						 headerClass="tableHeader"
+						 rowClasses="oddRow,evenRow"
+						 footerClass="tableFooter"
+						 columnClasses="cNumber,,cQuantity,,cPrice,cValue">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.number}" />
+					</f:facet>
+					<h:outputText value="#{ComponentLookup.components.orderRowsDataTable.rowIndex+1}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.item}" />
+					</f:facet>
+					<h:outputLink id="link"
+								  value="#{AppBean.appPath}/viewarticle.jsf"
+								  onmouseover="tipDivTag('popupDiv#{rowData.item.id}','#{AppBean.appPath}/ItemImage?name=#{CurrentOrderBean.imageName[rowData.item.id]}');"
+								  onmousemove="showDivTag('popupDiv#{rowData.item.id}')" 
+								  onmouseout="hideDivTag('popupDiv#{rowData.item.id}')">
+						<f:param name="id" value="#{rowData.item.id}"/>
+						<h:outputText value="#{rowData.item.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+						<h:outputText value="#{rowData.item.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+					</h:outputLink>
+					<div id="popupDiv#{rowData.item.id}" style="display: none; position: absolute; z-index: 1; opacity: .8;">
+					</div>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.quantity}"/>
+					</f:facet>
+					<h:commandButton image="/img/minus-16x16.png"
+					                 onclick="return confirm('#{msgs.confirmdeleterow}');"
+						             actionListener="#{CurrentOrderBean.deleteRow}"
+						             immediate="true" >
+						<f:param name="articleId" value="#{rowData.item.id}"/>						             
+					</h:commandButton>                 
+					<h:inputText id="amount"
+					             binding="#{ComponentLookup.components.amount}"
+					             onchange="jsf.ajax.request(this, event, {execute: '#{ComponentLookup.clientIds.amount}', render: '#{ComponentLookup.clientIds.amount} #{ComponentLookup.clientIds.amountMessage} #{ComponentLookup.clientIds.value} #{ComponentLookup.clientIds.totalValue}'}); return false;"
+								 size="8"
+								 maxlength="7"
+								 style="text-align: right; vertical-align: top;"
+								 required="true"
+								 value="#{rowData.amount}">
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>			 
+						<f:validateDoubleRange minimum="1" maximum="1000"/>
+					</h:inputText>
+					<br/>
+					<h:message id="amountMessage"
+					           binding="#{ComponentLookup.components.amountMessage}" 
+					           for="amount" 
+					           styleClass="errorText"/>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.packing}"/>
+					</f:facet>
+					<h:outputText value=" #{rowData.item.packingen}" rendered="#{AppBean.appLocale=='en'}"/>
+					<h:outputText value=" #{rowData.item.packingbg}" rendered="#{AppBean.appLocale=='bg'}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.price}"/>
+					</f:facet>
+					<h:outputText value="#{rowData.price}">
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>					
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.value}"/>
+					</f:facet>
+					<h:outputText id="value"
+					              binding="#{ComponentLookup.components.value}" 
+					              value="#{rowData.value}">
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+					</h:outputText>
+				</h:column>
+				
+			</h:dataTable>		
+			<div id="subtableDiv">
+				<h:outputText value="#{msgs.total} " rendered="#{CurrentOrderBean.haveOrderedArticles}"/>
+				<h:outputText id="totalValue"
+				              binding="#{ComponentLookup.components.totalValue}"
+				              value="#{CurrentOrderBean.order.totalValue}"
+				              rendered="#{CurrentOrderBean.haveOrderedArticles}">
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+				</h:outputText>
+			</div>		
+			<h:outputText value="#{msgs.pricesAreWoVat}" rendered="#{CurrentOrderBean.haveOrderedArticles}"/>
+			
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

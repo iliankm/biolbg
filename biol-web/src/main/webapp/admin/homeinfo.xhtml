@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body><h1>HEADER</h1>
+	<ui:composition template="/templates/edititemtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.homeinfo}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{HomeInfoBean}"/>
+		
+		<ui:define name="viewParams">
+			<f:metadata>
+				<f:viewParam name="id" value="#{HomeInfoBean.itemId}">
+					<f:convertNumber type="number" />
+				</f:viewParam>
+			</f:metadata>
+			<f:event type="preRenderView" listener="#{HomeInfoBean.preRenderView}"/>
+		</ui:define>
+		
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		<ui:define name="itemcontent">
+			<h:inputHidden value="#{HomeInfoBean.item.version}" />
+			<h:panelGrid columns="3">
+				<h:outputText value="* #{msgs.headeren}" />
+				<h:inputText id="headeren" 
+							 size="30"
+							 maxlength="50"
+							 value="#{HomeInfoBean.item.headertexten}"
+							 required="true">
+				</h:inputText>
+				<h:message for="headeren" styleClass="errorText"/>
+				
+				<h:outputText value="* #{msgs.headerbg}" />
+				<h:inputText id="headerbg"
+							 size="30"
+							 maxlength="50" 
+							 value="#{HomeInfoBean.item.headertextbg}"
+							 required="true">
+				</h:inputText>
+				<h:message for="headerbg" styleClass="errorText"/>
+
+				<h:outputText value="* #{msgs.texten}" />
+				<h:inputTextarea id="infotexten"
+							 rows="6"
+							 cols="40"
+							 maxlength="1024"	 
+							 value="#{HomeInfoBean.item.infotexten}"
+							 required="true">
+				</h:inputTextarea>
+				<h:message for="infotexten" styleClass="errorText"/>
+				
+				<h:outputText value="* #{msgs.textbg}" />
+				<h:inputTextarea id="infotextbg"
+							 rows="6"
+							 cols="40" 
+							 maxlength="1024"
+							 value="#{HomeInfoBean.item.infotextbg}"
+							 required="true">
+				</h:inputTextarea>
+				<h:message for="infotextbg" styleClass="errorText"/>
+				
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+      	xmlns:f="http://java.sun.com/jsf/core"
+      	xmlns:ui="http://java.sun.com/jsf/facelets"
+      	xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+<ui:composition template="/templates/apptemplate.xhtml">
+	<ui:param name="title" value="#{msgs.articles}"/>
+	<ui:param name="sidebarWidth" value="20%"/>
+	<ui:param name="viewBean" value="#{GalleryBean}"/>
+	
+	<ui:define name="metadata" >
+		<f:metadata>
+			<f:viewParam name="group" value="#{GalleryBean.paramGroup}">
+				<f:converter converterId="GroupConverter"/>
+			</f:viewParam>
+			<f:viewParam name="producer" value="#{GalleryBean.paramProducer}">
+				<f:converter converterId="ProducerConverter"/>
+			</f:viewParam>
+		</f:metadata>
+		<f:event type="preRenderView" listener="#{GalleryBean.preRenderView}"/>
+	</ui:define>
+	
+	<ui:define name="cssIncludes">
+		<link rel="stylesheet" type="text/css" href="resources/css/jcarousel/skin.css" />
+	</ui:define>
+
+	<ui:define name="viewClasses">
+	</ui:define>
+	
+	<ui:define name="viewScripts">
+		<h:outputScript name="js/jquery.jcarousel.min.js"/>
+		<script type="text/javascript">	
+			function mycarousel_itemLoadCallback(carousel, state)
+			{
+			}
+			function mycarousel_itemVisibleInCallback(carousel, liObject, position, state)
+			{
+				var itemImageId = liObject.getAttribute('itemImageId');
+				var itemImageName = liObject.getAttribute('itemImageName');
+				var itemImage = $(".itemImage_"+itemImageId);
+				if (itemImage)
+				{
+					if (!itemImage.attr("src") || itemImage.attr("src") == "")
+					{
+						itemImage.attr("src", "#{AppBean.appPath}/ItemImage?name="+itemImageName);
+					}
+				}
+ 			}
+			
+			function loadItemImage(itemId)
+			{
+				$("#itemImageContainer_"+itemId).css("background", "");
+				$(".itemImage_"+itemId).fadeIn("slow");
+			}
+		
+			$(document).ready(function() {
+			    $('#mycarousel').jcarousel({
+			    	scroll: 1,
+			    	visible: 1,
+			        itemLoadCallback: mycarousel_itemLoadCallback,
+			        itemVisibleInCallback: {
+			        	  onAfterAnimation: mycarousel_itemVisibleInCallback
+			        	} 
+			        	
+			        	
+			        	
+			    });
+			});
+		</script>
+	</ui:define>
+	
+	<ui:define name="sidebar">
+		<div class="boxHeaderDiv">
+			<h:outputText value="#{msgs.itemgroups}"/>
+			
+		</div>
+		<div class="boxContentDiv">
+			<ul>
+				<ui:repeat value="#{GalleryBean.groups}" var="group">
+					<ui:param name="selectedStyleClass" value="#{(GalleryBean.paramGroup.id == group.id) ? 'selectedBoxItem' : ''}"/>
+					<li>
+						<h:link value="#{group.nameen}" includeViewParams="false" outcome="gallery.xhtml" styleClass="blocka ${selectedStyleClass}" rendered="#{AppBean.appLocale == 'en'}">
+							<f:param name="group" value="#{group.id}"/>
+							<f:param name="producer" value="0"/>
+						</h:link>
+						<h:link value="#{group.namebg}" includeViewParams="false" outcome="gallery.xhtml" styleClass="blocka ${selectedStyleClass}" rendered="#{AppBean.appLocale == 'bg'}">
+							<f:param name="group" value="#{group.id}"/>
+							<f:param name="producer" value="0"/>
+						</h:link>
+					</li>	
+				</ui:repeat>
+			</ul>	
+		</div>
+		<br/>
+		<div class="boxHeaderDiv">
+			<h:outputText value="#{msgs.producers}"/>
+		</div>
+		<div class="boxContentDiv">
+			<ul>
+				<ui:repeat value="#{GalleryBean.producers}" var="producer">
+					<ui:param name="selectedStyleClass" value="#{(GalleryBean.paramProducer.id == producer.id) ? 'selectedBoxItem' : ''}"/>
+					<li>
+						<h:link value="#{producer.nameen}" includeViewParams="false" outcome="gallery.xhtml" styleClass="blocka ${selectedStyleClass}" rendered="#{AppBean.appLocale == 'en'}">
+							<f:param name="group" value="0"/>
+							<f:param name="producer" value="#{producer.id}"/>
+						</h:link>
+						<h:link value="#{producer.namebg}" includeViewParams="false" outcome="gallery.xhtml" styleClass="blocka ${selectedStyleClass}" rendered="#{AppBean.appLocale == 'bg'}">
+							<f:param name="group" value="0"/>
+							<f:param name="producer" value="#{producer.id}"/>
+						</h:link>
+					</li>	
+				</ui:repeat>
+			</ul>	
+		</div>	
+	</ui:define>
+	<ui:define name="content">
+			<ul id="mycarousel" class="jcarousel-skin-tango">
+				<ui:repeat value="#{GalleryBean.items}" var="item" id="repeatItems">
+				<li itemImageId="#{item.id}" itemImageName="#{GalleryBean.imageName[item.id]}">
+					<div id="itemContainer" style="clear:both; position:relative;">
+						<div id="itemImageContainer_#{item.id}" style="width: 290px; height: 290px; position:relative; float:left; text-align:center; background:url(#{AppBean.appPath}/img/ajax-loader.gif) no-repeat center">
+							<img src="" style="max-width: 290px; display: none;" class="itemImage_#{item.id}" onload="loadItemImage(#{item.id})" />
+						</div>
+						<div id="itemInfoContainer_#{item.id}" style="position:relative; float:right; width: 200px">
+						
+							<div id="homeInfoHeaderDiv">
+								<h:outputText value="#{item.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+								<h:outputText value="#{item.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+							</div>
+							<div id="homeInfoContentDiv">
+								<h:outputText value="#{item.descriptionen}" rendered="#{AppBean.appLocale=='en'}"/>
+								<h:outputText value="#{item.descriptionbg}" rendered="#{AppBean.appLocale=='bg'}"/>
+							</div>
+							<div id="homeInfoHeaderDiv">
+								<h:outputText value="#{msgs.producer}"/>
+							</div>
+							<div id="homeInfoContentDiv">
+								<h:outputLink value="#{AppBean.appPath}/articles.jsf">
+									<f:param name="producer" value="#{item.producer.id}"/>
+									<h:outputText value="#{item.producer.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+									<h:outputText value="#{item.producer.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+								</h:outputLink>
+							</div>
+							<div id="homeInfoHeaderDiv">
+								<h:outputText value="#{msgs.itemgroup}"/>
+							</div>
+							<div id="homeInfoContentDiv">
+								<h:outputLink value="#{AppBean.appPath}/articles.jsf">
+									<f:param name="group" value="#{item.group.id}"/>
+									<h:outputText value="#{item.group.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+									<h:outputText value="#{item.group.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+								</h:outputLink>
+							</div>
+							<div id="homeInfoHeaderDiv">
+								<h:outputText value="#{msgs.packing}"/>
+							</div>
+							<div id="homeInfoContentDiv">
+								<h:outputText value="#{msgs.packing}:"/>
+								<h:outputText value=" #{item.packingen}" rendered="#{AppBean.appLocale=='en'}"/>
+								<h:outputText value=" #{item.packingbg}" rendered="#{AppBean.appLocale=='bg'}"/>
+								<br/>
+								<h:outputText value="#{msgs.amountinpacking}: "/>
+								<h:outputText value="#{item.amountinpacking}">
+									<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+								</h:outputText>
+								<h:outputText value=" #{item.measureuniten}" rendered="#{AppBean.appLocale=='en'}"/>
+								<h:outputText value=" #{item.measureunitbg}" rendered="#{AppBean.appLocale=='bg'}"/>	
+								<br/>
+								<h:outputText value="#{msgs.priceforpacking}: "/>
+								<h:outputText value="#{item.priceforpacking}">
+									<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+								</h:outputText>
+								<h:outputText value=" #{msgs.leva}"/>
+								<br/>
+								<h:outputText value="#{msgs.pricesAreWoVat}"/>
+							</div>
+							<div id="homeInfoHeaderDiv">
+								<h:outputText value="#{msgs.order}"/>
+							</div>
+							<div id="homeInfoContentDiv">
+								<ez:orderArticle id="orderArticle"
+												 orderArticleController="#{OrderArticleController}"
+											     articleId="#{item.id}"/>
+							</div>
+						</div>
+					</div>	
+				</li>
+				</ui:repeat>
+			</ul>
+	</ui:define>
+</ui:composition>	
+</body>
+</html>

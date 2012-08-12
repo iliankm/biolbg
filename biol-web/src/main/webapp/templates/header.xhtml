@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition>
+		<div id="headerLeftDiv">
+			<h:graphicImage id="logoImage" value="/img/biol.jpg"/>
+		</div>
+		
+		<div id="headerRightDiv">
+			<h:panelGrid id="loginPanel" columns="2" rendered="#{AppBean.renderLoginPanel}">
+				<h:outputText id="usrText" value="#{msgs.user}:"/>
+				<h:inputText id="usrInput" 
+							 value="#{AppBean.username}" 
+							 binding="#{AppBean.usernameComp}"
+							 onkeypress="return formKeyPressed(event,'baseForm:loginButton');"/>
+				<h:outputText id="passText" value=" #{msgs.password}:"/>
+				<h:inputSecret id="passInput"  
+							   redisplay="false" 
+							   value="#{AppBean.password}" 
+							   binding="#{AppBean.passwordComp}"
+							   onkeypress="return formKeyPressed(event,'baseForm:loginButton');"/>
+				<h:outputText value=""/>
+				<h:commandButton id="loginButton" value="#{msgs.login}" action="#{AppBean.login}" immediate="true"/>
+				<h:outputText value=""/>
+				<h:outputLink id="registrationLink" value="#{AppBean.appPath}/registration.jsf">
+					<h:outputText id="registrationText" value="#{msgs.createAccount}"/>
+				</h:outputLink>
+			</h:panelGrid>
+			<h:message for="usrInput" infoStyle="color: green;" errorStyle="color: red;" />
+			<h:panelGrid id="logoutPanel" columns="1" columnClasses="taright" rendered="#{AppBean.renderLogoutPanel}">
+				<h:outputLink id="adminLink" value="#{AppBean.appPath}/admin/homeinfolist.jsf" rendered="#{AppBean.loggedUser.adminflag==1}">
+					<h:outputText id="adminText" value="#{msgs.adminPanel} "/>
+				</h:outputLink>
+				<h:outputText id="loggedUser" value="#{AppBean.loggedUser.username}"/>
+				<h:outputText id="loggedUserFullname" value="#{AppBean.loggedUser.fullname}"/>
+				<h:outputText id="loggedUserOrg" value="#{AppBean.loggedUser.organisation}"/>
+				<h:commandButton id="logoutButton" value="#{msgs.logout}" action="#{AppBean.logout}" immediate="true"/>				
+			</h:panelGrid>
+		</div>
+	</ui:composition>    
+</h:body>
+</html>

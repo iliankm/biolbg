@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition>
+		<div id="navbarContentDiv">
+		<ul>
+			<li>
+				<h:outputLink value="#{AppBean.appPath}/home.jsf">
+					<h:outputText id="homeText" value="#{msgs.home}"/>
+				</h:outputLink>
+			</li>
+			<li>
+				<h:link value="#{msgs.articles}" includeViewParams="false" outcome="gallery.xhtml">
+					<f:param name="group" value="#{GalleryParamsBean.paramGroup.id}" />
+					<f:param name="producer" value="#{GalleryParamsBean.paramProducer.id}" />
+				</h:link>
+			</li>
+			<li>
+				<h:outputLink value="#{AppBean.appPath}/articles.jsf">
+					<h:outputText id="articlesText" value="#{msgs.catalog}"/>
+				</h:outputLink>
+			</li>
+			<li>
+				<h:outputLink value="#{AppBean.appPath}/currentorder.jsf">
+					<h:outputText id="orderText" value="#{msgs.order}"/>
+				</h:outputLink>
+			</li>
+			<li>
+				<h:outputLink value="#{AppBean.appPath}/orderslist.jsf">
+					<h:outputText id="listText" value="#{msgs.list}"/>
+				</h:outputLink>
+			</li>
+		</ul>
+		</div>	
+	</ui:composition>
+</h:body>
+</html>

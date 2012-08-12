@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view locale="#{AppBean.appLocale}">
+	<ui:insert name="metadata"/>
+	
+	<h:head>
+		<h:outputStylesheet name="css/reset.css" target="head"/>
+		<h:outputStylesheet name="css/styles.css" target="head"/>
+		<ui:insert name="cssIncludes"/>
+		<style type="text/css" >
+			<ui:insert name="viewClasses"/>
+		</style>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var mousePosX=0; var mousePosY=0;
+			$(document).ready(function () {
+				$(".fadeInImage").hide();
+				$(".fadeInImage").fadeIn("slow");
+			});
+			$(document).mousemove(function(e) {
+				mousePosX=e.pageX;
+				mousePosY=e.pageY;
+			});
+		</script>
+		
+		<h:outputScript name="js/biol.js"/>
+		<ui:insert name="viewScripts" />		
+		
+	
+	    <title>#{msgs.pagetitleprefix}&#8482; : ${title}</title>
+	</h:head>
+	<h:body>
+		<div id="baseDiv" align="center">
+			<div id="mainDiv">
+				<h:form id="baseForm" onkeypress="return formKeyPressed(event,'${elementIdOnEnterPressed}');">	
+					<div id="headerDiv">
+						<ui:insert name="header"/>
+					</div>
+	
+					<div id="changeLangDiv">
+						<h:commandButton id="bgButton" image="/img/bg-flag.gif" action="#{AppBean.setBgLocale}" immediate="true"/>
+						<h:commandButton id="enButton" image="/img/en-flag.gif" action="#{AppBean.setEnLocale}" immediate="true"/>
+					</div>
+					<div id="navbarDiv">
+						<ui:insert name="navbar"/>
+					</div>
+					<div id="titleDiv">
+						${title}
+					</div>
+					<div id="basecontentDiv">
+						<ui:insert name="basecontent"/>
+					</div>
+				</h:form>
+				<div id="subformDiv">
+					<ui:insert name="subform"/>
+				</div>
+				<div id="footerDiv">
+					<ui:insert name="footer"/>
+				</div>	
+			</div>
+		</div>
+	</h:body>
+</f:view>
+
+</html>

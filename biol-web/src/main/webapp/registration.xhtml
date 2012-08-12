@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/apptemplate.xhtml">
+		<ui:param name="elementIdOnEnterPressed" value="baseForm:register"/>
+		<ui:param name="sidebarWidth" value="0px"/>
+		<ui:param name="viewBean" value="#{RegistrationBean}"/>
+		<ui:param name="title" value="#{msgs.registration}"/>
+
+		<ui:define name="content">
+			<h:panelGrid columns="3">
+				<h:outputText value="* #{msgs.user}" />
+				<h:panelGrid columns="2">
+					<h:inputText id="username"
+					 			 size="20"
+								 maxlength="30"
+								 required="true"				 
+								 value="#{RegistrationBean.username}" 
+								 onkeyup="document.getElementById('baseForm:validateUsername').click()" />
+					<h:commandButton id="validateUsername"
+									 style="visibility: hidden;"
+									 actionListener="#{RegistrationBean.validateUsername}" 
+									 onclick="jsf.ajax.request(this, event, {execute: 'baseForm:username', render: 'baseForm:usernameMsg'}); return false;"/>			 
+				</h:panelGrid>
+				<h:messages id="usernameMsg" for="username" errorClass="errorText" warnClass="infoText"/>
+				
+				<h:outputText value="" />
+				<h:panelGrid columns="1" >
+					<h:outputText value="#{msgs.usernameHintText1}" />
+					<h:outputText value="#{msgs.usernameHintText2}" />
+					<h:outputText value="#{msgs.usernameHintText3}" />
+					<h:outputText value="#{msgs.usernameHintText4}" /> <br/>
+				</h:panelGrid>
+				<h:outputText value="" />
+								
+				<h:outputText value="* #{msgs.password}" />
+				<h:inputSecret id="password" 
+				 			 size="20"
+							 maxlength="30"
+							 required="true"
+							 redisplay="false"				 
+							 value="#{RegistrationBean.password}" />
+				<h:messages for="password" styleClass="errorText"/>
+				
+				<h:outputText value="" />
+				<h:panelGrid columns="1" >
+					<h:outputText value="#{msgs.passwordHintText1}" />
+					<h:outputText value="#{msgs.passwordHintText2}" />
+					<h:outputText value="#{msgs.passwordHintText3}" />
+					<h:outputText value="#{msgs.passwordHintText4}" /> <br/>
+				</h:panelGrid>
+				<h:outputText value="" />
+				
+				<h:outputText value="* #{msgs.repeatPassword}" />
+				<h:inputSecret id="repeatpassword"
+     							size="20"
+	    						maxlength="30"
+		    					required="true"	
+		    					redisplay="false"			 
+							    value="#{RegistrationBean.repeatPassword}" />
+				<h:messages for="repeatpassword" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.fullname}" />
+				<h:inputText id="fullname" 
+							 size="40"
+							 maxlength="100"
+							 value="#{RegistrationBean.fullname}">
+				</h:inputText>
+				<h:message for="fullname" styleClass="errorText"/>
+
+				<h:outputText value="* #{msgs.organisation}" />
+				<h:inputText id="organisation"
+				 			size="40"
+	    					maxlength="100"
+		    				required="true"				 
+							value="#{RegistrationBean.organisation}" />
+				<h:messages for="organisation" styleClass="errorText"/>
+
+				<h:outputText value="* #{msgs.email}" />
+				<h:inputText id="email"
+				  			size="40"
+	    					maxlength="100"
+		    				required="true"				 
+				        	 value="#{RegistrationBean.email}" >
+					<f:validator validatorId="EmailValidator" />				        	 
+				</h:inputText>        	 
+				<h:messages for="email" styleClass="errorText"/>
+
+				<h:outputText value="* #{msgs.enterRegCode}" />
+				<h:inputText id="regcode"
+				  			size="10"
+	    					maxlength="4"
+		    				required="true"
+		    				redisplay="false"				 
+    						value="#{RegistrationBean.regcode}" />
+				<h:messages for="regcode" styleClass="errorText"/>
+				
+				<h:outputText value="" />
+				<h:outputText value="#{msgs.regCodeHintText}" />
+				<h:outputText value="" />
+				
+				<h:outputText value="" />
+				<h:panelGrid columns="2" >
+					<h:graphicImage id="regcodeImage" value="/RegCodeImage?p=#{RegistrationBean.randomStringParam}"/>
+					<h:commandButton id="refrregcode"
+					                 image="img/refresh-32x32.png"  
+					                 onclick="jsf.ajax.request(this, event, {execute: '', render: 'baseForm:regcodeImage'}); return false;"/>
+				</h:panelGrid>
+				<h:outputText value="" />
+
+			</h:panelGrid>
+
+			<br/>
+			<h:commandButton id="register" value="#{msgs.registration}" action="#{RegistrationBean.register}" />
+			<h:commandButton value="#{msgs.cancel}" action="exit" immediate="true" />
+			<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

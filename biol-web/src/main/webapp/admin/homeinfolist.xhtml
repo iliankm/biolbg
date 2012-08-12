@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/listtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.homeinfos}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{HomeInfoListBean}"/>
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		<ui:define name="viewClasses">
+	    	.c1 {width: 15px; text-align: center;}
+	    	.c2 {width: 40px;}
+		</ui:define>
+		<ui:param name="columnClasses" value="c1,c2,,,,"/>
+
+		<ui:define name="dataTableColumns">
+			<h:column>
+				<f:facet name="header">
+					<h:selectBooleanCheckbox readonly="true" onclick="return check_uncheck_all_in_document(this)"/>
+				</f:facet>
+				<h:selectBooleanCheckbox value="#{rowData.checked}" />
+				<h:inputHidden value="#{rowData.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="idSort" basecrudbean="#{HomeInfoListBean}" fieldName="o.id" textValue="#{msgs.id}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/admin/homeinfo.jsf">
+					<f:param name="#{HomeInfoListBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:graphicImage value="/img/edit_inline.gif"/>					
+					<h:outputText value=" #{rowData.id}"/>
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="headerenSort" basecrudbean="#{HomeInfoListBean}" fieldName="o.headertexten" textValue="#{msgs.headeren}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.headertexten}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="headerbgSort" basecrudbean="#{HomeInfoListBean}" fieldName="o.headertextbg" textValue="#{msgs.headerbg}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.headertextbg}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="textenSort" basecrudbean="#{HomeInfoListBean}" fieldName="o.infotexten" textValue="#{msgs.texten}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.infotexten}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="textbgSort" basecrudbean="#{HomeInfoListBean}" fieldName="o.infotextbg" textValue="#{msgs.textbg}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.infotextbg}"/>
+			</h:column>
+			
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

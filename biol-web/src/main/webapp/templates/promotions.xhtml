@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition>
+		<div class="boxHeaderDiv">
+			<h:outputText value="#{msgs.promotions}"/>
+		</div>
+		<div class="boxContentDiv">
+			<h:inputHidden id="pageNumberHidden" value="#{PromotionsBean.pagerController.pageNumber}"/>
+
+			<h:commandButton id="btnFirstPage"
+			                 image="img/first.png"
+			                 actionListener="#{PromotionsBean.pagerController.gotoFirstPage}" 
+			                 onclick="jsf.ajax.request(this, event, {execute: 'baseForm:pageNumberHidden', render: 'baseForm:pageNumberHidden baseForm:textPageNumber baseForm:textTotalPages baseForm:tablePromotionStuff'}); return false;">
+			</h:commandButton>                 
+			<h:commandButton id="btnPrevPage"
+			                 image="img/previous.png"
+			                 actionListener="#{PromotionsBean.pagerController.gotoPrevPage}"
+   			                 onclick="jsf.ajax.request(this, event, {execute: 'baseForm:pageNumberHidden', render: 'baseForm:pageNumberHidden baseForm:textPageNumber baseForm:textTotalPages baseForm:tablePromotionStuff'}); return false;">
+			</h:commandButton>
+			<h:commandButton id="btnNextPage"
+			                 image="img/next.png"
+			                 actionListener="#{PromotionsBean.pagerController.gotoNextPage}"
+   			                 onclick="jsf.ajax.request(this, event, {execute: 'baseForm:pageNumberHidden', render: 'baseForm:pageNumberHidden baseForm:textPageNumber baseForm:textTotalPages baseForm:tablePromotionStuff'}); return false;">
+			</h:commandButton>               
+			<h:commandButton id="btnLastPage"
+			                 image="img/last.png"
+			                 actionListener="#{PromotionsBean.pagerController.gotoLastPage}"
+			                 onclick="jsf.ajax.request(this, event, {execute: 'baseForm:pageNumberHidden', render: 'baseForm:pageNumberHidden baseForm:textPageNumber baseForm:textTotalPages baseForm:tablePromotionStuff'}); return false;" >
+			</h:commandButton>
+
+			<h:outputText id="textPageNumber" value="&nbsp; #{PromotionsBean.pagerController.pageNumber}"/>
+			<h:outputText id="textFrom" value="&nbsp;#{msgs.from}"/>
+			<h:outputText id="textTotalPages" value="&nbsp;#{PromotionsBean.pagerController.totalPages}"/>	 
+
+			<h:dataTable id="tablePromotionStuff" value="#{PromotionsBean.dataItems}" var="item">
+				<h:column>
+					<div style="width: 130px; height: 98px">
+						<h:outputLink value="#{AppBean.appPath}/viewarticle.jsf">
+							<f:param name="#{PromotionsBean.finalIdParam}" value="#{item.id}"/>
+							<h:graphicImage styleClass="fadeInImage" style="max-width: 130px; max-height: 98px;" value="/ItemImage?name=#{PromotionsBean.itemsImages[item.id]}"/>
+						</h:outputLink>
+					</div>		
+					<div style="width: 130px;">
+						<h:outputText value="#{item.nameen}" rendered="#{AppBean.appLocale == 'en'}"/>
+						<h:outputText value="#{item.namebg}" rendered="#{AppBean.appLocale == 'bg'}"/>
+						<br/>
+						<h:outputText value="#{item.producer.nameen}" rendered="#{AppBean.appLocale == 'en'}"/>
+						<h:outputText value="#{item.producer.namebg}" rendered="#{AppBean.appLocale == 'bg'}"/>
+						<br/>
+						<h:outputText value="#{item.priceforpacking}">
+							<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+						</h:outputText>	
+						<h:outputText value="&nbsp; #{msgs.leva}"/>
+						<h:outputText value="&nbsp; / &nbsp;"/>
+						<h:outputText value="#{item.packingen}" rendered="#{AppBean.appLocale == 'en'}"/>
+						<h:outputText value="#{item.packingbg}" rendered="#{AppBean.appLocale == 'bg'}"/>
+						<br/>
+						<ez:orderArticle id="orderArticle1"
+						                 orderArticleController="#{OrderArticleController}"
+									     articleId="#{item.id}"/>
+					</div>				     
+				</h:column>
+			</h:dataTable>
+		</div>
+		<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+		
+	</ui:composition>
+</h:body>
+</html>

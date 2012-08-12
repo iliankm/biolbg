@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp" >
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/apptemplate.xhtml">
+		<ui:param name="elementIdOnEnterPressed" value="baseForm:refreshButton"/>
+		
+		<ui:define name="content">
+			<h:outputScript name="js/list.js" target="head" />
+			
+			<div id="listparamsDiv">	
+				<ui:insert name="paramsPanel"/>
+			</div>
+			
+			<div id="listtoolbarDiv">	
+				<ui:include src="listtoolbar.xhtml"/>
+			</div>
+			
+			<div id="listpager1Div">	
+                                         
+				<h:inputHidden value="#{viewBean.pagerController.pageNumber}">
+					<f:converter converterId="javax.faces.Integer"/>
+				</h:inputHidden>
+				<h:inputHidden value="#{viewBean.pagerController.totalPages}">
+					<f:converter converterId="javax.faces.Integer"/>
+				</h:inputHidden>
+				
+				<h:outputText value="#{msgs.show}" />
+				<h:selectOneMenu value="#{viewBean.pagerController.showRowsCount}"
+								 onchange="document.getElementById('baseForm:submitShowRowsButton').click()" >
+					<f:converter converterId="javax.faces.Integer"/>
+					<f:selectItem itemValue="4" itemLabel="4"/>
+					<f:selectItem itemValue="10" itemLabel="10"/>
+					<f:selectItem itemValue="20" itemLabel="20"/>
+					<f:selectItem itemValue="50" itemLabel="50"/>
+					<f:selectItem itemValue="100" itemLabel="100"/>
+					<f:selectItem itemValue="500" itemLabel="500"/>
+					<f:selectItem itemValue="1000" itemLabel="1000"/>
+				</h:selectOneMenu>
+				<h:outputText value="#{msgs.rows}" />
+				<h:commandButton id="submitShowRowsButton" 
+									action="#{viewBean.pagerController.gotoFirstPage}"
+									style="visibility: hidden;" />
+				<h:commandLink value="#{msgs.first}" 
+				               action="#{viewBean.pagerController.gotoFirstPage}" 
+				               rendered="#{viewBean.pagerController.renderFirstLink}" />
+				<h:outputText value="#{msgs.first}" 
+				               rendered="#{!viewBean.pagerController.renderFirstLink}"
+				               style="color: Gray; font-style: italic;" />
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:commandLink value="#{msgs.previous}" 
+				               action="#{viewBean.pagerController.gotoPrevPage}"
+				               rendered="#{viewBean.pagerController.renderFirstLink}" />
+				<h:outputText value="#{msgs.previous}" 
+				               rendered="#{!viewBean.pagerController.renderFirstLink}"
+				               style="color: Gray; font-style: italic;" />
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:outputText value="#{viewBean.pagerController.pageNumber}"/>
+				<h:outputText value="#{msgs.from}"/>
+				<h:outputText value="#{viewBean.pagerController.totalPages}"/>	 
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:commandLink value="#{msgs.next}" 
+				               action="#{viewBean.pagerController.gotoNextPage}"
+				               rendered="#{viewBean.pagerController.renderLastLink}" />
+				<h:outputText value="#{msgs.next}" 
+				               rendered="#{!viewBean.pagerController.renderLastLink}"
+				               style="color: Gray; font-style: italic;" />
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:commandLink value="#{msgs.last}" 
+				               action="#{viewBean.pagerController.gotoLastPage}"
+				               rendered="#{viewBean.pagerController.renderLastLink}" />
+				<h:outputText value="#{msgs.last}" 
+				               rendered="#{!viewBean.pagerController.renderLastLink}" 
+				               style="color: Gray; font-style: italic;" />	
+                                         
+			</div>			
+			
+			<div id="listdatatableDiv">
+				<ui:include src="listdatatable.xhtml"/>
+			</div>	
+			
+			<div id="listpager2Div">
+				<h:commandLink value="#{msgs.first}" 
+				               action="#{viewBean.pagerController.gotoFirstPage}" 
+				               rendered="#{viewBean.pagerController.renderFirstLink}" />
+				<h:outputText value="#{msgs.first}" 
+				               rendered="#{!viewBean.pagerController.renderFirstLink}"
+				               style="color: Gray; font-style: italic;" />
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:commandLink value="#{msgs.previous}" 
+				               action="#{viewBean.pagerController.gotoPrevPage}"
+				               rendered="#{viewBean.pagerController.renderFirstLink}" />
+				<h:outputText value="#{msgs.previous}" 
+				               rendered="#{!viewBean.pagerController.renderFirstLink}"
+				               style="color: Gray; font-style: italic;" />
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:outputText value="#{viewBean.pagerController.pageNumber}"/>
+				<h:outputText value="#{msgs.from}"/>
+				<h:outputText value="#{viewBean.pagerController.totalPages}"/>	 
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:commandLink value="#{msgs.next}" 
+				               action="#{viewBean.pagerController.gotoNextPage}"
+				               rendered="#{viewBean.pagerController.renderLastLink}" />
+				<h:outputText value="#{msgs.next}" 
+				               rendered="#{!viewBean.pagerController.renderLastLink}"
+				               style="color: Gray; font-style: italic;" />
+				<h:outputText value="&nbsp;|&nbsp;"/> 
+				<h:commandLink value="#{msgs.last}" 
+				               action="#{viewBean.pagerController.gotoLastPage}"
+				               rendered="#{viewBean.pagerController.renderLastLink}" />
+				<h:outputText value="#{msgs.last}" 
+				               rendered="#{!viewBean.pagerController.renderLastLink}" 
+				               style="color: Gray; font-style: italic;" />	
+	                                         
+			</div>       
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

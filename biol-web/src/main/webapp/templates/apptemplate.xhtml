@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/basetemplate.xhtml">
+		<ui:define name="header">
+			<ui:include src="header.xhtml"/>
+		</ui:define>
+		
+		<ui:define name="navbar">
+			<ui:include src="navbar.xhtml"/>
+		</ui:define>
+		
+		<ui:define name="basecontent">
+			<table width="100%" rules="none" border="0">
+				<tr>					
+					<td width="${sidebarWidth}">
+						<div id="sidebarDiv">
+							<ui:insert name="sidebar"/>
+						</div>	
+					</td>
+					<td>
+						<h:graphicImage id="errorImage" value="/img/error.jpg" rendered="#{viewBean.haveErrorMessages}"/>
+						<h:messages for="baseForm" globalOnly="true" infoStyle="color: green;" errorStyle="color: red;" />
+						<div id="contentDiv">
+							<ui:insert name="content"/>
+						</div>	
+					</td>
+				</tr>
+			</table>	
+		</ui:define>
+
+		<ui:define name="footer">
+			<div class="footerPanel">
+				<h:outputText id="footerText" value="2010 Biol Ltd. Bulgaria Varna"/>
+			</div>	
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

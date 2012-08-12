@@ -1,0 +1,322 @@
+body {
+	background-color: White;
+}
+
+/* space between elements */
+span, p, h1, h2, h3, h4, h5, h6, input, textarea, select, a {
+	margin: 1px;
+}
+
+* {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	line-height: 14px;
+}
+a, a:link {
+	color: #3c982d;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:visited {
+	color: #2d7336;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover {
+	color: #09760d;
+	text-decoration: underline;
+}
+a:focus {
+	outline: 1px;
+	color: #09760d;
+}
+a:active {
+	color: #164619;
+}
+input[type="button"], input[type="reset"], input[type="submit"] {
+	color: #000;
+	font-weight: bold;
+	background-color: rgb(231,252,224);
+	border-top: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-left: 1px solid #000;
+	cursor: pointer;
+	cursor: hand;
+}
+input[type="button"]:hover, input[type="reset"]:hover , input[type="submit"]:hover {
+	color: Blue;
+	background-color: rgb(216,251,206);
+}
+input[type="text"], input[type="password"], input[type="file"], select {
+	border-top: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-left: 1px solid #000;
+}
+input[type="text"]:focus, input[type="password"]:focus, input[type="file"]:focus, select:focus {
+	border-top: 1px solid Silver;
+	border-right: 1px solid Silver;
+	border-bottom: 1px solid Silver;
+	border-left: 1px solid Silver;
+}
+textarea {
+	color: #000;
+	border-top: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-left: 1px solid #000;
+}
+textarea:focus {
+	border-top: 1px solid Silver;
+	border-right: 1px solid Silver;
+	border-bottom: 1px solid Silver;
+	border-left: 1px solid Silver;
+}
+input[type="checkbox"], input[type="radio"] {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-width: 0px;
+	margin-height: 0px;
+	border: 0px;
+}
+
+td {
+	text-align: left;
+	vertical-align: top;
+}
+
+.errorText {
+	color: Red;
+}
+.infoText {
+	color: Green;
+}	
+.listDataTable {
+	border-top: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-left: 1px solid #000;
+	width: 100%;
+}
+.listDataTable tbody tr:hover {
+   background: #DCDCDC;
+}
+.tableHeader {
+   text-align: center;
+   vertical-align: middle;
+   color: Snow;
+   background: Teal;
+}
+.oddRow {
+   background: White;
+}
+.evenRow {
+   background: #F6F9F9;
+}
+
+#mainDiv {
+	width: 800px;
+	text-align: left;
+	vertical-align: top;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	line-height: 14px;
+	border-top: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-left: 1px solid #000;
+	
+}
+#headerLeftDiv {
+	float: left;
+	width: 300px;
+}
+#headerRightDiv {
+	float: right;
+	text-align: right;
+	vertical-align: middle;
+}
+#changeLangDiv {
+	clear: both;
+}
+
+#navbarDiv {
+	clear: both;
+	background-color: rgb(232,234,232);
+	width: 100%;
+	border-top: 1px solid teal;
+}
+#navbarContentDiv {
+	margin: 0px auto;
+	display: table;
+	padding: 0px;
+	white-space: nowrap;
+}	
+#navbarContentDiv ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: table-row;
+	white-space: nowrap;
+}
+
+#navbarContentDiv ul li{
+	display: table-cell;
+}
+#navbarContentDiv ul a{
+	display: block;
+	padding: 6px 15px;
+	text-decoration: none;
+	font-size: 13px;
+	color: Black;
+	margin: 0px;
+}
+#navbarContentDiv ul a:hover {
+	background: #2F4F4F; 
+	color: #fff;
+}
+
+#navbarContentDiv ul {display: inline-block;}
+#navbarContentDiv ul {display: inline; }
+#navbarContentDiv ul li {display: inline-block}
+#navbarContentDiv ul li { display: inline;}
+#navbarContentDiv ul a { display: inline-block;}
+#navbarContentDiv {text-align: center}
+
+.blocka {
+	display: block;
+	padding: 1px 2px;
+	border: 1px solid snow;
+}
+.blocka:hover {
+	display: block;
+	padding: 1px 2px;
+	text-decoration: none;
+	border: 1px solid teal;
+}
+#titleDiv {
+	clear: both;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	border-top: 1px solid teal;
+	border-bottom: 1px solid teal;
+}
+#contentDiv {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+#sidebarDiv {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 3px;
+}
+#subformDiv {
+	text-align: center;
+}
+#footerDiv {
+	font-size: 9px;
+	text-align: center;
+}
+#listparamsDiv {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+#listtoolbarDiv {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+#listpager1Div, #listpager2Div {
+	clear: both;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	text-align: right;
+}
+.adminsidebarLI {
+	text-align: left;
+	vertical-align: middle;
+	border-bottom: 1px solid teal;
+	padding: 3px;
+}
+#homeInfoDiv {
+	float: left;
+	width: 73%;
+	border-top: 1px solid teal;
+	border-bottom: 1px solid teal;
+	border-left: 1px solid teal;
+	border-right: 1px solid teal;
+	padding: 3px;
+}
+#homeRightSidebarDiv {
+	float: right;
+	width: 25%;
+	
+}
+#homeInfoHeaderDiv {
+	text-align: center;
+	vertical-align: middle;
+	background-color: teal;
+	font-weight: bold;	
+	color: snow;
+	-moz-border-radius-topleft: 5px;
+	border-top-left-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-right-radius: 5px;
+}
+#homeInfoContentDiv {
+	margin-bottom: 5px;
+}
+.boxHeaderDiv {
+	border-top: 1px solid teal;
+	border-bottom: 1px solid teal;
+	border-left: 1px solid teal;
+	border-right: 1px solid teal;
+	-moz-border-radius-topleft: 5px;
+	border-top-left-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-right-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: rgb(231,252,224);
+	font-weight: bold;	
+	color: black;
+}
+.boxContentDiv {
+	border-bottom: 1px solid teal;
+	border-left: 1px solid teal;
+	border-right: 1px solid teal;
+	padding: 3px;
+}
+.selectedBoxItem {
+	background-color: rgb(231,252,224);
+}
+.taright {
+	text-align: right;
+}
+.tacenter {
+	text-align: center;
+}
+.unseenOrder {
+	font-weight: bold;	
+}
+.seenOrder {
+	font-weight: normal;
+}
+.fiveTabbedLink {
+	color: #3c982d;
+	font-weight: bold;
+	font-size: 15px;	
+}	
+.fiveTabbedActiveLink {
+	color: gray;
+	font-weight: bold;
+	font-size: 15px;	
+}
+
+	

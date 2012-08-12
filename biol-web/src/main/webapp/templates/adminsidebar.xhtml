@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition>
+		<ul>
+			<li class="adminsidebarLI">
+				<h:outputLink value="#{AppBean.appPath}/admin/userslist.jsf">
+					<h:outputText value="#{msgs.users}"/>
+				</h:outputLink>
+			</li>
+			<li class="adminsidebarLI">
+				<h:outputLink value="#{AppBean.appPath}/admin/homeinfolist.jsf">
+					<h:outputText value="#{msgs.homeinfos}"/>
+				</h:outputLink>
+			</li>
+			<li class="adminsidebarLI">
+				<h:outputLink value="#{AppBean.appPath}/admin/groupslist.jsf">
+					<h:outputText value="#{msgs.itemgroups}"/>
+				</h:outputLink>
+			</li>
+			<li class="adminsidebarLI">
+				<h:outputLink value="#{AppBean.appPath}/admin/producerslist.jsf">
+					<h:outputText value="#{msgs.producers}"/>
+				</h:outputLink>
+			</li>
+			<li class="adminsidebarLI">
+				<h:outputLink value="#{AppBean.appPath}/admin/itemslist.jsf">
+					<h:outputText value="#{msgs.items}"/>
+				</h:outputLink>
+			</li>
+			<li class="adminsidebarLI">
+				<h:outputLink value="#{AppBean.appPath}/admin/orderslist.jsf">
+					<h:outputText value="#{msgs.orders}"/>
+				</h:outputLink>
+			</li>
+		</ul>
+    </ui:composition>
+</h:body>
+</html>

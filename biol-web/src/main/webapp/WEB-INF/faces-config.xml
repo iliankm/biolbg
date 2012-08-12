@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.0">
+	
+	<application>
+		<message-bundle>com.biol.biolbg.web.messages.resources</message-bundle>	
+	    <resource-bundle>
+	        <base-name>com.biol.biolbg.web.messages.messages</base-name>
+        	<var>msgs</var>
+     	</resource-bundle>
+		<locale-config>
+			<default-locale>bg</default-locale>
+			<supported-locale>en</supported-locale>
+		</locale-config>
+	</application>
+
+	<lifecycle>
+	    <phase-listener>com.biol.biolbg.web.listeners.SecureAdminViewsListener</phase-listener>
+	</lifecycle>
+	
+	<converter>
+		<display-name>GroupConverter</display-name>
+		<converter-id>GroupConverter</converter-id>
+		<converter-class>com.biol.biolbg.web.converters.GroupConverter</converter-class>
+	</converter>
+	<converter>
+		<display-name>OrderStatusConverter</display-name>
+		<converter-id>OrderStatusConverter</converter-id>
+		<converter-class>com.biol.biolbg.web.converters.OrderStatusConverter</converter-class>
+	</converter>
+	<converter>
+		<display-name>ProducerConverter</display-name>
+		<converter-id>ProducerConverter</converter-id>
+		<converter-class>com.biol.biolbg.web.converters.ProducerConverter</converter-class>
+	</converter>
+	<navigation-rule>
+		<display-name>logout</display-name>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/groupslist.xhtml</display-name>
+		<from-view-id>/admin/groupslist.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/admin/group.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/group.xhtml</display-name>
+		<from-view-id>/admin/group.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/admin/groupslist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/homeinfolist.xhtml</display-name>
+		<from-view-id>/admin/homeinfolist.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/admin/homeinfo.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/homeinfo.xhtml</display-name>
+		<from-view-id>/admin/homeinfo.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/admin/homeinfolist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/userslist.xhtml</display-name>
+		<from-view-id>/admin/userslist.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/admin/user.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/user.xhtml</display-name>
+		<from-view-id>/admin/user.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/admin/userslist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/itemslist.xhtml</display-name>
+		<from-view-id>/admin/itemslist.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/admin/item.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/item.xhtml</display-name>
+		<from-view-id>/admin/item.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/admin/itemslist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/uploadimage.xhtml</display-name>
+		<from-view-id>/admin/uploadimage.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/admin/itemslist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/producerslist.xhtml</display-name>
+		<from-view-id>/admin/producerslist.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/admin/producer.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>admin/producer.xhtml</display-name>
+		<from-view-id>/admin/producer.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/admin/producerslist.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>viewarticle.xhtml</display-name>
+		<from-view-id>/viewarticle.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/articles.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>registration.xhtml</display-name>
+		<from-view-id>/registration.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/registrationdone.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>registrationdone.xhtml</display-name>
+		<from-view-id>/registrationdone.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>exit</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>registrationdone.xhtml</display-name>
+		<from-view-id>/registrationdone.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>loginok</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>registration.xhtml</display-name>
+		<from-view-id>/registration.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>exit</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<validator>
+		<display-name>EmailValidator</display-name>
+		<validator-id>EmailValidator</validator-id>
+		<validator-class>com.biol.biolbg.web.validators.EmailValidator</validator-class>
+	</validator>
+
+</faces-config>

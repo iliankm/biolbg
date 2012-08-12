@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/listtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.items}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{ItemsListBean}"/>
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		<ui:define name="viewClasses">
+	    	.c1 {width: 15px; text-align: center;}
+	    	.c2 {width: 40px;}
+	    	.c8 {text-align: right;}
+	    	.c9 {text-align: right;}
+	    	.c10c11 {width: 24px; text-align: center; vertical-align: middle;}
+		</ui:define>
+		<ui:param name="columnClasses" value="c1,c2,,,,,,c8,c9,c10c11,c10c11,c10c11,c10c11"/>
+		
+		<ui:define name="paramsPanel">
+			<h:panelGrid columns="3">
+				<h:outputText value="#{msgs.itemgroup}" />
+				<h:selectOneMenu id="group"
+								 value="#{ItemsListBean.group}" 
+								 onchange="document.getElementById('baseForm:refreshButton').click()">
+					<f:converter converterId="GroupConverter"/>
+					<f:selectItems value="#{ItemsListBean.groupsSelectItems}"/>
+				</h:selectOneMenu>
+				<h:message for="group" styleClass="errorText"/>
+
+				<h:outputText value="#{msgs.producer}" />
+				<h:selectOneMenu id="producer"
+								 value="#{ItemsListBean.producer}" 
+								 onchange="document.getElementById('baseForm:refreshButton').click()">
+					<f:converter converterId="ProducerConverter"/>
+					<f:selectItems value="#{ItemsListBean.producersSelectItems}"/>
+				</h:selectOneMenu>
+				<h:message for="producer" styleClass="errorText"/>
+				
+			</h:panelGrid>	
+		</ui:define>
+		
+		<ui:define name="dataTableColumns">
+			<h:column> 
+				<f:facet name="header">
+					<h:selectBooleanCheckbox readonly="true" onclick="return check_uncheck_all_in_document(this)"/>
+				</f:facet>
+				<h:selectBooleanCheckbox value="#{rowData.checked}" />
+				<h:inputHidden value="#{rowData.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="idSort" basecrudbean="#{ItemsListBean}" fieldName="o.id" textValue="#{msgs.id}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/admin/item.jsf">
+					<f:param name="#{ItemsListBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:outputText value=" #{rowData.id} "/>
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="groupSort" basecrudbean="#{ItemsListBean}" fieldName="o.group.nameen" textValue="#{msgs.itemgroup1}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.group.nameen}"/>	
+				<br/>
+				<h:outputText value="#{rowData.group.namebg}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="nameSort" basecrudbean="#{ItemsListBean}" fieldName="o.nameen" textValue="#{msgs.name}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.nameen}"/>	
+				<br/>
+				<h:outputText value="#{rowData.namebg}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="producerSort" basecrudbean="#{ItemsListBean}" fieldName="o.producer.nameen" textValue="#{msgs.producer}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.producer.nameen}"/>	
+				<br/>
+				<h:outputText value="#{rowData.producer.namebg}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="packingSort" basecrudbean="#{ItemsListBean}" fieldName="o.packingen" textValue="#{msgs.packing}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.packingen}"/>	
+				<br/>
+				<h:outputText value="#{rowData.packingbg}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="measureSort" basecrudbean="#{ItemsListBean}" fieldName="o.measureuniten" textValue="#{msgs.measure}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.measureuniten}"/>	
+				<br/>
+				<h:outputText value="#{rowData.measureunitbg}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="aminpackSort" basecrudbean="#{ItemsListBean}" fieldName="o.amountinpacking" textValue="#{msgs.amountinpacking}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.amountinpacking}">
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+				</h:outputText>	
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="priceSort" basecrudbean="#{ItemsListBean}" fieldName="o.priceforpacking" textValue="#{msgs.priceforpacking}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.priceforpacking}">
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+				</h:outputText>	
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="promotionSort" basecrudbean="#{ItemsListBean}" fieldName="o.promotion" textValue="#{msgs.promotion1}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:graphicImage value="/img/yes.jpg" rendered="#{rowData.promotion==1}"/>					
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="newitemSort" basecrudbean="#{ItemsListBean}" fieldName="o.newitem" textValue="#{msgs.newArticles}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:graphicImage value="/img/yes.jpg" rendered="#{rowData.newitem==1}"/>					
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="bestsellSort" basecrudbean="#{ItemsListBean}" fieldName="o.bestsell" textValue="#{msgs.bestSellArticles1}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:graphicImage value="/img/yes.jpg" rendered="#{rowData.bestsell==1}"/>					
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgs.picture}" />
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/admin/uploadimage.jsf">
+					<f:param name="#{ItemsListBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:graphicImage value="/img/yes.jpg" rendered="#{ItemsListBean.itemsImages[rowData.id]!=null}"/>					
+					<h:graphicImage value="/img/no.jpg" rendered="#{ItemsListBean.itemsImages[rowData.id]==null}"/>					
+				</h:outputLink>
+			</h:column>
+			
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

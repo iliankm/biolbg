@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+<head>
+</head>
+<body>
+	<composite:interface>
+		<composite:attribute name="basecrudbean" />
+		<composite:attribute name="fieldName" />
+		<composite:attribute name="textValue" />
+		<composite:attribute name="textStyle" />
+	</composite:interface>
+	
+	<composite:implementation>
+		<h:commandLink id="cmdlnkSortLink" actionListener="#{cc.attrs.basecrudbean.sortData}" >
+			<f:param name="#{cc.attrs.basecrudbean.finalSortByParam}" value="#{cc.attrs.fieldName}"/>
+			<h:outputText value="#{cc.attrs.textValue}" styleClass="#{cc.attrs.textStyle}"/>
+			<h:graphicImage value="/img/sort_none.gif" rendered="#{(cc.attrs.basecrudbean.sortByFieldName!=cc.attrs.fieldName)}"/>
+			<h:graphicImage value="/img/sort_asc.gif" rendered="#{(cc.attrs.basecrudbean.sortByFieldName==cc.attrs.fieldName) and (cc.attrs.basecrudbean.sortType==cc.attrs.basecrudbean.finalSortAsc)}"/>
+			<h:graphicImage value="/img/sort_desc.gif" rendered="#{(cc.attrs.basecrudbean.sortByFieldName==cc.attrs.fieldName) and (cc.attrs.basecrudbean.sortType==cc.attrs.basecrudbean.finalSortDesc)}"/>
+		</h:commandLink>
+	</composite:implementation>
+
+	
+</body>
+</html>

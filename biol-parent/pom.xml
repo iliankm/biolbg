@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.biol.biolbg</groupId>
+  <artifactId>biol-parent</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+
+  <name>biol-parent</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <modules>
+  	<module>../biol-jpa</module>
+  	<module>../biol-ejb-client</module>
+  	<module>../biol-ejb</module>
+  	<module>../biol-web</module>
+  	<module>../biol-ear</module>
+  </modules>
+</project>

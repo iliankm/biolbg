@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/apptemplate.xhtml">
+		<ui:param name="elementIdOnEnterPressed" value="baseForm:saveButton"/>
+
+		<ui:define name="metadata">
+			<ui:insert name="viewParams"/>
+		</ui:define>
+
+		<ui:define name="content">
+			<h:inputHidden id="itemIdHidden" value="#{viewBean.item.id}" binding="#{viewBean.itemIdComp}"/>
+			<ui:insert name="itemcontent" />
+			<h:commandButton id="saveButton" 
+							 value="#{msgs.save}"
+							 action="#{viewBean.saveData}"
+							 rendered="${hideSaveButton!='true'}" />
+			<h:commandButton id="cancelButton" 
+							 value="#{msgs.cancel}"
+							 action="#{viewBean.cancelData}"
+							 rendered="${hideCancelButton!='true'}" 
+							 immediate="true" />
+							 
+		</ui:define>
+	</ui:composition>		
+</h:body>
+</html>

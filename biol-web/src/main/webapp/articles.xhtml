@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/listtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.catalog}"/>
+		<ui:param name="sidebarWidth" value="0px"/>
+		<ui:param name="viewBean" value="#{ArticlesBean}"/>
+		
+		<ui:define name="metadata" >
+			<f:metadata>
+				<f:viewParam name="group" value="#{GalleryParamsBean.paramGroup}">
+					<f:converter converterId="GroupConverter"/>
+				</f:viewParam>
+				<f:viewParam name="producer" value="#{GalleryParamsBean.paramProducer}">
+					<f:converter converterId="ProducerConverter"/>
+				</f:viewParam>
+			</f:metadata>
+		</ui:define>
+		
+		<ui:define name="sidebar">
+		</ui:define>
+		<ui:define name="viewClasses">
+	    	.c5 {text-align: right;}
+	    	.c6 {text-align: right;}
+		</ui:define>
+		<ui:param name="columnClasses" value=",,,,c5,c6"/>
+		<ui:param name="hideRefreshButton" value="true"/>
+		<ui:param name="hideAddButton" value="true"/>
+		<ui:param name="hideDeleteButton" value="true"/>
+		<ui:param name="elementIdOnEnterPressed" value="baseForm:refrButt"/>
+		
+		<ui:define name="paramsPanel">
+			<div style="float: left;">
+				<h:panelGrid columns="3"> 
+					<h:outputText value="#{msgs.itemgroup}" />
+					<h:selectOneMenu id="group"
+									 value="#{ArticlesBean.group}" 
+									 onchange="document.getElementById('baseForm:inputName').value=''; document.getElementById('baseForm:refrButt').click()">
+						<f:converter converterId="GroupConverter"/>
+						<f:selectItems value="#{ArticlesBean.groupsSelectItems}"/>
+					</h:selectOneMenu>
+					<h:message for="group" styleClass="errorText"/>
+					<h:outputText value="#{msgs.producer}" />
+					<h:selectOneMenu id="producer"
+									 value="#{ArticlesBean.producer}" 
+									 onchange="document.getElementById('baseForm:inputName').value=''; document.getElementById('baseForm:refrButt').click()">
+						<f:converter converterId="ProducerConverter"/>
+						<f:selectItems value="#{ArticlesBean.producersSelectItems}"/>
+					</h:selectOneMenu>
+					<h:message for="producer" styleClass="errorText"/>
+				</h:panelGrid>
+			</div>
+			<div style="float: right;">
+				<h:inputText id="inputName" value="#{ArticlesBean.name}" onkeypress="return formKeyPressed(event,'baseForm:buttonSearch');"/>
+				<h:commandButton id="buttonSearch" value="#{msgs.search}" actionListener="#{ArticlesBean.findItemsByName}"/>
+			</div>		
+			<h:commandButton id="refrButt" 
+				actionListener="#{ArticlesBean.refreshData}"
+				style="visibility: hidden; width: 0px; height: 0px" />
+				
+		</ui:define>
+		
+		<ui:define name="dataTableColumns">
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="nameSortEn" basecrudbean="#{ArticlesBean}" fieldName="o.nameen" textValue="#{msgs.name}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='en'}"/>
+					<ez:sortLink id="nameSortBg" basecrudbean="#{ArticlesBean}" fieldName="o.namebg" textValue="#{msgs.name}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='bg'}"/>
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/viewarticle.jsf">
+					<f:param name="#{ArticlesBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:graphicImage id="image" styleClass="fadeInImage" value="/ItemImage?name=#{ArticlesBean.itemsImages[rowData.id]}" height="110px"/>
+				</h:outputLink>
+				<ez:orderArticle id="orderArticle"
+				                 orderArticleController="#{OrderArticleController}"
+							     articleId="#{rowData.id}"/>
+				<br/>
+				<h:outputLink value="#{AppBean.appPath}/viewarticle.jsf">
+					<f:param name="#{ArticlesBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:outputText value="#{rowData.nameen}" rendered="#{AppBean.appLocale=='en'}"/>	
+					<h:outputText value="#{rowData.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>			
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="groupSortEn" basecrudbean="#{ArticlesBean}" fieldName="o.group.nameen" textValue="#{msgs.itemgroup}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='en'}"/>
+					<ez:sortLink id="groupSortBg" basecrudbean="#{ArticlesBean}" fieldName="o.group.namebg" textValue="#{msgs.itemgroup}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='bg'}"/>
+				</f:facet>
+				<h:outputText value="#{rowData.group.nameen}" rendered="#{AppBean.appLocale=='en'}"/>	
+				<h:outputText value="#{rowData.group.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="producerSortEn" basecrudbean="#{ArticlesBean}" fieldName="o.producer.nameen" textValue="#{msgs.producer}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='en'}"/>
+					<ez:sortLink id="producerSortBg" basecrudbean="#{ArticlesBean}" fieldName="o.producer.namebg" textValue="#{msgs.producer}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='bg'}"/>
+				</f:facet>
+				<h:outputText value="#{rowData.producer.nameen}" rendered="#{AppBean.appLocale=='en'}"/>	
+				<h:outputText value="#{rowData.producer.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="packingSortEn" basecrudbean="#{ArticlesBean}" fieldName="o.packingen" textValue="#{msgs.packing}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='en'}"/>
+					<ez:sortLink id="packingSortBg" basecrudbean="#{ArticlesBean}" fieldName="o.packingbg" textValue="#{msgs.packing}" textStyle="tableHeader" rendered="#{AppBean.appLocale=='bg'}"/>
+				</f:facet>
+				<h:outputText value="#{rowData.packingen}" rendered="#{AppBean.appLocale=='en'}"/>	
+				<h:outputText value="#{rowData.packingbg}" rendered="#{AppBean.appLocale=='bg'}"/>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="aminpackSort" basecrudbean="#{ArticlesBean}" fieldName="o.amountinpacking" textValue="#{msgs.amountinpacking}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.amountinpacking}">
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+				</h:outputText>
+				<h:outputText value="#{rowData.measureuniten}" rendered="#{AppBean.appLocale=='en'}"/>
+				<h:outputText value="#{rowData.measureunitbg}" rendered="#{AppBean.appLocale=='bg'}"/>	
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="priceSort" basecrudbean="#{ArticlesBean}" fieldName="o.priceforpacking" textValue="#{msgs.priceforpacking}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.priceforpacking}">
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+				</h:outputText>	
+				<h:outputText value=" #{msgs.leva}"/>
+			</h:column>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

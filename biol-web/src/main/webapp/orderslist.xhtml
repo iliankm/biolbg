@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/listtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.orders}"/>
+		<ui:param name="sidebarWidth" value="0px"/>
+		<ui:param name="viewBean" value="#{OrdersForUserListBean}"/>
+		<ui:param name="hideAddButton" value="true"/>
+		<ui:param name="hideDeleteButton" value="true"/>
+		<ui:param name="hideDataTable" value="#{OrdersForUserListBean.appBean.isUserLoggedIn==false}" />
+
+		<ui:define name="viewClasses">
+	    	.c1 {width: 40px;}
+		</ui:define>
+		<ui:param name="columnClasses" value="c1"/>
+		
+		<ui:define name="paramsPanel">
+			<h:outputText value="#{msgs.toSeeThisInfoMustLogin}" 
+						  rendered="#{OrdersForUserListBean.appBean.isUserLoggedIn==false}"
+						  styleClass="errorText" />
+			<h:panelGrid columns="3">
+				<h:outputText value="#{msgs.fromdate}" />
+				<h:inputText id="fromDate" value="#{OrdersForUserListBean.fromDate}"
+							 size="15"
+							 maxlength="10"
+							 required="true">
+					<f:convertDateTime type="date" dateStyle="medium" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:inputText>
+				<h:message for="fromDate" styleClass="errorText"/>
+				
+				<h:outputText value="#{msgs.todate}" />
+				<h:inputText id="toDate" value="#{OrdersForUserListBean.toDate}"
+							 size="15"
+							 maxlength="10"	
+							 required="true">
+					<f:convertDateTime type="date" dateStyle="medium" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:inputText>
+				<h:message for="toDate" styleClass="errorText"/>
+			</h:panelGrid>	
+		</ui:define>
+		
+		<ui:define name="dataTableColumns">
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="idSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.id" textValue="#{msgs.id}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/order.jsf">
+					<f:param name="#{OrdersForUserListBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:graphicImage value="/img/edit_inline.gif"/>					
+					<h:outputText value=" #{rowData.id}"/>
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="postDateTimeSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.postdate" textValue="#{msgs.postdate}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.postdate}"/>
+				<br/>
+				<h:outputText value="#{rowData.posttime}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="forDateTimeSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.fordate" textValue="#{msgs.fordate}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.fordate}"/>
+				<br/>
+				<h:outputText value="#{rowData.fortime}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="usernameSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.user.username" textValue="#{msgs.username}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.user.username}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="organisationSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.user.organisation" textValue="#{msgs.organisation}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.user.organisation}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="delivaddrSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.deliveryAddress" textValue="#{msgs.delivAddress}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.deliveryAddress}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="statusSort" basecrudbean="#{OrdersForUserListBean}" fieldName="o.status.id" textValue="#{msgs.status}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.status.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+				<h:outputText value="#{rowData.status.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+			</h:column>
+			
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp" >
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/listtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.users}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{UsersListBean}"/>
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		<ui:define name="viewClasses">
+	    	.c1 {width: 15px; text-align: center;}
+	    	.c2 {width: 40px;}
+	    	.c9 {width: 40px; text-align: center;}
+		</ui:define>
+		<ui:param name="columnClasses" value="c1,c2,,,,,,,c9"/>
+		<ui:define name="dataTableColumns">
+			<h:column>
+				<f:facet name="header">
+					<h:selectBooleanCheckbox readonly="true" onclick="return check_uncheck_all_in_document(this)"/>
+				</f:facet>
+				<h:selectBooleanCheckbox value="#{rowData.checked}" />
+				<h:inputHidden value="#{rowData.id}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="idSort" basecrudbean="#{UsersListBean}" fieldName="o.id" textValue="#{msgs.id}" textStyle="tableHeader"/>				
+				</f:facet>
+				<h:outputLink value="#{AppBean.appPath}/admin/user.jsf">
+					<f:param name="#{UsersListBean.finalIdParam}" value="#{rowData.id}"/>
+					<h:graphicImage value="/img/edit_inline.gif"/>					
+					<h:outputText value=" #{rowData.id}"/>
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="usernameSort" basecrudbean="#{UsersListBean}" fieldName="o.username" textValue="#{msgs.username}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.username}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="fullnameSort" basecrudbean="#{UsersListBean}" fieldName="o.fullname" textValue="#{msgs.fullname}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.fullname}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="organisationSort" basecrudbean="#{UsersListBean}" fieldName="o.organisation" textValue="#{msgs.organisation}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.organisation}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="emailSort" basecrudbean="#{UsersListBean}" fieldName="o.email" textValue="#{msgs.email}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.email}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="lastloginSort" basecrudbean="#{UsersListBean}" fieldName="o.lastlogindate" textValue="#{msgs.lastlogin}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.lastlogindate}">
+					<f:convertDateTime type="date" pattern="dd.MM.yyyy" timeZone="#{AppBean.timeZone}"/>
+				</h:outputText>
+				<br/>
+				<h:outputText value="#{rowData.lastlogintime}">
+					<f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="#{AppBean.timeZone}"/>
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="lastloginIp" basecrudbean="#{UsersListBean}" fieldName="o.lastloginip" textValue="#{msgs.lastloginip}" textStyle="tableHeader"/>
+				</f:facet>
+				<h:outputText value="#{rowData.lastloginip}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<ez:sortLink id="adminflagSort" basecrudbean="#{UsersListBean}" fieldName="o.adminflag" textValue="#{msgs.adminflag}" textStyle="tableHeader"/>				
+				</f:facet>
+				<h:graphicImage value="/img/yes.jpg" rendered="#{rowData.adminflag==1}"/>
+			</h:column>
+		
+		</ui:define>
+	</ui:composition>	
+</h:body>
+</html>

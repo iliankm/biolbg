@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/edititemtemplate.xhtml">
+		<ui:param name="elementIdOnEnterPressed" value="baseForm:refrimg"/>
+
+		<ui:param name="title" value="#{msgs.uploadimage}"/>
+		<ui:param name="sidebarWidth" value="15%"/>
+		<ui:param name="viewBean" value="#{UploadImageBean}"/>
+		<ui:param name="hideSaveButton" value="true"/>
+		<ui:param name="hideCancelButton" value="true"/>
+
+		<ui:define name="viewParams">
+			<f:metadata>
+				<f:viewParam name="id" value="#{UploadImageBean.itemId}">
+					<f:convertNumber type="number" />
+				</f:viewParam>
+			</f:metadata>
+			<f:event type="preRenderView" listener="#{UploadImageBean.preRenderView}"/>
+		</ui:define>
+		
+		<ui:define name="sidebar">
+			<ui:include src="/templates/adminsidebar.xhtml"/>
+		</ui:define>
+		
+		<ui:define name="itemcontent">
+			<h:graphicImage id="image" value="/ItemImage?name=#{UploadImageBean.imageFileName}"/>
+			<br/>
+			<h:outputText value="#{UploadImageBean.item.nameen}"/>
+			<br/>
+			<h:outputText value="#{UploadImageBean.item.namebg}"/>
+			<br/>
+			<h:commandButton id="refrimg" value="#{msgs.refresh}">
+				<f:ajax execute="itemIdHidden" render="image" />
+			</h:commandButton>
+			<h:commandButton id="deleteButton" 
+							 value="#{msgs.delete}"
+							 actionListener="#{UploadImageBean.deleteImage}" >
+				<f:ajax execute="itemIdHidden" render="image"/>							 
+			</h:commandButton>				 
+			<h:commandButton value="#{msgs.cancel}"
+							 action="#{UploadImageBean.cancelData}" 
+							 immediate="true" />
+		</ui:define>
+		
+		<ui:define name="subform">	
+			<form id="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="/Biol/UploadImage?itemId=#{UploadImageBean.itemId}">
+				<input name="file" id="file" size="40" type="file" /><br />
+			</form>
+			<input type="button" name="action" value="#{msgs.upload}" onclick="window.frames['upload_target'].document.body.innerHTML=''; document.forms['file_upload_form'].submit();" />
+			<br/>
+			<iframe id="upload_target" name="upload_target" src="" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"></iframe>
+		</ui:define>	
+	</ui:composition>		
+</h:body>
+</html>

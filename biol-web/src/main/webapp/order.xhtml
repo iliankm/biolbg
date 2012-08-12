@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Page Title</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/edititemtemplate.xhtml">
+		<ui:param name="title" value="#{msgs.order}"/>
+		<ui:param name="sidebarWidth" value="0px"/>
+		<ui:param name="viewBean" value="#{OrderForUserBean}"/>
+		<ui:param name="hideSaveButton" value="true"/>
+		<ui:param name="hideCancelButton" value="true"/>
+		
+		<ui:define name="viewParams">
+			<f:metadata>
+				<f:viewParam name="id" value="#{OrderForUserBean.itemId}">
+					<f:convertNumber type="number" />
+				</f:viewParam>
+			</f:metadata>
+			<f:event type="preRenderView" listener="#{OrderForUserBean.preRenderView}"/>
+		</ui:define>
+		
+		<ui:define name="viewClasses">
+	    	.pgc2 {padding-left: 5px; font-weight: bold;}
+	    	.c1 {width: 15px; text-align: center;}
+	    	.c4 {text-align: right;}
+	    	.c5 {text-align: right;}
+	    	.c6 {text-align: right;}
+	    	.tableFooter {text-align: right; font-weight: bold;}
+		</ui:define>
+		
+		<ui:define name="itemcontent">
+			<h:outputText value="#{msgs.toSeeThisInfoMustLogin}" 
+						  rendered="#{OrderForUserBean.userLoggedIn==false}"
+						  styleClass="errorText" />
+			<h:outputText value="#{msgs.orderIsFromOtherUser}" 
+						  rendered="#{OrderForUserBean.orderIsForThisUser==false}"
+						  styleClass="errorText" />
+						  
+			<h:panelGrid columns="2" columnClasses=",pgc2" rendered="#{OrderForUserBean.renderView}">
+				<h:outputText value="#{msgs.postdate}"/>
+				<h:outputText value="#{OrderForUserBean.item.postdate} / #{OrderForUserBean.item.posttime}"/>
+				
+				<h:outputText value="#{msgs.fordate}"/>
+				<h:outputText value="#{OrderForUserBean.item.fordate} / #{OrderForUserBean.item.fortime}"/>
+				
+				<h:outputText value="#{msgs.username}"/>
+				<h:outputText value="#{OrderForUserBean.item.user.username}"/>
+				
+				<h:outputText value="#{msgs.organisation}"/>
+				<h:outputText value="#{OrderForUserBean.item.user.organisation}"/>
+				
+				<h:outputText value="#{msgs.delivAddress}"/>
+				<h:outputText value="#{OrderForUserBean.item.deliveryAddress}" />
+				
+				<h:outputText value="#{msgs.status}"/>
+				<h:panelGrid columns="2">
+					<h:outputText value="#{OrderForUserBean.item.status.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+					<h:outputText value="#{OrderForUserBean.item.status.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+					<h:commandButton id="cancelOrder" 
+					                 value="#{msgs.cancelstatus}" 
+					                 onclick="return confirm('#{msgs.confirmCancelOrder}');"
+					                 actionListener="#{OrderForUserBean.cancelOrder}" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:dataTable value="#{OrderForUserBean.item.rows}" 
+						 var="rowData"
+						 styleClass="listDataTable"
+						 headerClass="tableHeader"
+						 footerClass="tableFooter"
+						 rowClasses="oddRow,evenRow"
+						 columnClasses="c1,,,c4,c5,c6"
+						 binding="#{OrderForUserBean.orderRowsDataTable}"
+						 rendered="#{OrderForUserBean.renderView}">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.number}" />
+					</f:facet>
+					<h:outputText value="#{OrderForUserBean.orderRowsDataTable.rowIndex+1}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.itemgroup}"/>
+					</f:facet>
+					<h:outputText value="#{rowData.item.group.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+					<h:outputText value="#{rowData.item.group.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.item}"/>
+					</f:facet>
+					<h:outputText value="#{rowData.item.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
+					<h:outputText value="#{rowData.item.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.quantity}"/>
+					</f:facet>
+					<h:outputText value="#{rowData.amount}">
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>					
+					</h:outputText>
+					<h:outputText value=" #{rowData.item.packingen}" rendered="#{AppBean.appLocale=='en'}"/>
+					<h:outputText value=" #{rowData.item.packingbg}" rendered="#{AppBean.appLocale=='bg'}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.price}"/>
+					</f:facet>
+					<h:outputText value="#{rowData.price}">
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>					
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs.value}"/>
+					</f:facet>
+					<h:outputText value="#{rowData.value}">
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+					</h:outputText>
+					<f:facet name="footer">
+						<h:outputText value="#{OrderForUserBean.item.totalValue}">
+							<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
+						</h:outputText>
+					</f:facet>
+				</h:column>	
+			</h:dataTable>
+			<h:outputText value="#{msgs.pricesAreWoVat}" rendered="#{OrderForUserBean.renderView}"/>
+		</ui:define>
+	</ui:composition>		
+</h:body>
+</html>
