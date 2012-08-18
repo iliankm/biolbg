@@ -2,9 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.biol.biolbg</groupId>
   <artifactId>biol-ejb</artifactId>
-  <version>0.0.1</version>
 
   <name>biol-ejb</name>
   <url>http://maven.apache.org</url>
@@ -38,4 +36,10 @@
     </dependency>
   </dependencies>
   
+  <parent>
+  	<groupId>com.biol.biolbg</groupId>
+  	<artifactId>biol-parent</artifactId>
+  	<version>1.0</version>
+  	<relativePath>../biol-parent/pom.xml</relativePath>
+  </parent>
 </project>
