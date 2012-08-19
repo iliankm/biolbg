@@ -4,13 +4,27 @@
 
   <artifactId>biol-jpa</artifactId>
   <packaging>jar</packaging>
-
   <name>biol-jpa</name>
-  <url>http://maven.apache.org</url>
+  
+  <parent>
+  	<groupId>com.biol.biolbg</groupId>
+  	<artifactId>biol-parent</artifactId>
+  	<relativePath>../biol-parent/pom.xml</relativePath>
+  	<version>1.0</version>
+  </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  <build>
+  	<resources>
+  		<resource>
+  			<directory>src/main/resources</directory>
+  			<filtering>true</filtering>
+  		</resource>
+  	</resources>
+  </build>
 
   <dependencies>
     <dependency>
@@ -32,10 +46,4 @@
     	<scope>provided</scope>
     </dependency>
   </dependencies>
-  <parent>
-  	<groupId>com.biol.biolbg</groupId>
-  	<artifactId>biol-parent</artifactId>
-  	<relativePath>../biol-parent/pom.xml</relativePath>
-  	<version>1.0</version>
-  </parent>
 </project>

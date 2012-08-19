@@ -5,6 +5,14 @@
     <artifactId>biol-web</artifactId>
     <packaging>war</packaging>
     <name>${project.artifactId}</name>
+    
+    <parent>
+    	<groupId>com.biol.biolbg</groupId>
+    	<artifactId>biol-parent</artifactId>
+    	<version>1.0</version>
+    	<relativePath>../biol-parent/pom.xml</relativePath>
+    </parent>
+    
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -64,10 +72,4 @@
             <layout>default</layout>
         </repository>
     </repositories>
-    <parent>
-    	<groupId>com.biol.biolbg</groupId>
-    	<artifactId>biol-parent</artifactId>
-    	<version>1.0</version>
-    	<relativePath>../biol-parent/pom.xml</relativePath>
-    </parent>
 </project>

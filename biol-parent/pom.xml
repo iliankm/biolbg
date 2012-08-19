@@ -2,23 +2,47 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.biol.biolbg</groupId>
-  <artifactId>biol-parent</artifactId>
-  <version>1.0</version>
-  <packaging>pom</packaging>
+	<groupId>com.biol.biolbg</groupId>
+	<artifactId>biol-parent</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
 
-  <name>biol-parent</name>
-  <url>http://maven.apache.org</url>
+	<name>biol-parent</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<build>
+	<plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0-alpha-1</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <files>
+                <file>../biol-parent/${build}.properties</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>		
+		</plugins>
+	</build>
+		
 
-  <modules>
-  	<module>../biol-jpa</module>
-  	<module>../biol-ejb-client</module>
-  	<module>../biol-ejb</module>
-  	<module>../biol-web</module>
-  	<module>../biol-ear</module>
-  </modules>
+	<modules>
+		<module>../biol-jpa</module>
+		<module>../biol-ejb-client</module>
+		<module>../biol-ejb</module>
+		<module>../biol-web</module>
+		<module>../biol-ear</module>
+	</modules>
 </project>

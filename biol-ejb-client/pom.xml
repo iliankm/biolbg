@@ -7,6 +7,13 @@
 
   <name>biol-ejb-client</name>
   <url>http://maven.apache.org</url>
+  
+  <parent>
+  	<groupId>com.biol.biolbg</groupId>
+  	<artifactId>biol-parent</artifactId>
+  	<version>1.0</version>
+  	<relativePath>../biol-parent/pom.xml</relativePath>
+  </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,10 +39,4 @@
     </dependency>
   </dependencies>
   
-  <parent>
-  	<groupId>com.biol.biolbg</groupId>
-  	<artifactId>biol-parent</artifactId>
-  	<version>1.0</version>
-  	<relativePath>../biol-parent/pom.xml</relativePath>
-  </parent>
 </project>

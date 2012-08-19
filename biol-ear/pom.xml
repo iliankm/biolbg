@@ -4,14 +4,21 @@
 
   <artifactId>biol-ear</artifactId>
   <packaging>ear</packaging>
-
   <name>biol-ear</name>
+  
+  <parent>
+  	<groupId>com.biol.biolbg</groupId>
+  	<artifactId>biol-parent</artifactId>
+  	<version>1.0</version>
+  	<relativePath>../biol-parent/pom.xml</relativePath>
+  </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <build>
+  <finalName>${appContext}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -30,14 +37,14 @@
             <version>6</version>
             <defaultLibBundleDir>lib</defaultLibBundleDir>
             
-            <applicationName>biol-${project.version}</applicationName>
+            <applicationName>${appContext}</applicationName>
             <generateApplicationXml>true</generateApplicationXml>
             <modules>
 				<webModule>
             		<groupId>com.biol.biolbg</groupId>
             		<artifactId>biol-web</artifactId>
         			<bundleFileName>biol-web.war</bundleFileName>
-            		<contextRoot>/biol-${project.version}</contextRoot>
+            		<contextRoot>/${appWebContext}</contextRoot>
           		</webModule>
             </modules>
             
@@ -106,10 +113,4 @@
   		<type>war</type>
   	</dependency>
   </dependencies>
-  <parent>
-  	<groupId>com.biol.biolbg</groupId>
-  	<artifactId>biol-parent</artifactId>
-  	<version>1.0</version>
-  	<relativePath>../biol-parent/pom.xml</relativePath>
-  </parent>
 </project>
