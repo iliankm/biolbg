@@ -8,21 +8,26 @@ public class OrderRow extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Order order;
-	private Item item;
-	private Double amount;
-	private Double price;
-	
 	@ManyToOne
 	@JoinColumn(name="order_id")
+	private Order order;
+	
+	@ManyToOne
+	@JoinColumn(name="item_id")
+	private Item item;
+	
+	@Column(name="amount")
+	private Double amount;
+	
+	@Column(name="price")
+	private Double price;
+	
 	public Order getOrder() {
 		return order;
 	}
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	@ManyToOne
-	@JoinColumn(name="item_id")
 	public Item getItem() {
 		return item;
 	}
@@ -41,6 +46,8 @@ public class OrderRow extends BaseEntity {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	@Transient
 	public Double getValue() {
 		return amount*price;
 	}

@@ -6,6 +6,7 @@ import static javax.persistence.TemporalType.TIME;
 import java.util.Date;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -15,70 +16,89 @@ public class Order extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Column(name="version")
+	@Version
 	private int version;
-	private Date postdate;
-	private Date posttime;
-	private Date fordate;
-	private Date fortime;
-	private Usr user;
-	private OrderStatus status;
-	private String deliveryAddress;
-	private int seenbyadmin;
-	private Collection<OrderRow> rows;
 	
+	@Column(name="postdate")
 	@Temporal(DATE)
+	private Date postdate;
+	
+	@Column(name="posttime")
+	@Temporal(TIME)
+	private Date posttime;
+	
+	@Column(name="fordate")
+	@Temporal(DATE)
+	private Date fordate;
+	
+	@Column(name="fortime")
+	@Temporal(TIME)
+	private Date fortime;
+	
+	@ManyToOne
+	@JoinColumn(name="usr_id")
+	private Usr user;
+	
+	@ManyToOne
+	@JoinColumn(name="orderstatus_id")
+	private OrderStatus status;
+	
+	@Column(name="deliveryAddress")
+	private String deliveryAddress;
+	
+	@Column(name="seenbyadmin")
+	private int seenbyadmin;
+	
+	@OneToMany(cascade={CascadeType.ALL},
+			fetch=FetchType.EAGER,
+			mappedBy="order")
+	private List<OrderRow> rows;
+	
 	public Date getPostdate() {
 		return postdate;
 	}
 	public void setPostdate(Date postdate) {
 		this.postdate = postdate;
 	}
-	@Temporal(TIME)
 	public Date getPosttime() {
 		return posttime;
 	}
 	public void setPosttime(Date posttime) {
 		this.posttime = posttime;
 	}
-	@Temporal(DATE)
 	public Date getFordate() {
 		return fordate;
 	}
 	public void setFordate(Date fordate) {
 		this.fordate = fordate;
 	}
-	@Temporal(TIME)
 	public Date getFortime() {
 		return fortime;
 	}
 	public void setFortime(Date fortime) {
 		this.fortime = fortime;
 	}
-	@ManyToOne
-	@JoinColumn(name="usr_id")
 	public Usr getUser() {
 		return user;
 	}
 	public void setUser(Usr user) {
 		this.user = user;
 	}
-	@ManyToOne
-	@JoinColumn(name="orderstatus_id")
 	public OrderStatus getStatus() {
 		return status;
 	}
 	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
-	@OneToMany(cascade={CascadeType.ALL},
-				fetch=FetchType.EAGER,
-				mappedBy="order")
-	public Collection<OrderRow> getRows() {
+	public List<OrderRow> getRows() {
 		return rows;
 	}
-	public void setRows(Collection<OrderRow> rows) {
+	public void setRows(List<OrderRow> rows) {
 		this.rows = rows;
 	}
+	
+	@Transient
 	public Double getTotalValue() {
 		Double res = 0.0;
 		Iterator<OrderRow> iter = rows.iterator();
@@ -97,7 +117,6 @@ public class Order extends BaseEntity {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	@Version
 	public int getVersion() {
 		return version;
 	}

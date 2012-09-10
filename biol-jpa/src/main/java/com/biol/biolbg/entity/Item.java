@@ -8,33 +8,63 @@ public class Item extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Column(name="version")
+	@Version
 	private int version;
-	private Group group;
-	private Producer producer;
-	private String namebg;
-	private String nameen;
-	private String descriptionbg;
-	private String descriptionen;
-	private String packingbg;
-	private String packingen;
-	private String measureunitbg;
-	private String measureuniten;
-	private Double amountinpacking;
-	private Double priceforpacking;
-	private int promotion;
-	private int newitem;
-	private int bestsell;
 	
 	@ManyToOne
 	@JoinColumn(name="group_id")
+	private Group group;
+	
+	@ManyToOne
+	@JoinColumn(name="producer_id")
+	private Producer producer;
+	
+	@Column(name="namebg")
+	private String namebg;
+	
+	@Column(name="nameen")
+	private String nameen;
+	
+	@Column(name="descriptionbg")
+	private String descriptionbg;
+	
+	@Column(name="descriptionen")
+	private String descriptionen;
+	
+	@Column(name="packingbg")
+	private String packingbg;
+	
+	@Column(name="packingen")
+	private String packingen;
+	
+	@Column(name="measureunitbg")
+	private String measureunitbg;
+	
+	@Column(name="measureuniten")
+	private String measureuniten;
+	
+	@Column(name="amountinpacking")
+	private Double amountinpacking;
+	
+	@Column(name="priceforpacking")
+	private Double priceforpacking;
+	
+	@Column(name="promotion")
+	private int promotion;
+	
+	@Column(name="newitem")
+	private int newitem;
+	
+	@Column(name="bestsell")
+	private int bestsell;
+	
 	public Group getGroup() {
 		return group;
 	}
 	public void setGroup(Group group) {
 		this.group = group;
 	}
-	@ManyToOne
-	@JoinColumn(name="producer_id")
 	public Producer getProducer() {
 		return producer;
 	}
@@ -122,7 +152,6 @@ public class Item extends BaseEntity {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	@Version
 	public int getVersion() {
 		return version;
 	}

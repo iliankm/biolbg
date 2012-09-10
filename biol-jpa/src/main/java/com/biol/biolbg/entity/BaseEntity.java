@@ -12,22 +12,23 @@ import javax.persistence.Transient;
 public class BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected int id;
+
+	@Transient
 	protected Boolean checked;
 	
 	
 	public void setId(int id) {
 		this.id = id;
 	}
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
 		return id;
 	}
 	public void setChecked(Boolean checked) {
 		this.checked = checked;
 	}
-	@Transient
 	public Boolean getChecked() {
 		return checked;
 	}

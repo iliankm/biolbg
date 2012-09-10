@@ -8,10 +8,20 @@ public class HomeInfo extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Column(name="version")
+	@Version
 	private int version;
+	
+	@Column(name="headertextbg")
 	private String headertextbg;
+	
+	@Column(name="infotextbg")
 	private String infotextbg;
+	
+	@Column(name="headertexten")
 	private String headertexten;
+	
+	@Column(name="infotexten")
 	private String infotexten;
 	
 	public String getHeadertextbg() {
@@ -41,7 +51,6 @@ public class HomeInfo extends BaseEntity {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	@Version
 	public int getVersion() {
 		return version;
 	}

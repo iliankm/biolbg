@@ -13,15 +13,37 @@ public class Usr extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Column(name="version")
+	@Version
 	private int version;
+	
+	@Column(name="username")
 	private String username;
+	
+	@Column(name="password")
 	private String password;
+	
+	@Column(name="fullname")
 	private String fullname;
+	
+	@Column(name="organisation")
 	private String organisation;
+	
+	@Column(name="email")
 	private String email;
+	
+	@Column(name="lastlogindate")
+	@Temporal(DATE)
 	private Date lastlogindate;
+	
+	@Column(name="lastlogintime")
+	@Temporal(TIME)
 	private Date lastlogintime;
+	
+	@Column(name="lastloginip")
 	private String lastloginip;
+	
+	@Column(name="adminflag")
 	private int adminflag;
 	
 	public String getUsername() {
@@ -54,14 +76,12 @@ public class Usr extends BaseEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@Temporal(DATE)
 	public Date getLastlogindate() {
 		return lastlogindate;
 	}
 	public void setLastlogindate(Date lastlogindate) {
 		this.lastlogindate = lastlogindate;
 	}
-	@Temporal(TIME)
 	public Date getLastlogintime() {
 		return lastlogintime;
 	}
@@ -83,7 +103,6 @@ public class Usr extends BaseEntity {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	@Version
 	public int getVersion() {
 		return version;
 	}
