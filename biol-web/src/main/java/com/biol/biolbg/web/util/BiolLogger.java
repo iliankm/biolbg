@@ -1,19 +1,19 @@
 package com.biol.biolbg.web.util;
 
-//import java.io.IOException;
-//import java.util.logging.FileHandler;
+import java.io.IOException;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-//import java.util.logging.SimpleFormatter;
+import java.util.logging.SimpleFormatter;
 
-//import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContext;
 
 public class BiolLogger {
 	
 	private BiolLogger() {
 	}
 	
-	private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-/*	static {
+	private static Logger logger = Logger.getLogger("com.biolbg");
+	static {
 		FacesContext facesCtx = FacesContext.getCurrentInstance();
 		String logPath = 
 			facesCtx.getExternalContext().getInitParameter("logPath");
@@ -29,7 +29,7 @@ public class BiolLogger {
 			e.printStackTrace();
 		}
 	}
-*/	
+	
 	public static Logger getLogger() {
 		return logger;
 	}
