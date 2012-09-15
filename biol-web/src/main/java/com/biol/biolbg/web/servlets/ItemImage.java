@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
+
 /**
  * Servlet implementation class ItemImage
  */
@@ -21,7 +23,7 @@ public class ItemImage extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		imagesPath = config.getServletContext().getInitParameter("imagesPath");
+		imagesPath = config.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 		if (imagesPath == null) {
 		    throw new ServletException("Context parameter 'imagesPath' is not configured.");
 		}

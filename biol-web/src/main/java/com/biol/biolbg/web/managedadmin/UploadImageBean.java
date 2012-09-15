@@ -10,6 +10,7 @@ import javax.faces.bean.RequestScoped;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
+import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
 
@@ -28,7 +29,7 @@ public class UploadImageBean extends BaseEditItem implements Serializable{
 	
 	public void deleteImage(ActionEvent event) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String imagesPath = facesContext.getExternalContext().getInitParameter("imagesPath");
+		String imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 		
 		String itemId = getRealItemId().toString();
 		
@@ -49,7 +50,7 @@ public class UploadImageBean extends BaseEditItem implements Serializable{
 	//determine the file image for the given itemId
 	public String getImageFileName() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String imagesPath = facesContext.getExternalContext().getInitParameter("imagesPath");
+		String imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 		
 		String itemId = getRealItemId().toString();
 		

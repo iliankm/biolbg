@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.biol.biolbg.web.util.FileUtil;
+import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 
 /**
@@ -28,7 +29,7 @@ public class UploadImage extends HttpServlet {
 	private Integer maxImageFileSize;
 
 	public void init(ServletConfig config) throws ServletException {
-		uploadImagePath = config.getServletContext().getInitParameter("imagesPath");
+		uploadImagePath = config.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
         if (uploadImagePath == null) {
             throw new ServletException("Context parameter 'imagesPath' is not configured.");
         }

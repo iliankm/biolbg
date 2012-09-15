@@ -3,7 +3,6 @@ package com.biol.biolbg.web.managed;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.naming.NamingException;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.EJBLocator;
@@ -20,7 +19,7 @@ public class GalleryParamsBean extends Base {
 	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	@PostConstruct
-	public final void postConstruct() throws NamingException {
+	public final void postConstruct() {
 		paramProducer = null;
 		paramGroup = getRandomGroup();
 	}

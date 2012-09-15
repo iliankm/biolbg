@@ -52,9 +52,10 @@
 		</ui:define>
 		
 		<ui:define name="subform">	
-			<form id="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="/Biol/UploadImage?itemId=#{UploadImageBean.itemId}">
+			<form id="file_upload_form" method="post" enctype="multipart/form-data" target="upload_target" action="#{AppBean.appPath}/UploadImage?itemId=#{UploadImageBean.itemId}">
 				<input name="file" id="file" size="40" type="file" /><br />
 			</form>
+			
 			<input type="button" name="action" value="#{msgs.upload}" onclick="window.frames['upload_target'].document.body.innerHTML=''; document.forms['file_upload_form'].submit();" />
 			<br/>
 			<iframe id="upload_target" name="upload_target" src="" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"></iframe>

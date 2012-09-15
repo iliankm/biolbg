@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
+import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.OrderFacade;
 import com.biol.biolbg.entity.Order;
@@ -47,7 +48,7 @@ public class CurrentOrderBean extends Base implements Serializable {
 		order.setRows(new ArrayList<OrderRow>());
 		//get images path
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		imagesPath = facesContext.getExternalContext().getInitParameter("imagesPath");
+		imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 		
 	}
 	

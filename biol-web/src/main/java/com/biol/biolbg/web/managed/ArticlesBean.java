@@ -3,11 +3,9 @@ package com.biol.biolbg.web.managed;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -19,7 +17,7 @@ import com.biol.biolbg.web.managedadmin.GroupBean;
 import com.biol.biolbg.web.managedadmin.ProducerBean;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.EJBLocator;
-import com.biol.biolbg.web.util.FileUtil;
+import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 
 import com.biol.biolbg.ejb.session.ItemFacade;
@@ -36,6 +34,9 @@ public class ArticlesBean extends BaseList implements Serializable {
 	
 	@ManagedProperty(value="#{GalleryParamsBean}")
 	private GalleryParamsBean galleryParamsBean;
+	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
+	private ItemImagesFilenameMapper itemImagesFilenameMapper; 
+	
 	private String name = "";
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
@@ -53,6 +54,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 		// nothing to do here
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
 		try {
@@ -68,22 +70,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 
 		//load itemsImages with file names of images
 		if (getDataItems() != null) {
-			itemsImages.clear();
-			
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			String imagesPath = facesContext.getExternalContext().getInitParameter("imagesPath");
-			
-			Iterator<?> iter = getDataItems().iterator();
-			while (iter.hasNext()) {
-				Object obj = iter.next();
-				if (obj instanceof Item) {
-					Item item = (Item) obj;
-					String imageFileName = FileUtil.imageFileName(imagesPath, Integer.toString(item.getId()));
-					if (imageFileName != null) {
-						itemsImages.put(item.getId(), imageFileName);
-					}
-				}
-			}
+			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
 		}
 	}
 
@@ -258,6 +245,14 @@ public class ArticlesBean extends BaseList implements Serializable {
 
 	public GalleryParamsBean getGalleryParamsBean() {
 		return galleryParamsBean;
+	}
+
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
+	}
+
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+		return itemImagesFilenameMapper;
 	}
 	
 

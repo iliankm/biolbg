@@ -17,6 +17,7 @@ import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
+import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.ejb.session.ItemFacade;
@@ -46,7 +47,7 @@ public class GalleryBean extends Base implements Serializable{
 	public final void postConstruct() {
 		//get images path
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		imagesPath = facesContext.getExternalContext().getInitParameter("imagesPath");
+		imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 	}
 	
 	public void preRenderView(javax.faces.event.ComponentSystemEvent event) {
