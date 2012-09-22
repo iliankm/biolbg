@@ -17,6 +17,18 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+	<build>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-ejb-plugin</artifactId>
+	            <configuration>
+	                <ejbVersion>3.0</ejbVersion>
+	            </configuration>
+	        </plugin>
+	    </plugins>
+	</build>  
 
   <dependencies>
     <dependency>
@@ -43,4 +55,5 @@
     </dependency>
   </dependencies>
   
+  <packaging>ejb</packaging>
 </project>

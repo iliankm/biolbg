@@ -40,6 +40,10 @@
             <applicationName>${appContext}</applicationName>
             <generateApplicationXml>true</generateApplicationXml>
             <modules>
+				<ejbModule>
+					<groupId>com.biol.biolbg</groupId>
+					<artifactId>biol-ejb</artifactId>
+				</ejbModule>            
 				<webModule>
             		<groupId>com.biol.biolbg</groupId>
             		<artifactId>biol-web</artifactId>
@@ -104,6 +108,7 @@
   	<dependency>
   		<groupId>com.biol.biolbg</groupId>
   		<artifactId>biol-ejb</artifactId>
+  		<type>ejb</type>
   		<version>${project.version}</version>
   	</dependency>
   	<dependency>
