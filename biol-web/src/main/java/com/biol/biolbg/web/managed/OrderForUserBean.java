@@ -3,13 +3,13 @@ package com.biol.biolbg.web.managed;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.ejb.EJB;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.OrderFacade;
 import com.biol.biolbg.entity.Order;
@@ -23,7 +23,8 @@ public class OrderForUserBean extends BaseEditItem implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private HtmlDataTable orderRowsDataTable;
-	private OrderFacade orderFacade = EJBLocator.getInstance().lookup(OrderFacade.class);
+	@EJB
+	private OrderFacade orderFacade; //= EJBLocator.getInstance().lookup(OrderFacade.class);
 	
 	@Override
 	public Boolean getIsViewItemOnly() {

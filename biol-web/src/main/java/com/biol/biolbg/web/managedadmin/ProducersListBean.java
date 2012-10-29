@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.ProducerFacade;
 import com.biol.biolbg.entity.Producer;
@@ -18,7 +18,8 @@ import com.biol.biolbg.entity.Producer;
 public class ProducersListBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ProducerFacade producerFacade = EJBLocator.getInstance().lookup(ProducerFacade.class);
+	@EJB
+	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete) {

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -15,7 +16,6 @@ import javax.faces.context.FacesContext;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
@@ -39,9 +39,12 @@ public class GalleryBean extends Base implements Serializable{
 	private List<Group> groups;
 	private List<Producer> producers;
 	private String imagesPath;
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
-	private GroupFacade groupFacade = EJBLocator.getInstance().lookup(GroupFacade.class);
-	private ProducerFacade producerFacade = EJBLocator.getInstance().lookup(ProducerFacade.class);
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
+	@EJB
+	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(GroupFacade.class);
+	@EJB
+	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
 	
 	@PostConstruct
 	public final void postConstruct() {

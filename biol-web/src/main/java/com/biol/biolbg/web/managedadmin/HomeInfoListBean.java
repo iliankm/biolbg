@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.HomeInfoFacade;
 import com.biol.biolbg.entity.HomeInfo;
@@ -18,7 +18,8 @@ import com.biol.biolbg.entity.HomeInfo;
 public class HomeInfoListBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private HomeInfoFacade homeInfoFacade = EJBLocator.getInstance().lookup(HomeInfoFacade.class);
+	@EJB
+	private HomeInfoFacade homeInfoFacade; //= EJBLocator.getInstance().lookup(HomeInfoFacade.class);
 
 	@Override
 	public void init() {

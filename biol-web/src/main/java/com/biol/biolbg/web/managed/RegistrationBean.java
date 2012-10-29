@@ -3,6 +3,7 @@ package com.biol.biolbg.web.managed;
 import java.io.Serializable;
 import java.util.Random;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
 
@@ -31,7 +31,8 @@ public class RegistrationBean extends Base implements Serializable {
 	private String organisation;
 	private String email;
 	private String regcode;
-	private UsrFacade usrFacade = EJBLocator.getInstance().lookup(UsrFacade.class);
+	@EJB
+	private UsrFacade usrFacade; //= EJBLocator.getInstance().lookup(UsrFacade.class);
 	
 	public String register() {
 		String errorText;

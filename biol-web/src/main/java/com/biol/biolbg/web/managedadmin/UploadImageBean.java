@@ -2,13 +2,13 @@ package com.biol.biolbg.web.managedadmin;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
@@ -20,7 +20,8 @@ import com.biol.biolbg.ejb.session.ItemFacade;
 public class UploadImageBean extends BaseEditItem implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	@Override
 	public Boolean getIsViewItemOnly() {

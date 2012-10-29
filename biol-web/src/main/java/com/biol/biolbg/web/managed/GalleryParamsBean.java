@@ -1,11 +1,11 @@
 package com.biol.biolbg.web.managed;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
 import com.biol.biolbg.entity.Group;
@@ -16,7 +16,9 @@ import com.biol.biolbg.entity.Producer;
 public class GalleryParamsBean extends Base {
 	private Group paramGroup;
 	private Producer paramProducer;
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	@PostConstruct
 	public final void postConstruct() {

@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.ejb.session.HomeInfoFacade;
@@ -24,13 +24,22 @@ import com.biol.biolbg.entity.Producer;
 public class HomeBean extends Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ArticlesBean articlesBean = (ArticlesBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ArticlesBean");
+	
+	@ManagedProperty(value="#{ArticlesBean}")
+	private ArticlesBean articlesBean; //= (ArticlesBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ArticlesBean");
+	
+	@EJB
+	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(GroupFacade.class);
+	
+	@EJB
+	private	ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
+	
+	@EJB
+	private HomeInfoFacade homeInfoFacade; //=	EJBLocator.getInstance().lookup(HomeInfoFacade.class);
+	
 	private List<Group> groups = null;
 	private List<Producer> producers = null;
 	private List<HomeInfo> homeinfos = null;
-	private GroupFacade groupFacade = EJBLocator.getInstance().lookup(GroupFacade.class);
-	private	ProducerFacade producerFacade = EJBLocator.getInstance().lookup(ProducerFacade.class);
-	private HomeInfoFacade homeInfoFacade =	EJBLocator.getInstance().lookup(HomeInfoFacade.class);
 
 	@PostConstruct
 	public final void postConstruct() {
@@ -79,6 +88,10 @@ public class HomeBean extends Base implements Serializable {
 
 	public List<HomeInfo> getHomeinfos() {
 		return homeinfos;
+	}
+
+	public void setArticlesBean(ArticlesBean articlesBean) {
+		this.articlesBean = articlesBean;
 	}
 
 

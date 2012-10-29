@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
+
+import javax.ejb.EJB;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -20,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BiolLogger;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.ViewCredentials;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
@@ -32,6 +33,7 @@ public class AppBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static final String LOCALE_COOKIE_NAME = "locale";
+	
 	private String appLocale;
 	private TimeZone timeZone = TimeZone.getDefault(); //"UTC/GMT +3";
 	private String username = "";
@@ -41,7 +43,9 @@ public class AppBean implements Serializable {
 	private Map<String, ViewCredentials> viewCredentials = new HashMap<String, ViewCredentials>();
 	private UIInput usernameComp;
 	private UIInput passwordComp;
-	private UsrFacade usrFacade = EJBLocator.getInstance().lookup(UsrFacade.class);
+	
+	@EJB
+	private UsrFacade usrFacade; // = EJBLocator.getInstance().lookup(UsrFacade.class);
 	
 	private String getLocaleFromCookie() {
 		String locale = "";

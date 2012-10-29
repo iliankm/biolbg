@@ -2,12 +2,12 @@ package com.biol.biolbg.web.managed;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
@@ -21,7 +21,8 @@ import com.biol.biolbg.entity.Item;
 public class ViewArticleBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 
 	@Override
 	public Boolean getIsViewItemOnly() {

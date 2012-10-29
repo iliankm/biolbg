@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -16,7 +17,6 @@ import javax.naming.NamingException;
 import com.biol.biolbg.web.managedadmin.GroupBean;
 import com.biol.biolbg.web.managedadmin.ProducerBean;
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 
@@ -34,14 +34,23 @@ public class ArticlesBean extends BaseList implements Serializable {
 	
 	@ManagedProperty(value="#{GalleryParamsBean}")
 	private GalleryParamsBean galleryParamsBean;
+	
 	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
-	private ItemImagesFilenameMapper itemImagesFilenameMapper; 
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
+	
+	@ManagedProperty(value="#{ProducerBean}")
+	private ProducerBean producerBean;
+	
+	@ManagedProperty(value="#{GroupBean}")
+	private GroupBean groupBean;
+	
+	@EJB
+	ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	private String name = "";
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
-	ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	//-----------------CONSTRUCTOR-------------------------------------
 	public ArticlesBean() {
@@ -114,7 +123,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 		}
 		try {
 			groupsSelectItems = 
-				GroupBean.groupsSelectItemList(groupsSortByField, SORT_ASC, getAppBean().getAppLocale());
+				getGroupBean().groupsSelectItemList(groupsSortByField, SORT_ASC, getAppBean().getAppLocale());
 		} catch (Exception e) {
 			addErrorMessage(e.getMessage());
 		}
@@ -122,7 +131,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 		
 		try {
 			producersSelectItems = 
-				ProducerBean.producersSelectItemList(producersSortByField, BaseList.SORT_ASC, getAppBean().getAppLocale());
+				getProducerBean().producersSelectItemList(producersSortByField, BaseList.SORT_ASC, getAppBean().getAppLocale());
 		} catch (Exception e) {
 			addErrorMessage(e.getMessage());
 		}
@@ -253,6 +262,22 @@ public class ArticlesBean extends BaseList implements Serializable {
 
 	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
 		return itemImagesFilenameMapper;
+	}
+
+	public void setProducerBean(ProducerBean producerBean) {
+		this.producerBean = producerBean;
+	}
+
+	public ProducerBean getProducerBean() {
+		return producerBean;
+	}
+
+	public void setGroupBean(GroupBean groupBean) {
+		this.groupBean = groupBean;
+	}
+
+	public GroupBean getGroupBean() {
+		return groupBean;
 	}
 	
 

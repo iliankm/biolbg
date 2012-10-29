@@ -2,11 +2,11 @@ package com.biol.biolbg.web.managedadmin;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.HomeInfoFacade;
 import com.biol.biolbg.entity.HomeInfo;
@@ -16,7 +16,8 @@ import com.biol.biolbg.entity.HomeInfo;
 public class HomeInfoBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private HomeInfoFacade homeInfoFacade = EJBLocator.getInstance().lookup(HomeInfoFacade.class);
+	@EJB
+	private HomeInfoFacade homeInfoFacade; //= EJBLocator.getInstance().lookup(HomeInfoFacade.class);
 
 	@Override
 	public Object createNewItem() {

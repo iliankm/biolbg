@@ -3,13 +3,15 @@ package com.biol.biolbg.web.managedadmin;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
 import com.biol.biolbg.entity.Item;
@@ -21,7 +23,14 @@ public class ItemBean extends BaseEditItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
+	
+	@ManagedProperty(value="#{GroupBean}")
+	private GroupBean groupBean;
+	
+	@ManagedProperty(value="#{ProducerBean}")
+	private ProducerBean producerBean;
 
 	@Override
 	public Object createNewItem() {
@@ -71,10 +80,10 @@ public class ItemBean extends BaseEditItem implements Serializable {
 	public void init() {
 		//fill groupsSelectItems from GroupBean method
 		groupsSelectItems = 
-			GroupBean.groupsSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+			groupBean.groupsSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
 		//fill producersSelectItems from ProducerBean method
 		producersSelectItems = 
-			ProducerBean.producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+			producerBean.producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
 		
 	}
 	

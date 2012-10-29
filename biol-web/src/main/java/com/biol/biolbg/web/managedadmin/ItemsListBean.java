@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.ItemsListCredentials;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
@@ -32,7 +32,14 @@ public class ItemsListBean extends BaseList implements Serializable {
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
+	
+	@ManagedProperty(value="#{GroupBean}")
+	private GroupBean groupBean;
+	
+	@ManagedProperty(value="#{ProducerBean}")
+	private ProducerBean producerBean;
 	
 	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
 	private ItemImagesFilenameMapper itemImagesFilenameMapper; 
@@ -91,10 +98,10 @@ public class ItemsListBean extends BaseList implements Serializable {
 		
 		//fill groupsSelectItems from GroupBean method
 		groupsSelectItems = 
-			GroupBean.groupsSelectItemList("o.id", SORT_ASC, getAppBean().getAppLocale());
+			groupBean.groupsSelectItemList("o.id", SORT_ASC, getAppBean().getAppLocale());
 		//fill producersSelectItems from ProducerBean method
 		producersSelectItems = 
-			ProducerBean.producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+			producerBean.producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
 	}
 
 	@Override

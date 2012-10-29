@@ -3,11 +3,12 @@ package com.biol.biolbg.web.managed;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.OrdersListCredentials;
 
 import com.biol.biolbg.ejb.session.OrderFacade;
@@ -20,7 +21,8 @@ public class OrdersForUserListBean extends BaseList implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date fromDate = new Date();
 	private Date toDate = new Date();
-	private OrderFacade orderFacade = EJBLocator.getInstance().lookup(OrderFacade.class);
+	@EJB
+	private OrderFacade orderFacade; //= EJBLocator.getInstance().lookup(OrderFacade.class);
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete) {

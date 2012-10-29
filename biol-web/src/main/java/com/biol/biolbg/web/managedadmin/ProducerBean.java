@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.EJBLocator;
 
 import com.biol.biolbg.ejb.session.ProducerFacade;
 import com.biol.biolbg.entity.Producer;
@@ -20,7 +20,8 @@ import com.biol.biolbg.entity.Producer;
 public class ProducerBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ProducerFacade producerFacade = EJBLocator.getInstance().lookup(ProducerFacade.class);
+	@EJB
+	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
 
 	@Override
 	public Object createNewItem() {
@@ -54,8 +55,7 @@ public class ProducerBean extends BaseEditItem implements Serializable {
 		// nothing to do here
 	}
 
-	public static List<SelectItem> producersSelectItemList(String sortByFieldName, String sortType, String localeName) {
-		ProducerFacade producerFacade = EJBLocator.getInstance().lookup(ProducerFacade.class);
+	public List<SelectItem> producersSelectItemList(String sortByFieldName, String sortType, String localeName) {
 		List<SelectItem> result = new ArrayList<SelectItem>();
 
 		//get all producers in allProducers

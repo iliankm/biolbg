@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
@@ -23,7 +23,8 @@ public class PromotionsBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
 	private ItemImagesFilenameMapper itemImagesFilenameMapper; 

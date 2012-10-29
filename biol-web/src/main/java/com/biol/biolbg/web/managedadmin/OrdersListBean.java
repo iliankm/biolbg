@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.OrdersListCredentials;
 
 import com.biol.biolbg.ejb.session.OrderFacade;
@@ -27,7 +27,8 @@ public class OrdersListBean extends BaseList implements Serializable {
 	private Date toDate = new Date();
 	private String username = null;
 	private String organisation = null;
-	private OrderFacade orderFacade = EJBLocator.getInstance().lookup(OrderFacade.class);
+	@EJB
+	private OrderFacade orderFacade; //= EJBLocator.getInstance().lookup(OrderFacade.class);
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete) {

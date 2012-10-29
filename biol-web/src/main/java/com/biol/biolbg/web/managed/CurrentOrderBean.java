@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.EJBLocator;
 import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
@@ -41,7 +41,9 @@ public class CurrentOrderBean extends Base implements Serializable {
 	private Map<Integer,String> orderedAmount = new HashMap<Integer,String>();
 	private String regcode;
 	private String imagesPath;
-	private OrderFacade orderFacade = EJBLocator.getInstance().lookup(OrderFacade.class);
+	
+	@EJB
+	private OrderFacade orderFacade; //= EJBLocator.getInstance().lookup(OrderFacade.class);
 	
 	@PostConstruct
 	public final void postConstruct() {

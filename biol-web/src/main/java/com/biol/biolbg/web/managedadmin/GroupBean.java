@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.EJBLocator;
-
 import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.entity.Group;
 
@@ -19,7 +19,8 @@ import com.biol.biolbg.entity.Group;
 public class GroupBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private GroupFacade groupFacade = EJBLocator.getInstance().lookup(GroupFacade.class);
+	@EJB
+	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(GroupFacade.class);
 
 	@Override
 	public Boolean doSaveData() {
@@ -48,8 +49,8 @@ public class GroupBean extends BaseEditItem implements Serializable {
 		return groupFacade.createNewItem();
 	}
 
-	public static List<SelectItem> groupsSelectItemList(String sortByFieldName, String sortType, String localeName) {
-		GroupFacade groupFacade = EJBLocator.getInstance().lookup(GroupFacade.class);
+	public List<SelectItem> groupsSelectItemList(String sortByFieldName, String sortType, String localeName) {
+		//GroupFacade groupFacade = EJBLocator.getInstance().lookup(GroupFacade.class);
 		List<SelectItem> result = new ArrayList<SelectItem>();
 
 		//get all groups in allGroups

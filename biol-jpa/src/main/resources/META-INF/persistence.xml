@@ -3,9 +3,10 @@
 	<persistence-unit name="BiolPU" transaction-type="JTA">
 		<jta-data-source>${appDatasource}</jta-data-source>
 	    
-	    
+	    <!--
 	    <properties>
 	    	<property name="eclipselink.weaving" value="false"/>
 	    </properties>
+	    -->
 	</persistence-unit>
 </persistence>

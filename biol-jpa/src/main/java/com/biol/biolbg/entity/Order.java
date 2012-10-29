@@ -4,7 +4,6 @@ import static javax.persistence.TemporalType.DATE;
 import static javax.persistence.TemporalType.TIME;
 
 import java.util.Date;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
