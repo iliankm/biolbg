@@ -30,6 +30,7 @@
 	            <artifactId>maven-war-plugin</artifactId>
 	            <version>2.2</version>
 	            <configuration>
+	            	<warName>biol</warName>
 	                <webResources>
 	                    <resource>
 	                        <filtering>true</filtering>

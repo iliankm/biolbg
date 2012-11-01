@@ -47,7 +47,7 @@
 				<webModule>
             		<groupId>com.biol.biolbg</groupId>
             		<artifactId>biol-web</artifactId>
-        			<bundleFileName>biol-web.war</bundleFileName>
+        			<bundleFileName>biol.war</bundleFileName>
             		<contextRoot>/${appWebContext}</contextRoot>
           		</webModule>
             </modules>
