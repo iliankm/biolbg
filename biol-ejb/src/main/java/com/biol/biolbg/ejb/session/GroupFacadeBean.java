@@ -1,6 +1,8 @@
 package com.biol.biolbg.ejb.session;
 
 import java.util.List;
+import java.util.Random;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.persistence.EntityManager;
@@ -54,5 +56,20 @@ public class GroupFacadeBean implements GroupFacade {
 		Query query = em.createQuery("SELECT COUNT(o.id) FROM Group o");
 		return (Long)query.getSingleResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Group getRandomGroup() {
+		Group res = null;
+		Query query = em.createQuery("SELECT o.group.id FROM Item o GROUP BY o.group.id");
+		List<Integer> groupIds = query.getResultList();
+		if (groupIds.size() > 0) {
+			Random random = new Random();
+			Integer randomInteger = random.nextInt(groupIds.size()-1);
+			Integer groupId = groupIds.get(randomInteger);
+			res = em.find(Group.class, groupId);
+		}	
+		return res;
+	}
+	
 
 }

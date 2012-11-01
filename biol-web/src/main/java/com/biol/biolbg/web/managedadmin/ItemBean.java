@@ -80,10 +80,10 @@ public class ItemBean extends BaseEditItem implements Serializable {
 	public void init() {
 		//fill groupsSelectItems from GroupBean method
 		groupsSelectItems = 
-			groupBean.groupsSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+			getGroupBean().groupsSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
 		//fill producersSelectItems from ProducerBean method
 		producersSelectItems = 
-			producerBean.producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
 		
 	}
 	
@@ -146,6 +146,22 @@ public class ItemBean extends BaseEditItem implements Serializable {
 			}
 		}
 		
+	}
+
+	public void setGroupBean(GroupBean groupBean) {
+		this.groupBean = groupBean;
+	}
+
+	public GroupBean getGroupBean() {
+		return groupBean;
+	}
+
+	public void setProducerBean(ProducerBean producerBean) {
+		this.producerBean = producerBean;
+	}
+
+	public ProducerBean getProducerBean() {
+		return producerBean;
 	}
 	
 	

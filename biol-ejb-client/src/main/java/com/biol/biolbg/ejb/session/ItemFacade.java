@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Item;
 
 
@@ -26,5 +25,4 @@ public interface ItemFacade {
 	public Long getNewItemsCount();
 	public List<Item> getBestSellItems(Integer fromRow, Integer maxResults);
 	public Long getBestSellItemsCount();
-	public Group getRandomGroup();
 }

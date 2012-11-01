@@ -1,7 +1,6 @@
 package com.biol.biolbg.ejb.session;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -10,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
-import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Item;
 
 @Stateless
@@ -150,17 +148,4 @@ public class ItemFacadeBean implements ItemFacade {
 		Query query = em.createQuery(queryText);
 		return (Long)query.getSingleResult();
 	}
-	@SuppressWarnings("unchecked")
-	public Group getRandomGroup() {
-		Group res = null;
-		Query query = em.createQuery("SELECT o.group FROM Item o GROUP BY o.group");
-		List<Group> groups = query.getResultList();
-		if (groups.size() > 0) {
-			Random random = new Random();
-			Integer randomInteger = random.nextInt(groups.size()-1);
-			res = groups.get(randomInteger);
-		}	
-		return res;
-	}
-
 }

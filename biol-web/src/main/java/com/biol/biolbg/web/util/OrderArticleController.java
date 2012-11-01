@@ -5,6 +5,8 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -25,7 +27,9 @@ public class OrderArticleController extends Base implements Serializable {
 	
 	@ManagedProperty(value="#{CurrentOrderBean}")
 	private CurrentOrderBean currentOrderBean;
-	private ItemFacade itemFacade = EJBLocator.getInstance().lookup(ItemFacade.class);
+	
+	@EJB
+	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	//increments the amount of ordered article
 	//if not found - create it

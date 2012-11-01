@@ -28,8 +28,9 @@ public class SecureAdminViewsListener implements PhaseListener {
         	AppBean appBean = (AppBean) FacesContext.getCurrentInstance().getExternalContext()
             .getSessionMap().get("AppBean");
         	Boolean redirect = true;
-        	Usr loggedUser = appBean.getLoggedUser();
+        	
         	if (appBean != null) {
+        		Usr loggedUser = appBean.getLoggedUser();
         		if (loggedUser != null) {
         			if (loggedUser.getAdminflag() == 1) {
         				redirect = false;
@@ -45,7 +46,6 @@ public class SecureAdminViewsListener implements PhaseListener {
 				}
         	}	
         }	
-
 	}
 
 	@Override

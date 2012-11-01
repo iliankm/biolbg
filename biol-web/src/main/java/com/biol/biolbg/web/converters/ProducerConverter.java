@@ -2,20 +2,18 @@ package com.biol.biolbg.web.converters;
 
 import java.util.ResourceBundle;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import com.biol.biolbg.web.util.EJBLocator;
-
-
 import com.biol.biolbg.ejb.session.ProducerFacade;
 import com.biol.biolbg.entity.Producer;
 
 public class ProducerConverter implements Converter {
-	private ProducerFacade producerFacade = EJBLocator.getInstance().lookup(ProducerFacade.class);
+	@EJB
+	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
 
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {

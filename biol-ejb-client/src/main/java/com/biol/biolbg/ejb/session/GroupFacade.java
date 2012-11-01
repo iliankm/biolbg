@@ -15,4 +15,5 @@ public interface GroupFacade {
 	public Group createNewItem();
 	public List<Group> getAllItems(Integer fromRow, Integer maxResults, String sortBy, String sortType);
 	public Long getAllItemsCount();
+	public Group getRandomGroup();
 }

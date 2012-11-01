@@ -32,6 +32,7 @@ public class ItemsListBean extends BaseList implements Serializable {
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
+	
 	@EJB
 	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
@@ -98,10 +99,10 @@ public class ItemsListBean extends BaseList implements Serializable {
 		
 		//fill groupsSelectItems from GroupBean method
 		groupsSelectItems = 
-			groupBean.groupsSelectItemList("o.id", SORT_ASC, getAppBean().getAppLocale());
+			getGroupBean().groupsSelectItemList("o.id", SORT_ASC, getAppBean().getAppLocale());
 		//fill producersSelectItems from ProducerBean method
 		producersSelectItems = 
-			producerBean.producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
 	}
 
 	@Override
@@ -165,6 +166,22 @@ public class ItemsListBean extends BaseList implements Serializable {
 
 	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
 		return itemImagesFilenameMapper;
+	}
+
+	public void setGroupBean(GroupBean groupBean) {
+		this.groupBean = groupBean;
+	}
+
+	public GroupBean getGroupBean() {
+		return groupBean;
+	}
+
+	public void setProducerBean(ProducerBean producerBean) {
+		this.producerBean = producerBean;
+	}
+
+	public ProducerBean getProducerBean() {
+		return producerBean;
 	}
 	
 }

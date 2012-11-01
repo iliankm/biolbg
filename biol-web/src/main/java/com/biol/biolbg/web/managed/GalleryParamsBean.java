@@ -7,7 +7,7 @@ import javax.faces.bean.SessionScoped;
 
 import com.biol.biolbg.web.util.Base;
 
-import com.biol.biolbg.ejb.session.ItemFacade;
+import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Producer;
 
@@ -18,7 +18,7 @@ public class GalleryParamsBean extends Base {
 	private Producer paramProducer;
 	
 	@EJB
-	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
+	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
 	
 	@PostConstruct
 	public final void postConstruct() {
@@ -40,7 +40,7 @@ public class GalleryParamsBean extends Base {
 	}
 	
 	private Group getRandomGroup() {
-		return itemFacade.getRandomGroup();
+		return groupFacade.getRandomGroup();
 	}
 
 }
