@@ -16,12 +16,12 @@
 	
 	<composite:implementation>
 		<h:commandLink id="btnIncAmount" actionListener="#{OrderArticleController.incArticle}">
-			<f:ajax execute="@this" render="@this orderedArticleMeasure"/>
+			<f:ajax execute="@this" render="orderedArticleMeasure"/>
 			<f:param name="articleId" value="#{cc.attrs.articleId}" />
 			<h:graphicImage value="img/plus.png" />
 		</h:commandLink>	
 		<h:commandLink id="btnDecAmount" actionListener="#{OrderArticleController.decArticle}">
-			<f:ajax execute="@this" render="@this orderedArticleMeasure"/>
+			<f:ajax execute="@this" render="orderedArticleMeasure"/>
 			<f:param name="articleId" value="#{cc.attrs.articleId}" />
 			<h:graphicImage value="img/minus.png" />
 		</h:commandLink>	
