@@ -36,7 +36,6 @@
         <configuration>
             <version>6</version>
             <defaultLibBundleDir>lib</defaultLibBundleDir>
-            
             <applicationName>${appContext}</applicationName>
             <generateApplicationXml>true</generateApplicationXml>
             <modules>
