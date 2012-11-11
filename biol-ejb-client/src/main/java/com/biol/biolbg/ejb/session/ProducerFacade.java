@@ -2,11 +2,11 @@ package com.biol.biolbg.ejb.session;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.biol.biolbg.entity.Producer;
 
-@Remote
+@Local
 public interface ProducerFacade {
 	public void addItem(Producer item);
 	public void removeItem(Integer id);

@@ -18,10 +18,10 @@
 		<ui:define name="metadata" >
 			<f:metadata>
 				<f:viewParam name="group" value="#{GalleryParamsBean.paramGroup}">
-					<f:converter converterId="GroupConverter"/>
+					<f:converter binding="#{GroupConverter}"/>
 				</f:viewParam>
 				<f:viewParam name="producer" value="#{GalleryParamsBean.paramProducer}">
-					<f:converter converterId="ProducerConverter"/>
+					<f:converter binding="#{ProducerConverter}"/>
 				</f:viewParam>
 			</f:metadata>
 		</ui:define>
@@ -45,7 +45,7 @@
 					<h:selectOneMenu id="group"
 									 value="#{ArticlesBean.group}" 
 									 onchange="document.getElementById('baseForm:inputName').value=''; document.getElementById('baseForm:refrButt').click()">
-						<f:converter converterId="GroupConverter"/>
+						<f:converter binding="#{GroupConverter}"/>
 						<f:selectItems value="#{ArticlesBean.groupsSelectItems}"/>
 					</h:selectOneMenu>
 					<h:message for="group" styleClass="errorText"/>
@@ -53,7 +53,7 @@
 					<h:selectOneMenu id="producer"
 									 value="#{ArticlesBean.producer}" 
 									 onchange="document.getElementById('baseForm:inputName').value=''; document.getElementById('baseForm:refrButt').click()">
-						<f:converter converterId="ProducerConverter"/>
+						<f:converter binding="#{ProducerConverter}"/>
 						<f:selectItems value="#{ArticlesBean.producersSelectItems}"/>
 					</h:selectOneMenu>
 					<h:message for="producer" styleClass="errorText"/>

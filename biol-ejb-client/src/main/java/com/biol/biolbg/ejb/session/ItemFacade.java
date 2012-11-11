@@ -2,12 +2,12 @@ package com.biol.biolbg.ejb.session;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.biol.biolbg.entity.Item;
 
 
-@Remote
+@Local
 public interface ItemFacade {
 	public void addItem(Item item);
 	public void removeItem(Integer id);

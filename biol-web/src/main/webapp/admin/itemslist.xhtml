@@ -32,7 +32,7 @@
 				<h:selectOneMenu id="group"
 								 value="#{ItemsListBean.group}" 
 								 onchange="document.getElementById('baseForm:refreshButton').click()">
-					<f:converter converterId="GroupConverter"/>
+					<f:converter binding="#{GroupConverter}"/>
 					<f:selectItems value="#{ItemsListBean.groupsSelectItems}"/>
 				</h:selectOneMenu>
 				<h:message for="group" styleClass="errorText"/>
@@ -41,7 +41,7 @@
 				<h:selectOneMenu id="producer"
 								 value="#{ItemsListBean.producer}" 
 								 onchange="document.getElementById('baseForm:refreshButton').click()">
-					<f:converter converterId="ProducerConverter"/>
+					<f:converter binding="#{ProducerConverter}"/>
 					<f:selectItems value="#{ItemsListBean.producersSelectItems}"/>
 				</h:selectOneMenu>
 				<h:message for="producer" styleClass="errorText"/>

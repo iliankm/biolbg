@@ -10,42 +10,56 @@ import javax.naming.NamingException;
 
 public class EJBLocator {
 	
-	private Context context;
+	private static Context JNDI_CONTEXT;
+	static 
+	{
+		try 
+		{
+			JNDI_CONTEXT = new InitialContext();
+		} catch (NamingException e) 
+		{
+			BiolLogger.getLogger().log(Level.ALL, "", e);
+		}
+	}
+	
+	private static String EJB_CONTEXT = "java:comp/env/";
+	
 	private Map<String, Object> ejbInterfaces;
 	
 	//Singleton
-	private EJBLocator() {
-		try {
-			context = new InitialContext();
-		} catch (NamingException e) {
-			BiolLogger.getLogger().log(Level.ALL, "", e);
-		}
+	private EJBLocator() 
+	{
 		ejbInterfaces = new ConcurrentHashMap<String, Object>(); //HashMap<String, Object>();
 	}
 	
-	private static class EJBLocatorHolder {
+	private static class EJBLocatorHolder 
+	{
 		public static final EJBLocator instance = new EJBLocator();
 	}
 	
-	public static EJBLocator getInstance() {
+	public static EJBLocator getInstance() 
+	{
 		return EJBLocatorHolder.instance;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T lookup(Class<T> facadeInterfaceClass) {
-		
-		String facadeInterfaceClassname = facadeInterfaceClass.getName();
+	public <T> T lookup(String name) 
+	{
+		String facadeInterfaceClassname = EJB_CONTEXT + name;
 		Object ejbInterface = ejbInterfaces.get(facadeInterfaceClassname);
-		if (ejbInterface == null) {
-			try {
-				ejbInterface = context.lookup(facadeInterfaceClassname);
-			} catch (NamingException e) {
+		if (ejbInterface == null) 
+		{
+			try 
+			{
+				ejbInterface = JNDI_CONTEXT.lookup(facadeInterfaceClassname);
+			} 
+			catch (NamingException e) 
+			{
 				BiolLogger.getLogger().log(Level.ALL, "", e);
 			}
 			ejbInterfaces.put(facadeInterfaceClassname, ejbInterface);
 		}
+		
 		return (T)ejbInterface;
 	}
-	
-
 }
