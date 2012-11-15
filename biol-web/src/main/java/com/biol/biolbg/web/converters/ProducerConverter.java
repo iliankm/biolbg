@@ -4,6 +4,8 @@ import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -11,45 +13,58 @@ import javax.faces.convert.ConverterException;
 import com.biol.biolbg.ejb.session.ProducerFacade;
 import com.biol.biolbg.entity.Producer;
 
-public class ProducerConverter implements Converter {
+@ManagedBean(name="ProducerConverter")
+@RequestScoped
+public class ProducerConverter implements Converter 
+{
 	@EJB
-	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
+	private ProducerFacade producerFacade;
 
 	@Override
-	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
-		if ("0".equals(arg2)) {
+	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) 
+	{
+		if ("0".equals(arg2)) 
+		{
 			return null;
 		}
-		Producer res = null;
-		Integer id = -1;
-		try {
+		
+		Integer id;
+		try 
+		{
 			id = Integer.parseInt(arg2);
-			res = producerFacade.findItem(id);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			throw new ConverterException(getMessage());
 		}
-		if (res == null) {
+		
+		Producer res = producerFacade.findItem(id);
+		
+		if (res == null) 
+		{
 			throw new ConverterException(getMessage());
-		} else {
-			if (res.getId() <= 0) {
-				throw new ConverterException(getMessage());
-			}
-		}
+		} 
+		
 		return res;
 	}
 
 	@Override
-	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) {
-		if (arg2 != null) {
-			if (arg2 instanceof Producer) {
+	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) 
+	{
+		if (arg2 != null) 
+		{
+			if (arg2 instanceof Producer) 
+			{
 				Producer producer = (Producer)arg2;
 				return Integer.toString(producer.getId());
 			}
 		}
+		
 		return "0";
 	}
 	
-	private FacesMessage getMessage() {
+	private FacesMessage getMessage() 
+	{
         FacesMessage message = new FacesMessage();
         
         FacesContext context = FacesContext.getCurrentInstance();
@@ -60,7 +75,8 @@ public class ProducerConverter implements Converter {
         message.setDetail(str);
         message.setSummary(str);
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
-		return message;
+		
+        return message;
 	}
 	
 

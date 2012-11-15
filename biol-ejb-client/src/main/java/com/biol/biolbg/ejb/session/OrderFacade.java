@@ -3,12 +3,12 @@ package com.biol.biolbg.ejb.session;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.biol.biolbg.entity.Order;
 import com.biol.biolbg.entity.OrderStatus;
 
-@Remote
+@Local
 public interface OrderFacade {
 	public void addItem(Order item);
 	public void removeItem(Integer id);

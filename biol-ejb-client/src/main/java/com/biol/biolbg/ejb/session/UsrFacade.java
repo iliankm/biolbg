@@ -2,13 +2,13 @@ package com.biol.biolbg.ejb.session;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.biol.biolbg.entity.Usr;
 import com.biol.biolbg.exception.ValidateRegistrationException;
 
 
-@Remote
+@Local
 public interface UsrFacade {
 	public void addItem(Usr item) ;
 	public void removeItem(Integer id) ;

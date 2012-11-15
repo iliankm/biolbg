@@ -18,10 +18,10 @@
 	<ui:define name="metadata" >
 		<f:metadata>
 			<f:viewParam name="group" value="#{GalleryBean.paramGroup}">
-				<f:converter converterId="GroupConverter"/>
+				<f:converter binding="#{GroupConverter}"/>
 			</f:viewParam>
 			<f:viewParam name="producer" value="#{GalleryBean.paramProducer}">
-				<f:converter converterId="ProducerConverter"/>
+				<f:converter binding="#{ProducerConverter}"/>
 			</f:viewParam>
 		</f:metadata>
 		<f:event type="preRenderView" listener="#{GalleryBean.preRenderView}"/>

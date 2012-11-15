@@ -2,11 +2,11 @@ package com.biol.biolbg.ejb.session;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.biol.biolbg.entity.HomeInfo;
 
-@Remote
+@Local
 public interface HomeInfoFacade {
 	public void addItem(HomeInfo item);
 	public void removeItem(Integer id);

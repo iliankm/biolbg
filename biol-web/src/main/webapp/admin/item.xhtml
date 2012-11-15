@@ -33,7 +33,7 @@
 				<h:selectOneMenu id="group"
 								 value="#{ItemBean.item.group}"
 								 required="true" >
-					<f:converter converterId="GroupConverter"/>
+					<f:converter binding="#{GroupConverter}"/>
 					<f:selectItems value="#{ItemBean.groupsSelectItems}"/>
 				</h:selectOneMenu>
 				<h:message for="group" styleClass="errorText"/>
@@ -60,7 +60,7 @@
 				<h:selectOneMenu id="producer"
 								 value="#{ItemBean.item.producer}" 
 								 required="true" >
-					<f:converter converterId="ProducerConverter"/>
+					<f:converter binding="#{ProducerConverter}"/>
 					<f:selectItems value="#{ItemBean.producersSelectItems}"/>
 				</h:selectOneMenu>
 				<h:message for="producer" styleClass="errorText"/>

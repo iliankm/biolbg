@@ -76,7 +76,7 @@
 					<h:selectOneMenu id="status"
 									 value="#{OrderBean.item.status}" 
 									 required="true" >
-						<f:converter converterId="OrderStatusConverter"/>
+						<f:converter binding="#{OrderStatusConverter}"/>
 						<f:selectItems value="#{OrderBean.orderStatusSelectItems}"/>
 					</h:selectOneMenu>
 					<h:commandButton id="updateStatus" value="#{msgs.udatestatus}" actionListener="#{OrderBean.updateStatus}"/>

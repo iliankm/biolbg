@@ -2,11 +2,11 @@ package com.biol.biolbg.ejb.session;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.biol.biolbg.entity.Group;
 
-@Remote
+@Local
 public interface GroupFacade {
 	public void addItem(Group item);
 	public void removeItem(Integer id);
