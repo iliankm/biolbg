@@ -3,9 +3,6 @@ package com.biol.biolbg.web.util.cdi;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -27,11 +24,12 @@ public class ItemImagesFilenameMapper {
 		Map<Integer, String> result = new HashMap<Integer, String>();
 		
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String imagesPath = facesContext.getExternalContext().getInitParameter(IMAGES_PATH);
-		imagesPath = envVarsResolver.resolve(imagesPath);
+		String imagesPathUnresolved = facesContext.getExternalContext().getInitParameter(IMAGES_PATH);
+		String imagesPath = envVarsResolver.resolve(imagesPathUnresolved);
 		
 		for (Item item : items) {
 			String imageFileName = FileUtil.imageFileName(imagesPath, Integer.toString(item.getId()));
+			
 			if (imageFileName != null) {
 				result.put(item.getId(), imageFileName);
 			}

@@ -118,6 +118,8 @@ public class AppBean implements Serializable {
 			password = passwordComp.getSubmittedValue().toString();
 		}
 		
+		BiolLogger.getLogger().info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
+		
 		loggedUser = new Usr();
 		isUserLoggedIn = false;
 		//check if username & password is provided
