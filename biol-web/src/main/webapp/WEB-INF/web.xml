@@ -15,10 +15,6 @@
     <param-value>${imagesPath}</param-value>
   </context-param>
   <context-param>
-    <param-name>maxImageFileSize</param-name>
-    <param-value>300000</param-value>
-  </context-param>
-  <context-param>
   	<param-name>logPath</param-name>
   	<param-value>${logPath}</param-value>
   </context-param>

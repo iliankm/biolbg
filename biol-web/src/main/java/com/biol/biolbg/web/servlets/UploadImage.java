@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.biol.biolbg.web.util.FileUtil;
+import com.biol.biolbg.web.util.cdi.EnvVarsResolver;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 
@@ -25,27 +25,20 @@ import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
  */
 public class UploadImage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String uploadImagePath;
-	private Integer maxImageFileSize;
-
-	public void init(ServletConfig config) throws ServletException {
-		uploadImagePath = config.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
-        if (uploadImagePath == null) {
-            throw new ServletException("Context parameter 'imagesPath' is not configured.");
-        }
-        String strMaxImageFileSize = config.getServletContext().getInitParameter("maxImageFileSize");
-        try {
-        	maxImageFileSize = Integer.parseInt(strMaxImageFileSize);
-        } catch (Exception e) {
-        	throw new ServletException("Context parameter 'maxImageFileSize' is not configured or is not a number.");
-        }
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	private static final Integer MAX_IMAGE_FILE_SIZE = 300000;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		doPost(request, response); 
 	}
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		EnvVarsResolver envVarsResolver = new EnvVarsResolver();
+		String uploadImagePathUnresolved = request.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
+		String uploadImagePath = envVarsResolver.resolve(uploadImagePathUnresolved);
+		
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter( );
 
@@ -59,7 +52,7 @@ public class UploadImage extends HttpServlet {
 
 	    out.println("<body>");
 	    FileUpload fu = new FileUpload();
-		if (fu.processFileUpload(request, uploadImagePath, maxImageFileSize)) {
+		if (fu.processFileUpload(request, uploadImagePath, MAX_IMAGE_FILE_SIZE)) {
 			FileUtil.deleteImageFilesForItem(uploadImagePath, fu.itemId, fu.uploadedFileName);
 			out.println("<img src=\"img/ok.jpeg\"/>");
 		} else {
