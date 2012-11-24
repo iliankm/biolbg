@@ -19,16 +19,14 @@
 				<h:outputText id="usrText" value="#{msgs.user}:"/>
 				<h:inputText id="usrInput" 
 							 value="#{AppBean.username}" 
-							 binding="#{AppBean.usernameComp}"
 							 onkeypress="return formKeyPressed(event,'baseForm:loginButton');"/>
 				<h:outputText id="passText" value=" #{msgs.password}:"/>
 				<h:inputSecret id="passInput"  
 							   redisplay="false" 
 							   value="#{AppBean.password}" 
-							   binding="#{AppBean.passwordComp}"
 							   onkeypress="return formKeyPressed(event,'baseForm:loginButton');"/>
 				<h:outputText value=""/>
-				<h:commandButton id="loginButton" value="#{msgs.login}" action="#{AppBean.login}" immediate="true"/>
+				<h:commandButton id="loginButton" value="#{msgs.login}" action="#{AppBean.login}"/>
 				<h:outputText value=""/>
 				<h:outputLink id="registrationLink" value="#{AppBean.appPath}/registration.jsf">
 					<h:outputText id="registrationText" value="#{msgs.createAccount}"/>
@@ -42,9 +40,15 @@
 				<h:outputText id="loggedUser" value="#{AppBean.loggedUser.username}"/>
 				<h:outputText id="loggedUserFullname" value="#{AppBean.loggedUser.fullname}"/>
 				<h:outputText id="loggedUserOrg" value="#{AppBean.loggedUser.organisation}"/>
-				<h:commandButton id="logoutButton" value="#{msgs.logout}" action="#{AppBean.logout}" immediate="true"/>				
+				<h:commandButton id="logoutButton" value="#{msgs.logout}" action="#{AppBean.logout}" />				
 			</h:panelGrid>
 		</div>
+		
+		<div id="changeLangDiv">
+			<h:commandButton id="bgButton" image="/img/bg-flag.gif" action="#{AppBean.setBgLocale}" />
+			<h:commandButton id="enButton" image="/img/en-flag.gif" action="#{AppBean.setEnLocale}" />
+		</div>
+		
 	</ui:composition>    
 </h:body>
 </html>

@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 import java.util.TimeZone;
 
 import javax.ejb.EJB;
-import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
@@ -41,8 +40,6 @@ public class AppBean implements Serializable {
 	private Usr loggedUser = new Usr();
 	private Boolean isUserLoggedIn = false;
 	private Map<String, ViewCredentials> viewCredentials = new HashMap<String, ViewCredentials>();
-	private UIInput usernameComp;
-	private UIInput passwordComp;
 	
 	@EJB
 	private UsrFacade usrFacade; // = EJBLocator.getInstance().lookup(UsrFacade.class);
@@ -106,18 +103,7 @@ public class AppBean implements Serializable {
 		return loggedUser;
 	}
 	public String login() {
-		//get values from username and password components
-		if (usernameComp.isLocalValueSet()) {
-			username = usernameComp.getValue().toString();
-		} else {
-			username = usernameComp.getSubmittedValue().toString();
-		}
-		if (passwordComp.isLocalValueSet()) {
-			password = passwordComp.getValue().toString();
-		} else {
-			password = passwordComp.getSubmittedValue().toString();
-		}
-		
+	
 		BiolLogger.getLogger().info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
 		
 		loggedUser = new Usr();
@@ -125,7 +111,7 @@ public class AppBean implements Serializable {
 		//check if username & password is provided
 		if ((username.trim().equals(""))||(password.trim().equals(""))) {
 			String errorText = getMessageResourceString("provideUsernamePassword", null);
-			FacesContext.getCurrentInstance().addMessage("baseForm:usrInput", new FacesMessage(
+			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
 			return "error";
 		}
@@ -144,7 +130,7 @@ public class AppBean implements Serializable {
 		}
 		if (!res) {
 			String errorText = getMessageResourceString("invalidUsernamePassword", null);
-			FacesContext.getCurrentInstance().addMessage("baseForm:usrInput", new FacesMessage(
+			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
 			return "error";
 		} else {
@@ -235,16 +221,5 @@ public class AppBean implements Serializable {
 	public TimeZone getTimeZone() {
 		return timeZone;
 	}
-	public void setUsernameComp(UIInput usernameComp) {
-		this.usernameComp = usernameComp;
-	}
-	public UIInput getUsernameComp() {
-		return usernameComp;
-	}
-	public void setPasswordComp(UIInput passwordComp) {
-		this.passwordComp = passwordComp;
-	}
-	public UIInput getPasswordComp() {
-		return passwordComp;
-	}
+	
 }

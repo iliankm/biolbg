@@ -38,25 +38,26 @@
 	<h:body>
 		<div id="baseDiv" align="center">
 			<div id="mainDiv">
-				<h:form id="baseForm" onkeypress="return formKeyPressed(event,'${elementIdOnEnterPressed}');">	
+				<h:form id="headerForm" onkeypress="return formKeyPressed(event,'headerForm:loginButton');">
 					<div id="headerDiv">
 						<ui:insert name="header"/>
 					</div>
+				</h:form>	
 	
-					<div id="changeLangDiv">
-						<h:commandButton id="bgButton" image="/img/bg-flag.gif" action="#{AppBean.setBgLocale}" immediate="true"/>
-						<h:commandButton id="enButton" image="/img/en-flag.gif" action="#{AppBean.setEnLocale}" immediate="true"/>
-					</div>
-					<div id="navbarDiv">
-						<ui:insert name="navbar"/>
-					</div>
-					<div id="titleDiv">
-						${title}
-					</div>
+				<div id="navbarDiv">
+					<ui:insert name="navbar"/>
+				</div>
+				
+				<div id="titleDiv">
+					${title}
+				</div>
+				
+				<h:form id="baseForm" onkeypress="return formKeyPressed(event,'${elementIdOnEnterPressed}');">	
 					<div id="basecontentDiv">
 						<ui:insert name="basecontent"/>
 					</div>
 				</h:form>
+				
 				<div id="subformDiv">
 					<ui:insert name="subform"/>
 				</div>
