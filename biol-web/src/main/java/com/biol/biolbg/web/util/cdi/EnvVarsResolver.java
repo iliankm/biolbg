@@ -4,10 +4,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.NoneScoped;
 
 @ManagedBean(name="EnvVarsResolver")
-@RequestScoped
+@NoneScoped
 public class EnvVarsResolver {
 	
 	public String resolve(String input)

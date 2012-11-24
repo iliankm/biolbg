@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
@@ -22,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.OrderFacade;
@@ -34,24 +34,24 @@ import com.biol.biolbg.entity.OrderRow;
 public class CurrentOrderBean extends Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
+	
 	private Order order = new Order();
 	private java.util.Date fordate;
 	private java.util.Date fortime;
 	private HtmlDataTable orderRowsDataTable;
 	private Map<Integer,String> orderedAmount = new HashMap<Integer,String>();
 	private String regcode;
-	private String imagesPath;
 	
 	@EJB
 	private OrderFacade orderFacade; //= EJBLocator.getInstance().lookup(OrderFacade.class);
 	
 	@PostConstruct
-	public final void postConstruct() {
+	public final void postConstruct() 
+	{
 		order.setRows(new ArrayList<OrderRow>());
-		//get images path
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
-		
 	}
 	
 	public void saveData(ActionEvent event) {
@@ -211,21 +211,42 @@ public class CurrentOrderBean extends Base implements Serializable {
 		return res;
 	}
 	
-	public Map<Integer, String> getImageName() {
-		Map<Integer, String> res = new AbstractMap<Integer, String>() {
+	public Map<Integer, String> getImageName() 
+	{
+		Map<Integer, String> res = new AbstractMap<Integer, String>() 
+		{
 
 			@Override
-			public String get(Object key) {
-				return FileUtil.imageFileName(imagesPath, key.toString());
+			public String get(Object key) 
+			{
+				Integer itemId;
+				try
+				{
+					itemId = Integer.valueOf(key.toString());
+				}
+				catch (Exception e)
+				{
+					itemId = -1;
+				}
+				return itemImagesFilenameMapper.getSingle(itemId);
 			}
 			
 			@Override
-			public Set<java.util.Map.Entry<Integer, String>> entrySet() {
+			public Set<java.util.Map.Entry<Integer, String>> entrySet() 
+			{
 				throw new UnsupportedOperationException();
 			}
 		};
 			
 		return res;
+	}
+
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
+	}
+
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+		return itemImagesFilenameMapper;
 	}
 	
 

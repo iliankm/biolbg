@@ -7,16 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BaseList;
-import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.GroupFacade;
@@ -35,23 +32,22 @@ public class GalleryBean extends Base implements Serializable{
 	
 	@ManagedProperty(value="#{GalleryParamsBean}")
 	private GalleryParamsBean galleryParamsBean;
+	
+	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
+	
 	private List<Item> items;
 	private List<Group> groups;
 	private List<Producer> producers;
-	private String imagesPath;
+	
 	@EJB
 	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
+	
 	@EJB
 	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(GroupFacade.class);
+	
 	@EJB
 	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
-	
-	@PostConstruct
-	public final void postConstruct() {
-		//get images path
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
-	}
 	
 	public void preRenderView(javax.faces.event.ComponentSystemEvent event) {
 		if (items == null)
@@ -107,16 +103,29 @@ public class GalleryBean extends Base implements Serializable{
 	public void setProducers(List<Producer> producers) {
 		this.producers = producers;
 	}
-	public Map<Integer, String> getImageName() {
-		Map<Integer, String> res = new AbstractMap<Integer, String>() {
+	public Map<Integer, String> getImageName() 
+	{
+		Map<Integer, String> res = new AbstractMap<Integer, String>() 
+		{
 
 			@Override
-			public String get(Object key) {
-				return FileUtil.imageFileName(imagesPath, key.toString());
+			public String get(Object key) 
+			{
+				Integer itemId;
+				try
+				{
+					itemId = Integer.valueOf(key.toString());
+				}
+				catch (Exception e)
+				{
+					itemId = -1;
+				}
+				return itemImagesFilenameMapper.getSingle(itemId);
 			}
 			
 			@Override
-			public Set<java.util.Map.Entry<Integer, String>> entrySet() {
+			public Set<java.util.Map.Entry<Integer, String>> entrySet() 
+			{
 				throw new UnsupportedOperationException();
 			}
 		};
@@ -151,6 +160,14 @@ public class GalleryBean extends Base implements Serializable{
 
 	public GalleryParamsBean getGalleryParamsBean() {
 		return galleryParamsBean;
+	}
+
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
+	}
+
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+		return itemImagesFilenameMapper;
 	}
 	
 }

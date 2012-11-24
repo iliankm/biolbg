@@ -38,7 +38,7 @@ public class FileUtil {
 		}
 	}
 	
-	public static String imageFileName(String dirName, String itemId) {
+	public static String imageFileName(String dirName, Integer itemId) {
 		String res = null;
 		File dir = new File(dirName);
 		File[] files = dir.listFiles();
@@ -47,7 +47,7 @@ public class FileUtil {
 		}
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isFile()) {
-				if (files[i].getName().startsWith(itemId.concat("_"))) {
+				if (files[i].getName().startsWith(itemId.toString().concat("_"))) {
 					res = files[i].getName();
 				}
 			}

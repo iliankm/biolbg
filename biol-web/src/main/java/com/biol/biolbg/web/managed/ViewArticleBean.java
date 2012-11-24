@@ -3,17 +3,15 @@ package com.biol.biolbg.web.managed;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
 
-import com.biol.biolbg.entity.BaseEntity;
 import com.biol.biolbg.entity.Item;
 
 @ManagedBean(name = "ViewArticleBean")
@@ -21,8 +19,12 @@ import com.biol.biolbg.entity.Item;
 public class ViewArticleBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	@EJB
 	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
+	
+	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
 
 	@Override
 	public Boolean getIsViewItemOnly() {
@@ -51,17 +53,9 @@ public class ViewArticleBean extends BaseEditItem implements Serializable {
 	
 	//determine the file image for the given itemId
 	public String getImageFileName() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String imagesPath = facesContext.getExternalContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
+		Item item_ = (Item) getItem();
 		
-		BaseEntity item_ = (BaseEntity) getItem();
-		String itemId = String.valueOf(item_.getId());  //getRealItemId().toString(); //getItemId().toString();
-		
-		String res = FileUtil.imageFileName(imagesPath, itemId);
-		if (res == null) {
-			res = "";
-		}
-		return res;
+		return itemImagesFilenameMapper.getSingle(item_);
 	}
 	
 	public String getLocalizedItemName() {
@@ -79,6 +73,14 @@ public class ViewArticleBean extends BaseEditItem implements Serializable {
 		} else {
 			return "";
 		}
+	}
+
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
+	}
+
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+		return itemImagesFilenameMapper;
 	}
 	
 
