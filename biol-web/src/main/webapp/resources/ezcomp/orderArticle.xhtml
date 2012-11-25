@@ -13,23 +13,23 @@
 		<composite:attribute name="orderArticleController" />
 		<composite:attribute name="articleId" />
 	</composite:interface>
-	
+
 	<composite:implementation>
-		<h:commandLink id="btnIncAmount" actionListener="#{OrderArticleController.incArticle}">
+		<h:commandLink id="btnIncAmount" actionListener="#{OrderArticleController.incArticle}" title="#{msgs.addAmountOfArticleInOrder}">
 			<f:ajax execute="@this" render="orderedArticleMeasure"/>
 			<f:param name="articleId" value="#{cc.attrs.articleId}" />
 			<h:graphicImage value="img/plus.png" />
-		</h:commandLink>	
-		<h:commandLink id="btnDecAmount" actionListener="#{OrderArticleController.decArticle}">
+		</h:commandLink>
+		<h:commandLink id="btnDecAmount" actionListener="#{OrderArticleController.decArticle}" title="#{msgs.decAmountOfArticleInOrder}">
 			<f:ajax execute="@this" render="orderedArticleMeasure"/>
 			<f:param name="articleId" value="#{cc.attrs.articleId}" />
 			<h:graphicImage value="img/minus.png" />
-		</h:commandLink>	
+		</h:commandLink>
 
 		<h:outputText id="orderedArticleMeasure"
 					  value="#{OrderArticleController.orderedAmount[cc.attrs.articleId]}">
 		</h:outputText>
 	</composite:implementation>
-	
+
 </body>
 </html>
