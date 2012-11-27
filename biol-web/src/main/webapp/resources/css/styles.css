@@ -93,7 +93,7 @@ td {
 }
 .infoText {
 	color: Green;
-}	
+}
 .listDataTable {
 	border-top: 1px solid #000;
 	border-right: 1px solid #000;
@@ -128,7 +128,7 @@ td {
 	border-right: 1px solid #000;
 	border-bottom: 1px solid #000;
 	border-left: 1px solid #000;
-	
+
 }
 #headerLeftDiv {
 	float: left;
@@ -154,7 +154,7 @@ td {
 	display: table;
 	padding: 0px;
 	white-space: nowrap;
-}	
+}
 #navbarContentDiv ul {
 	list-style: none;
 	margin: 0;
@@ -175,7 +175,7 @@ td {
 	margin: 0px;
 }
 #navbarContentDiv ul a:hover {
-	background: #2F4F4F; 
+	background: #2F4F4F;
 	color: #fff;
 }
 
@@ -256,13 +256,13 @@ td {
 #homeRightSidebarDiv {
 	float: right;
 	width: 25%;
-	
+
 }
 #homeInfoHeaderDiv {
 	text-align: center;
 	vertical-align: middle;
 	background-color: teal;
-	font-weight: bold;	
+	font-weight: bold;
 	color: snow;
 	-moz-border-radius-topleft: 5px;
 	border-top-left-radius: 5px;
@@ -284,7 +284,7 @@ td {
 	text-align: center;
 	vertical-align: middle;
 	background-color: rgb(231,252,224);
-	font-weight: bold;	
+	font-weight: bold;
 	color: black;
 }
 .boxContentDiv {
@@ -303,7 +303,7 @@ td {
 	text-align: center;
 }
 .unseenOrder {
-	font-weight: bold;	
+	font-weight: bold;
 }
 .seenOrder {
 	font-weight: normal;
@@ -311,12 +311,16 @@ td {
 .fiveTabbedLink {
 	color: #3c982d;
 	font-weight: bold;
-	font-size: 15px;	
-}	
+	font-size: 15px;
+}
 .fiveTabbedActiveLink {
 	color: gray;
 	font-weight: bold;
-	font-size: 15px;	
+	font-size: 15px;
 }
 
-	
+img.loadingMask.small {
+	width: 16px;
+}
+
+

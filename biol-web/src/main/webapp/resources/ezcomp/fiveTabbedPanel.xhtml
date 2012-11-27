@@ -16,7 +16,7 @@
 		<composite:attribute name="appBean" />
 		<composite:attribute name="orderArticleControllerBean" />
 	</composite:interface>
-	
+
 	<composite:implementation>
 		<h:panelGrid columns="1" columnClasses="taright">
 			<h:panelGroup id="#{cc.attrs.id}pages">
@@ -46,7 +46,7 @@
 				</h:commandLink>
 				<h:outputText value=" 5 " styleClass="fiveTabbedActiveLink" rendered="#{cc.attrs.baseListBean.pagerController.pageNumber==5}" />
 			</h:panelGroup>
-			<h:dataTable id="#{cc.attrs.id}contentTable" 
+			<h:dataTable id="#{cc.attrs.id}contentTable"
 						 value="#{cc.attrs.baseListBean.dataItems}"
 						 var="item"	 >
 				<h:column>
@@ -54,28 +54,29 @@
 						<h:outputLink value="#{cc.attrs.appBean.appPath}/viewarticle.jsf">
 							<f:param name="#{cc.attrs.baseListBean.finalIdParam}" value="#{item.id}"/>
 							<h:graphicImage styleClass="fadeInImage" style="max-width: 130px; max-height: 98px;" value="/ItemImage?name=#{cc.attrs.baseListBean.itemsImages[item.id]}"/>
-						</h:outputLink>	
+						</h:outputLink>
 					</div>
-					<div style="width: 130px;">	
+					<div style="width: 130px;">
 						<h:outputText value="#{item.nameen}" rendered="#{cc.attrs.appBean.appLocale == 'en'}"/>
 						<h:outputText value="#{item.namebg}" rendered="#{cc.attrs.appBean.appLocale == 'bg'}"/>
 						<br/>
 						<h:outputText value="#{item.priceforpacking}">
 							<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
-						</h:outputText>	
+						</h:outputText>
 						<h:outputText value="&nbsp; #{msgs.leva}"/>
 						<h:outputText value="&nbsp; / &nbsp;"/>
 						<h:outputText value="#{item.packingen}" rendered="#{cc.attrs.appBean.appLocale == 'en'}"/>
 						<h:outputText value="#{item.packingbg}" rendered="#{cc.attrs.appBean.appLocale == 'bg'}"/>
 						<br/>
-						<ez:orderArticle id="#{cc.attrs.id}orderArticle"
+						<ez:orderArticle id ="orderArticle_#{cc.attrs.id}"
 						                 orderArticleController="#{cc.attrs.orderArticleControllerBean}"
 									     articleId="#{item.id}"/>
+
 					</div>
 				</h:column>
 			</h:dataTable>
-		</h:panelGrid>	
+		</h:panelGrid>
 	</composite:implementation>
-	
+
 </body>
 </html>

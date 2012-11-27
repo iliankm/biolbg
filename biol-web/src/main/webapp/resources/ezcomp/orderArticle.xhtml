@@ -15,13 +15,18 @@
 	</composite:interface>
 
 	<composite:implementation>
-		<h:commandLink id="btnIncAmount" actionListener="#{OrderArticleController.incArticle}" title="#{msgs.addAmountOfArticleInOrder}">
-			<f:ajax execute="@this" render="orderedArticleMeasure"/>
+		<h:outputScript library="js" name="orderArticle.js" target="head" />
+
+		<ui:param name="loadingMaskId" value="#{cc.attrs.id}loadingMask" />
+
+		<h:commandLink id="btnIncAmount" actionListener="#{OrderArticleController.incArticle}" title="#{msgs.addAmountOfArticleInOrder}" onclick="orderArticle.showOrderArticleLoadingMask('#{ComponentLookup.clientIds[loadingMaskId]}')">
+			<f:ajax execute="@this" render="orderedArticleMeasure" onevent="function(data) { orderArticle.hideOrderArticleLoadingMask(data, '#{ComponentLookup.clientIds[loadingMaskId]}') }"/>
 			<f:param name="articleId" value="#{cc.attrs.articleId}" />
 			<h:graphicImage value="img/plus.png" />
 		</h:commandLink>
-		<h:commandLink id="btnDecAmount" actionListener="#{OrderArticleController.decArticle}" title="#{msgs.decAmountOfArticleInOrder}">
-			<f:ajax execute="@this" render="orderedArticleMeasure"/>
+
+		<h:commandLink id="btnDecAmount" actionListener="#{OrderArticleController.decArticle}" title="#{msgs.decAmountOfArticleInOrder}" onclick="orderArticle.showOrderArticleLoadingMask('#{ComponentLookup.clientIds[loadingMaskId]}')">
+			<f:ajax execute="@this" render="orderedArticleMeasure" onevent="function(data) { orderArticle.hideOrderArticleLoadingMask(data, '#{ComponentLookup.clientIds[loadingMaskId]}') }"/>
 			<f:param name="articleId" value="#{cc.attrs.articleId}" />
 			<h:graphicImage value="img/minus.png" />
 		</h:commandLink>
@@ -29,6 +34,9 @@
 		<h:outputText id="orderedArticleMeasure"
 					  value="#{OrderArticleController.orderedAmount[cc.attrs.articleId]}">
 		</h:outputText>
+
+		<h:graphicImage id="loadingMask" binding="#{ComponentLookup.components[loadingMaskId]}" value="img/ajax-loader.gif" styleClass="loadingMask small" style="visibility: hidden"/>
+
 	</composite:implementation>
 
 </body>

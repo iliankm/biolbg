@@ -15,8 +15,8 @@ function formKeyPressed(e,elementIdOnEnterPressed) {
 			}
 			document.getElementById(elementIdOnEnterPressed).click();
 			return false;
-		}	 
-	} else  return true;				
+		}
+	} else  return true;
 }
 
 function tipDivTag(divId,imageUrl) {
