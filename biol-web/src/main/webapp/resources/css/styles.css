@@ -323,4 +323,28 @@ img.loadingMask.small {
 	width: 16px;
 }
 
+.orderArticle {
+	margin-top: 3px;
+	height: 41px;
+}
+.orderArticle .orderArticleButton {
+	border: 1px solid #E7FB70;
+	border-radius: 7px;
+	padding: 2px;
+	padding-top: 13px;
+	background-color: #E7FCE0;
+}
+
+.orderArticle .orderArticleButton:hover {
+	background-color: rgb(216,251,206);
+}
+
+.orderArticle .buttons {
+	height: 30px;
+}
+
+.orderArticle .measure {
+	margin-top: 2px;
+}
+
 
