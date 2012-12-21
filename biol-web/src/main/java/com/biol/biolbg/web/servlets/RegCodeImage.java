@@ -6,13 +6,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
 
 public class RegCodeImage extends HttpServlet {
 
@@ -46,7 +46,8 @@ public class RegCodeImage extends HttpServlet {
 		for (int y = 0; y < 30; y = y + step) {
 			graphics.drawLine(0, y, 70, y);
 		}
-		JPEGCodec.createJPEGEncoder(out).encode(image);
+		ImageIO.write(image, "png", out);
+
 		//store random code in session
 		req.getSession().setAttribute("RandomRegCode", randomCode);
 	}
@@ -54,9 +55,9 @@ public class RegCodeImage extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		super.doPost(req, resp); 
+		super.doPost(req, resp);
 	}
-	
+
 	private String getRandomCode() {
 		Random random = new Random();
 		Integer num = random.nextInt(9999);
