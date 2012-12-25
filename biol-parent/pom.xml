@@ -4,7 +4,7 @@
 
 	<groupId>com.biol.biolbg</groupId>
 	<artifactId>biol-parent</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<packaging>pom</packaging>
 
 	<name>biol-parent</name>
@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<build>
 	<plugins>
       <plugin>
@@ -33,7 +33,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>		
+      </plugin>
 		</plugins>
 	<pluginManagement>
 		<plugins>
@@ -71,7 +71,7 @@
 		</plugins>
 	</pluginManagement>
 	</build>
-		
+
 
 	<modules>
 		<module>../biol-jpa</module>
