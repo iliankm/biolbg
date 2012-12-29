@@ -5,21 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseList;
 
 import com.biol.biolbg.ejb.session.ProducerFacade;
 import com.biol.biolbg.entity.Producer;
 
-@ManagedBean(name = "ProducersListBean")
+@Named("ProducersListBean")
 @RequestScoped
 public class ProducersListBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@EJB
-	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
+	private ProducerFacade producerFacade;
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete) {
@@ -46,9 +47,9 @@ public class ProducersListBean extends BaseList implements Serializable {
 
 	@Override
 	public void init() {
-		if (getSortByFieldName() == "") { 
+		if (getSortByFieldName() == "") {
 			setSortByFieldName("o.id");
-		}	
+		}
 	}
 
 	@Override

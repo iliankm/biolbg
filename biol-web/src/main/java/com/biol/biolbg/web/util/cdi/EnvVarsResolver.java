@@ -1,15 +1,16 @@
 package com.biol.biolbg.web.util.cdi;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.NoneScoped;
+import javax.inject.Named;
 
-@ManagedBean(name="EnvVarsResolver")
-@NoneScoped
-public class EnvVarsResolver {
-	
+@Named("EnvVarsResolver")
+public class EnvVarsResolver implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	public String resolve(String input)
 	{
 	    if (null == input)

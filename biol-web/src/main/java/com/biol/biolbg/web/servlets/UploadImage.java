@@ -24,21 +24,22 @@ import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
  * Servlet implementation class UploadImage
  */
 public class UploadImage extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Integer MAX_IMAGE_FILE_SIZE = 300000;
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		doPost(request, response); 
+		doPost(request, response);
 	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		EnvVarsResolver envVarsResolver = new EnvVarsResolver();
 		String uploadImagePathUnresolved = request.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 		String uploadImagePath = envVarsResolver.resolve(uploadImagePathUnresolved);
-		
+
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter( );
 
@@ -64,12 +65,12 @@ public class UploadImage extends HttpServlet {
 	    out.println("</body>");
 	}
 
-//--------------------------------------------------------------------------------------------	
+//--------------------------------------------------------------------------------------------
 	private class FileUpload {
 		private String errText = "";
 		private String uploadedFileName = "";
 		private String itemId = "";
-		
+
 		//@SuppressWarnings("unchecked")
 		public Boolean processFileUpload(HttpServletRequest request, String uploadImagePath, Integer maxImageFileSize) {
 			errText = "";
@@ -98,12 +99,12 @@ public class UploadImage extends HttpServlet {
 
 	    	// Create a new file upload handler
 	    	ServletFileUpload upload = new ServletFileUpload(factory);
-	    	
+
 	    	// Parse the request
 	    	List<?> items = null;
 	    	try {
 	    		items = upload.parseRequest(request);
-	    		
+
 	    	} catch (Exception e) {
 	    		errText = e.getMessage();
 	    	}

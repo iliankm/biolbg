@@ -5,27 +5,28 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseList;
 
 import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.entity.Group;
 
-@ManagedBean(name = "GroupsListBean")
+@Named("GroupsListBean")
 @RequestScoped
 public class GroupsListBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@EJB
-	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(GroupFacade.class);
+	private GroupFacade groupFacade;
 
 	@Override
 	public void init() {
-		if (getSortByFieldName() == "") { 
+		if (getSortByFieldName() == "") {
 			setSortByFieldName("o.id");
-		}	
+		}
 	}
 
 	@Override
@@ -60,5 +61,5 @@ public class GroupsListBean extends BaseList implements Serializable {
 	public Object storeCustomCredentials() {
 		return null;
 	}
-	
+
 }

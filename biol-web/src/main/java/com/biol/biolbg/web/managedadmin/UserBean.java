@@ -3,22 +3,22 @@ package com.biol.biolbg.web.managedadmin;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseEditItem;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
 import com.biol.biolbg.entity.Usr;
 
-@ManagedBean(name = "UserBean")
+@Named("UserBean")
 @RequestScoped
 public class UserBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@EJB
-	private UsrFacade usrFacade; //= EJBLocator.getInstance().lookup(UsrFacade.class);
+	private UsrFacade usrFacade;
 
 	@Override
 	public Object createNewItem() {
@@ -54,13 +54,13 @@ public class UserBean extends BaseEditItem implements Serializable {
 
 	public Boolean getAdminflag() {
 		if (getItem() instanceof Usr) {
-			Usr item = (Usr)getItem(); 
-			return (item.getAdminflag() == 1); 
+			Usr item = (Usr)getItem();
+			return (item.getAdminflag() == 1);
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void setAdminflag(Boolean adminflag) {
 		if (getItem() instanceof Usr) {
 			Usr item = (Usr)getItem();
@@ -71,5 +71,5 @@ public class UserBean extends BaseEditItem implements Serializable {
 			}
 		}
 	}
-	
+
 }

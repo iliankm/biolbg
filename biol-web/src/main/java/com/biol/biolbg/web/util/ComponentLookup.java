@@ -5,18 +5,19 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+
+import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
-@ManagedBean(name = "ComponentLookup")
+@Named("ComponentLookup")
 @RequestScoped
 public class ComponentLookup implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
     private Map<String, Map<String, UIComponent>> componentMap;
 
     private Map<String, Map<String, UIComponent>> getPageMaps() {
@@ -75,5 +76,5 @@ public class ComponentLookup implements Serializable {
         }
         return component.getClientId(context);
     }
-    
-}	
+
+}

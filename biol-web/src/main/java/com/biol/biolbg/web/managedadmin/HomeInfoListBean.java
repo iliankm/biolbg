@@ -5,27 +5,28 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseList;
 
 import com.biol.biolbg.ejb.session.HomeInfoFacade;
 import com.biol.biolbg.entity.HomeInfo;
 
-@ManagedBean(name = "HomeInfoListBean")
+@Named("HomeInfoListBean")
 @RequestScoped
 public class HomeInfoListBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@EJB
-	private HomeInfoFacade homeInfoFacade; //= EJBLocator.getInstance().lookup(HomeInfoFacade.class);
+	private HomeInfoFacade homeInfoFacade;
 
 	@Override
 	public void init() {
-		if (getSortByFieldName() == "") { 
+		if (getSortByFieldName() == "") {
 			setSortByFieldName("o.id");
-		}	
+		}
 	}
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
@@ -55,6 +56,6 @@ public class HomeInfoListBean extends BaseList implements Serializable {
 	public Object storeCustomCredentials() {
 		return null;
 	}
-	
+
 
 }

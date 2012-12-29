@@ -7,30 +7,34 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+import com.biol.biolbg.web.managed.AppBean;
 import com.biol.biolbg.web.managed.CurrentOrderBean;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
 import com.biol.biolbg.entity.Item;
 import com.biol.biolbg.entity.OrderRow;
 
-@ManagedBean(name = "OrderArticleController")
+@Named("OrderArticleController")
 @RequestScoped
 public class OrderArticleController extends Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ManagedProperty(value="#{CurrentOrderBean}")
+
+	@Inject
 	private CurrentOrderBean currentOrderBean;
-	
+
+	@Inject
+	private AppBean appBean;
+
 	@EJB
-	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
+	private ItemFacade itemFacade;
+
 	//increments the amount of ordered article
 	//if not found - create it
 	public void incArticle(ActionEvent event) {
@@ -78,7 +82,7 @@ public class OrderArticleController extends Base implements Serializable {
 			}
 		}
 	}
-	
+
 	public Map<String, String> getOrderedAmount() {
 		Map<String, String> resMap = new AbstractMap<String, String>() {
             @Override
@@ -91,7 +95,7 @@ public class OrderArticleController extends Base implements Serializable {
             }
         };
         return resMap;
-	}     
+	}
 
 	private String getOrderedAmount(String articleId) {
 		if (getCurrentOrderBean() == null) {
@@ -103,7 +107,7 @@ public class OrderArticleController extends Base implements Serializable {
 		if (getCurrentOrderBean().getOrder().getRows() == null) {
 			return "null2";
 		}
-		
+
 		Integer iArticleId = getArticleId();
 		if (iArticleId <= 0) {
 			try {
@@ -111,8 +115,8 @@ public class OrderArticleController extends Base implements Serializable {
 			} catch (Exception e) {
 				iArticleId = -1;
 			}
-		}	
-			
+		}
+
 		Iterator<OrderRow> iter = getCurrentOrderBean().getOrder().getRows().iterator();
 		String res = "";
 		while (iter.hasNext()) {
@@ -120,10 +124,10 @@ public class OrderArticleController extends Base implements Serializable {
 			if (orderRow.getItem().getId() == iArticleId.intValue()) {
 				res = orderRow.getAmount().toString();
 				res = res.concat(" ");
-				if (this.getAppBean().getAppLocale().equals("en")) {
+				if (appBean.getAppLocale().equals("en")) {
 					res = res.concat(orderRow.getItem().getPackingen());
 				} else {
-					if (this.getAppBean().getAppLocale().equals("bg")) {
+					if (appBean.getAppLocale().equals("bg")) {
 						res = res.concat(orderRow.getItem().getPackingbg());
 					}
 				}
@@ -132,13 +136,13 @@ public class OrderArticleController extends Base implements Serializable {
 		}
 		return res;
 	}
-	
+
 	private Integer getArticleId() {
 		Integer attribArticleId = -1;
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		String sId = params.get("articleId");
-		
+
 		try {
 			attribArticleId = Integer.parseInt(sId);
 		} catch (Exception e) {
@@ -156,5 +160,5 @@ public class OrderArticleController extends Base implements Serializable {
 	public CurrentOrderBean getCurrentOrderBean() {
 		return currentOrderBean;
 	}
-	
+
 }

@@ -13,21 +13,22 @@ import javax.faces.validator.ValidatorException;
 public class EmailValidator implements Validator {
 
 	@Override
-	public void validate(FacesContext arg0, UIComponent arg1, Object arg2)
-			throws ValidatorException {
+	public void validate(FacesContext arg0, UIComponent arg1, Object arg2) throws ValidatorException {
+
 		String enteredEmail = (String)arg2;
-        //Set the email pattern string
+
+		//Set the email pattern string
         Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-        
+
         //Match the given string with the pattern
         Matcher m = p.matcher(enteredEmail);
-        
+
         //Check whether match is found
         boolean matchFound = m.matches();
-        
+
         if (!matchFound) {
             FacesMessage message = new FacesMessage();
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             ResourceBundle bundle =
                       ResourceBundle.getBundle("com.biol.biolbg.web.messages.resources",

@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+import com.biol.biolbg.web.managed.AppBean;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.ItemsListCredentials;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
@@ -22,28 +23,36 @@ import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Item;
 import com.biol.biolbg.entity.Producer;
 
-@ManagedBean(name = "ItemsListBean")
+@Named("ItemsListBean")
 @RequestScoped
 public class ItemsListBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private Group group = null;
+
 	private Producer producer = null;
+
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
+
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
+
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
-	
+
 	@EJB
-	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
-	@ManagedProperty(value="#{GroupBean}")
+	private ItemFacade itemFacade;
+
+	@Inject
 	private GroupBean groupBean;
-	
-	@ManagedProperty(value="#{ProducerBean}")
+
+	@Inject
 	private ProducerBean producerBean;
-	
-	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
-	private ItemImagesFilenameMapper itemImagesFilenameMapper; 
+
+	@Inject
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
+
+	@Inject
+	private AppBean appBean;
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete) {
@@ -93,16 +102,16 @@ public class ItemsListBean extends BaseList implements Serializable {
 
 	@Override
 	public void init() {
-		if (getSortByFieldName() == "") { 
+		if (getSortByFieldName() == "") {
 			setSortByFieldName("o.id");
 		}
-		
+
 		//fill groupsSelectItems from GroupBean method
-		groupsSelectItems = 
-			getGroupBean().groupsSelectItemList("o.id", SORT_ASC, getAppBean().getAppLocale());
+		groupsSelectItems =
+			getGroupBean().groupsSelectItemList("o.id", SORT_ASC, appBean.getAppLocale());
 		//fill producersSelectItems from ProducerBean method
-		producersSelectItems = 
-			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+		producersSelectItems =
+			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, appBean.getAppLocale());
 	}
 
 	@Override
@@ -183,5 +192,5 @@ public class ItemsListBean extends BaseList implements Serializable {
 	public ProducerBean getProducerBean() {
 		return producerBean;
 	}
-	
+
 }

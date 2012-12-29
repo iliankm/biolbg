@@ -17,10 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 public class RegCodeImage extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+
 	private static final int WIDTH = 70;
+
 	private static final int HEIGHT = 32;
+
 	private static final Color BACKGROUND_COLOR = new Color(100,149,237);
+
 	private static final Color COLOR = new Color(0,0,139);
+
 	private static final Font FONT = new Font("Times New Roman", Font.BOLD, 20);
 
 	@Override

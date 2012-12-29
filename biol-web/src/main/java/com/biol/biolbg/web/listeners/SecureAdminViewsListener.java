@@ -24,11 +24,11 @@ public class SecureAdminViewsListener implements PhaseListener {
 
         //if the accessed view is from /admin/ folder
         if (facesContext.getViewRoot().getViewId().contains("/admin/")) {
-        	//get AppBean session scoped bean
-        	AppBean appBean = (AppBean) FacesContext.getCurrentInstance().getExternalContext()
-            .getSessionMap().get("AppBean");
+
+        	AppBean appBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{AppBean}", AppBean.class);
+
         	Boolean redirect = true;
-        	
+
         	if (appBean != null) {
         		Usr loggedUser = appBean.getLoggedUser();
         		if (loggedUser != null) {
@@ -44,8 +44,8 @@ public class SecureAdminViewsListener implements PhaseListener {
 				} catch (IOException e) {
 					throw new FacesException("Cannot redirect due to IO exception.", e);
 				}
-        	}	
-        }	
+        	}
+        }
 	}
 
 	@Override

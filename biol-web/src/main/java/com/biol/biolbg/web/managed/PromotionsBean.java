@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
@@ -17,17 +17,17 @@ import com.biol.biolbg.ejb.session.ItemFacade;
 
 import com.biol.biolbg.entity.Item;
 
-@ManagedBean(name = "PromotionsBean")
+@Named("PromotionsBean")
 @RequestScoped
 public class PromotionsBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
 	@EJB
-	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
-	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
-	private ItemImagesFilenameMapper itemImagesFilenameMapper; 
+	private ItemFacade itemFacade;
+
+	@Inject
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete) {

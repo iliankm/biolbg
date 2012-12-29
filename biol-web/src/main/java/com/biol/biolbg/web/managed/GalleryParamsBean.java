@@ -1,9 +1,11 @@
 package com.biol.biolbg.web.managed;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.Base;
 
@@ -11,21 +13,25 @@ import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Producer;
 
-@ManagedBean(name = "GalleryParamsBean")
+@Named("GalleryParamsBean")
 @SessionScoped
-public class GalleryParamsBean extends Base {
+public class GalleryParamsBean extends Base implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private Group paramGroup;
+
 	private Producer paramProducer;
-	
+
 	@EJB
-	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
+	private GroupFacade groupFacade;
+
 	@PostConstruct
-	public final void postConstruct() {
+	public void postConstruct() {
 		paramProducer = null;
 		paramGroup = getRandomGroup();
 	}
-	
+
 	public Group getParamGroup() {
 		return paramGroup;
 	}
@@ -38,7 +44,7 @@ public class GalleryParamsBean extends Base {
 	public void setParamProducer(Producer paramProducer) {
 		this.paramProducer = paramProducer;
 	}
-	
+
 	private Group getRandomGroup() {
 		return groupFacade.getRandomGroup();
 	}

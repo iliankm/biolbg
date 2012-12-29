@@ -5,32 +5,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+import com.biol.biolbg.web.managed.AppBean;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.BaseList;
 
 import com.biol.biolbg.ejb.session.ItemFacade;
 import com.biol.biolbg.entity.Item;
 
-@ManagedBean(name = "ItemBean")
+@Named("ItemBean")
 @RequestScoped
 public class ItemBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
+
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
+
 	@EJB
-	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
-	@ManagedProperty(value="#{GroupBean}")
+	private ItemFacade itemFacade;
+
+	@Inject
 	private GroupBean groupBean;
-	
-	@ManagedProperty(value="#{ProducerBean}")
+
+	@Inject
 	private ProducerBean producerBean;
+
+	@Inject
+	private AppBean appBean;
 
 	@Override
 	public Object createNewItem() {
@@ -71,31 +78,33 @@ public class ItemBean extends BaseEditItem implements Serializable {
 	public List<SelectItem> getGroupsSelectItems() {
 		return groupsSelectItems;
 	}
-	
+
 	public List<SelectItem> getProducersSelectItems() {
 		return producersSelectItems;
 	}
 
 	@Override
 	public void init() {
+
 		//fill groupsSelectItems from GroupBean method
-		groupsSelectItems = 
-			getGroupBean().groupsSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
+		groupsSelectItems =
+			getGroupBean().groupsSelectItemList("o.id", BaseList.SORT_ASC, appBean.getAppLocale());
+
 		//fill producersSelectItems from ProducerBean method
-		producersSelectItems = 
-			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, getAppBean().getAppLocale());
-		
+		producersSelectItems =
+			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, appBean.getAppLocale());
+
 	}
-	
+
 	public Boolean getPromotion() {
 		if (getItem() instanceof Item) {
-			Item item = (Item)getItem(); 
-			return (item.getPromotion() == 1); 
+			Item item = (Item)getItem();
+			return (item.getPromotion() == 1);
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void setPromotion(Boolean promotion) {
 		if (getItem() instanceof Item) {
 			Item item = (Item)getItem();
@@ -105,17 +114,17 @@ public class ItemBean extends BaseEditItem implements Serializable {
 				item.setPromotion(0);
 			}
 		}
-		
+
 	}
 	public Boolean getNewitem() {
 		if (getItem() instanceof Item) {
-			Item item = (Item)getItem(); 
-			return (item.getNewitem() == 1); 
+			Item item = (Item)getItem();
+			return (item.getNewitem() == 1);
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void setNewitem(Boolean newitem) {
 		if (getItem() instanceof Item) {
 			Item item = (Item)getItem();
@@ -125,17 +134,17 @@ public class ItemBean extends BaseEditItem implements Serializable {
 				item.setNewitem(0);
 			}
 		}
-		
+
 	}
 	public Boolean getBestsell() {
 		if (getItem() instanceof Item) {
-			Item item = (Item)getItem(); 
-			return (item.getBestsell() == 1); 
+			Item item = (Item)getItem();
+			return (item.getBestsell() == 1);
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void setBestsell(Boolean bestsell) {
 		if (getItem() instanceof Item) {
 			Item item = (Item)getItem();
@@ -145,7 +154,7 @@ public class ItemBean extends BaseEditItem implements Serializable {
 				item.setBestsell(0);
 			}
 		}
-		
+
 	}
 
 	public void setGroupBean(GroupBean groupBean) {
@@ -163,6 +172,6 @@ public class ItemBean extends BaseEditItem implements Serializable {
 	public ProducerBean getProducerBean() {
 		return producerBean;
 	}
-	
-	
+
+
 }

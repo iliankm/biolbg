@@ -2,30 +2,36 @@ package com.biol.biolbg.web.util;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIInput;
+import javax.inject.Inject;
 
 public abstract class BaseEditItem extends Base {
-	
+
 	public static final String ID_PARAM = "id";
-	
+
+	@Inject
+	private MessageResourcesBean messageResourcesBean;
+
 	private Integer itemId = -1;  //binded to view param only
+
 	private UIInput itemIdComp;
+
 	private Object item = null;
-	
-	
+
+
 	//------ABSTRACT METHODS------------------------
 	public abstract void init();
 	public abstract Boolean doSaveData();
 	public abstract Object createNewItem();
 	public abstract Object findItemById(Integer id);
-	
-	//------FINAL METHODS---------------------------
+
+
 	@PostConstruct
-	public final void postConstruct() {
+	public void postConstruct() {
 		init();
 		item = createNewItem();
 	}
-	
-	public final void preRenderView(javax.faces.event.ComponentSystemEvent event) {
+
+	public void preRenderView(javax.faces.event.ComponentSystemEvent event) {
 		if (itemId > 0) {
 			item = findItemById(itemId);
 		} else {
@@ -35,17 +41,17 @@ public abstract class BaseEditItem extends Base {
 		}
 		if (item == null) {
 			item = createNewItem();
-			addErrorMessage(getAppBean().getMessageResourceString("invalidParamOrRecordDeleted", null));
+			addErrorMessage(messageResourcesBean.getMessage("invalidParamOrRecordDeleted", null));
 		}
 	}
-	
+
 	public Boolean getIsViewItemOnly() {
 		return false;
 	}
-	
-	public final String saveData() {
+
+	public String saveData() {
 		if (doSaveData()) {
-			String text = getAppBean().getMessageResourceString("dataSavedOK", null);
+			String text = messageResourcesBean.getMessage("dataSavedOK", null);
 			addInfoMessage(text);
 			item = createNewItem();
 			return "OK";
@@ -53,12 +59,12 @@ public abstract class BaseEditItem extends Base {
 			return "Error";
 		}
 	}
-	
-	public final String cancelData() {
+
+	public String cancelData() {
 		return "cancel";
 	}
-	
-	public final Integer getRealItemId() {
+
+	public Integer getRealItemId() {
 		Integer iItemId = -1;
 		if (getItemIdComp() != null) {
 			//Object submittedValue = null;
@@ -78,35 +84,35 @@ public abstract class BaseEditItem extends Base {
 				} catch (Exception e) {
 					iItemId = -1;
 				}
-			}	
-		}	
+			}
+		}
 		return iItemId;
 	}
-	
-	
+
+
 	//---------GETTERS AND SETTERS------------------
-	public final Object getItem() {
+	public Object getItem() {
 		return item;
 	}
 
-	public final void setItem(Object item) {
+	public void setItem(Object item) {
 		this.item = item;
 	}
-	
-	public final void setItemId(Integer itemId) {
+
+	public void setItemId(Integer itemId) {
 		this.itemId = itemId;
 	}
-	public final Integer getItemId() {
+	public Integer getItemId() {
 		return itemId;
 	}
-	
+
 	public void setItemIdComp(UIInput itemIdComp) {
 		this.itemIdComp = itemIdComp;
 	}
 	public UIInput getItemIdComp() {
 		return itemIdComp;
 	}
-	public final String getFinalIdParam() {
+	public String getFinalIdParam() {
 		return ID_PARAM;
 	}
 

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.naming.NamingException;
 
 import com.biol.biolbg.web.managedadmin.GroupBean;
@@ -26,32 +26,35 @@ import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Item;
 import com.biol.biolbg.entity.Producer;
 
-@ManagedBean(name = "ArticlesBean")
+@Named("ArticlesBean")
 @RequestScoped
 public class ArticlesBean extends BaseList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ManagedProperty(value="#{GalleryParamsBean}")
+
+	@Inject
 	private GalleryParamsBean galleryParamsBean;
-	
-	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
+
+	@Inject
 	private ItemImagesFilenameMapper itemImagesFilenameMapper;
-	
-	@ManagedProperty(value="#{ProducerBean}")
+
+	@Inject
 	private ProducerBean producerBean;
-	
-	@ManagedProperty(value="#{GroupBean}")
+
+	@Inject
 	private GroupBean groupBean;
-	
+
+	@Inject
+	private	AppBean appBean;
+
 	@EJB
-	ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
+	ItemFacade itemFacade;
+
 	private String name = "";
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
-	
+
 	//-----------------CONSTRUCTOR-------------------------------------
 	public ArticlesBean() {
 		getPagerController().setShowRowsCount(4);
@@ -72,7 +75,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 			} else {
 				setDataItems(getItemsByName(fromRow, maxResults));
 			}
-			
+
 		} catch (Exception e) {
 			addErrorMessage(e.getMessage());
 		}
@@ -92,7 +95,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 			} else {
 				itemsCount = getItemsByNameCount();
 			}
-			
+
 		} catch (Exception e) {
 			addErrorMessage(e.getMessage());
 		}
@@ -101,20 +104,20 @@ public class ArticlesBean extends BaseList implements Serializable {
 
 	@Override
 	public void init() {
-		if (getSortByFieldName() == "") { 	
-			if (this.getAppBean().getAppLocale().equals("bg")) {
+		if (getSortByFieldName() == "") {
+			if (appBean.getAppLocale().equals("bg")) {
 				setSortByFieldName("o.namebg");
 			} else {
-				if (this.getAppBean().getAppLocale().equals("en")) {
+				if (appBean.getAppLocale().equals("en")) {
 					setSortByFieldName("o.nameen");
 				}
 			}
 		}
-		
+
 		//fill groupsSelectItems from GroupBean method
 		String groupsSortByField = null;
 		String producersSortByField = null;
-		if (this.getAppBean().getAppLocale().equals("en")) {
+		if (appBean.getAppLocale().equals("en")) {
 			groupsSortByField = "o.nameen";
 			producersSortByField = "o.nameen";
 		} else {
@@ -122,16 +125,16 @@ public class ArticlesBean extends BaseList implements Serializable {
 			producersSortByField = "o.namebg";
 		}
 		try {
-			groupsSelectItems = 
-				getGroupBean().groupsSelectItemList(groupsSortByField, SORT_ASC, getAppBean().getAppLocale());
+			groupsSelectItems =
+				getGroupBean().groupsSelectItemList(groupsSortByField, SORT_ASC, appBean.getAppLocale());
 		} catch (Exception e) {
 			addErrorMessage(e.getMessage());
 		}
 		//fill producersSelectItems from ProducerBean method
-		
+
 		try {
-			producersSelectItems = 
-				getProducerBean().producersSelectItemList(producersSortByField, BaseList.SORT_ASC, getAppBean().getAppLocale());
+			producersSelectItems =
+				getProducerBean().producersSelectItemList(producersSortByField, BaseList.SORT_ASC, appBean.getAppLocale());
 		} catch (Exception e) {
 			addErrorMessage(e.getMessage());
 		}
@@ -145,13 +148,13 @@ public class ArticlesBean extends BaseList implements Serializable {
 	public Object storeCustomCredentials() {
 		return null;
 	}
-	
+
 	public void findItemsByName(ActionEvent event) {
 		name = name.trim();
 		getGalleryParamsBean().setParamGroup(null);
 		getGalleryParamsBean().setParamProducer(null);
 		loadDataItems();
-		
+
 		//if (name.trim() == "") {
 		//	addErrorMessage(getAppBean().getMessageResourceString("enterNameForSearch", null));
 		//} else {
@@ -160,7 +163,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 		//	loadDataItems();
 		//}
 	}
-	
+
 	//---------------PRIVATE METHODS--------------------------
 	private List<Item> getItemsByGroupAndProducer(Integer fromRow, Integer maxResults) {
 		Group group = getGalleryParamsBean().getParamGroup();
@@ -175,11 +178,11 @@ public class ArticlesBean extends BaseList implements Serializable {
 		}
 		return itemFacade.getAllItems(groupId, producerId, fromRow, maxResults, getSortByFieldName(), getSortType());
 	}
-	
+
 	private List<Item> getItemsByName(Integer fromRow, Integer maxResults) {
 		return itemFacade.getItemsByName(name, fromRow, maxResults, getSortByFieldName(), getSortType());
 	}
-	
+
 	private Long getItemsByNameCount() {
 		return itemFacade.getItemsByNameCount(name);
 	}
@@ -187,7 +190,7 @@ public class ArticlesBean extends BaseList implements Serializable {
 	private Long getAllItemsCount() throws NamingException {
 		Group group = getGalleryParamsBean().getParamGroup();
 		Producer producer = getGalleryParamsBean().getParamProducer();
-		
+
 		Integer groupId = 0;
 		if (group != null) {
 			groupId = group.getId();
@@ -198,8 +201,8 @@ public class ArticlesBean extends BaseList implements Serializable {
 		}
 		return itemFacade.getAllItemsCount(groupId, producerId);
 	}
-	
-	//------------------GETTERS AND SETTERS--------------------------- 
+
+	//------------------GETTERS AND SETTERS---------------------------
 	public Group getGroup() {
 		return getGalleryParamsBean().getParamGroup();
 	}
@@ -279,6 +282,6 @@ public class ArticlesBean extends BaseList implements Serializable {
 	public GroupBean getGroupBean() {
 		return groupBean;
 	}
-	
+
 
 }

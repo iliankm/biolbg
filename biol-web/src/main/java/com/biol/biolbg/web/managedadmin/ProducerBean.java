@@ -6,22 +6,23 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseEditItem;
 
 import com.biol.biolbg.ejb.session.ProducerFacade;
 import com.biol.biolbg.entity.Producer;
 
-@ManagedBean(name = "ProducerBean")
+@Named("ProducerBean")
 @RequestScoped
 public class ProducerBean extends BaseEditItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@EJB
-	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
+	private ProducerFacade producerFacade;
 
 	@Override
 	public Object createNewItem() {
@@ -74,5 +75,5 @@ public class ProducerBean extends BaseEditItem implements Serializable {
 		}
 		return result;
 	}
-	
+
 }

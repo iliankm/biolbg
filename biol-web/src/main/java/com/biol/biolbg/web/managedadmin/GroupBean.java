@@ -6,15 +6,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.ejb.session.GroupFacade;
 import com.biol.biolbg.entity.Group;
 
-@ManagedBean(name = "GroupBean")
+@Named("GroupBean")
 @RequestScoped
 public class GroupBean extends BaseEditItem implements Serializable {
 
@@ -74,5 +74,5 @@ public class GroupBean extends BaseEditItem implements Serializable {
 	public void init() {
 		// nothing to do here
 	}
-	
+
 }

@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BaseList;
@@ -24,31 +24,36 @@ import com.biol.biolbg.entity.Group;
 import com.biol.biolbg.entity.Item;
 import com.biol.biolbg.entity.Producer;
 
-@ManagedBean(name = "GalleryBean")
-@ViewScoped
-public class GalleryBean extends Base implements Serializable{
+@Named("GalleryBean")
+@RequestScoped
+public class GalleryBean extends Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ManagedProperty(value="#{GalleryParamsBean}")
-	private GalleryParamsBean galleryParamsBean;
-	
-	@ManagedProperty(value="#{ItemImagesFilenameMapper}")
-	private ItemImagesFilenameMapper itemImagesFilenameMapper;
-	
+
 	private List<Item> items;
+
 	private List<Group> groups;
+
 	private List<Producer> producers;
-	
+
+	@Inject
+	private GalleryParamsBean galleryParamsBean;
+
+	@Inject
+	private ItemImagesFilenameMapper itemImagesFilenameMapper;
+
+	@Inject
+	private AppBean appBean;
+
 	@EJB
-	private ItemFacade itemFacade; //= EJBLocator.getInstance().lookup(ItemFacade.class);
-	
+	private ItemFacade itemFacade;
+
 	@EJB
-	private GroupFacade groupFacade; //= EJBLocator.getInstance().lookup(GroupFacade.class);
-	
+	private GroupFacade groupFacade;
+
 	@EJB
-	private ProducerFacade producerFacade; //= EJBLocator.getInstance().lookup(ProducerFacade.class);
-	
+	private ProducerFacade producerFacade;
+
 	public void preRenderView(javax.faces.event.ComponentSystemEvent event) {
 		if (items == null)
 			items = new ArrayList<Item>();
@@ -56,12 +61,12 @@ public class GalleryBean extends Base implements Serializable{
 
 		groups = getAllGroups();
 		producers = getAllProducers();
-		
+
 		Integer groupId = 0;
 		Integer producerId = 0;
 		if (getGalleryParamsBean().getParamGroup() != null) {
 			groupId = getGalleryParamsBean().getParamGroup().getId();
-		} 
+		}
 		if (getGalleryParamsBean().getParamProducer() != null) {
 			producerId = getGalleryParamsBean().getParamProducer().getId();
 		}
@@ -70,9 +75,9 @@ public class GalleryBean extends Base implements Serializable{
 		}
 		else {
 			items = itemFacade.getAllItems(groupId, producerId, 0, 1000, "o.id", BaseList.SORT_ASC);
-		}	
+		}
 	}
-	
+
 	public void setParamGroup(Group paramGroup) {
 		getGalleryParamsBean().setParamGroup(paramGroup);
 	}
@@ -103,13 +108,13 @@ public class GalleryBean extends Base implements Serializable{
 	public void setProducers(List<Producer> producers) {
 		this.producers = producers;
 	}
-	public Map<Integer, String> getImageName() 
+	public Map<Integer, String> getImageName()
 	{
-		Map<Integer, String> res = new AbstractMap<Integer, String>() 
+		Map<Integer, String> res = new AbstractMap<Integer, String>()
 		{
 
 			@Override
-			public String get(Object key) 
+			public String get(Object key)
 			{
 				Integer itemId;
 				try
@@ -122,35 +127,41 @@ public class GalleryBean extends Base implements Serializable{
 				}
 				return itemImagesFilenameMapper.getSingle(itemId);
 			}
-			
+
 			@Override
-			public Set<java.util.Map.Entry<Integer, String>> entrySet() 
+			public Set<java.util.Map.Entry<Integer, String>> entrySet()
 			{
 				throw new UnsupportedOperationException();
 			}
 		};
-			
+
 		return res;
 	}
-	
+
 	//************PRIVATE METHODS************
 	private List<Group> getAllGroups() {
+
 		String groupsSortByField;
-		if (this.getAppBean().getAppLocale().equals("en")) {
+
+		if (appBean.getAppLocale().equals("en")) {
 			groupsSortByField = "o.nameen";
-		} else { 
+		} else {
 			groupsSortByField = "o.namebg";
 		}
+
 		return groupFacade.getAllItems(0, 0, groupsSortByField, BaseList.SORT_ASC);
 	}
 
 	private List<Producer> getAllProducers() {
+
 		String producersSortByField = null;
-		if (this.getAppBean().getAppLocale().equals("en")) {
+
+		if (appBean.getAppLocale().equals("en")) {
 			producersSortByField = "o.nameen";
 		} else {
 			producersSortByField = "o.namebg";
 		}
+
 		return producerFacade.getAllItems(0, 0, producersSortByField, BaseList.SORT_ASC);
 	}
 
@@ -169,5 +180,5 @@ public class GalleryBean extends Base implements Serializable{
 	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
 		return itemImagesFilenameMapper;
 	}
-	
+
 }

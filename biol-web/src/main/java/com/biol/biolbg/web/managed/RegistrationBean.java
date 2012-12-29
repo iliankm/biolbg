@@ -4,36 +4,49 @@ import java.io.Serializable;
 import java.util.Random;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.biol.biolbg.web.util.Base;
+import com.biol.biolbg.web.util.MessageResourcesBean;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
 
 import com.biol.biolbg.entity.Usr;
 import com.biol.biolbg.exception.ValidateRegistrationException;
 
-@ManagedBean(name = "RegistrationBean")
+@Named("RegistrationBean")
 @RequestScoped
 public class RegistrationBean extends Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private String username;
+
 	private String password;
+
 	private String repeatPassword;
+
 	private String fullname;
+
 	private String organisation;
+
 	private String email;
+
 	private String regcode;
+
 	@EJB
-	private UsrFacade usrFacade; //= EJBLocator.getInstance().lookup(UsrFacade.class);
-	
+	private UsrFacade usrFacade;
+
+	@Inject
+	private MessageResourcesBean messageResourcesBean;
+
 	public String register() {
 		String errorText;
 		Boolean haveErrors = false;
@@ -48,17 +61,17 @@ public class RegistrationBean extends Base implements Serializable {
 			if (!randomRegCode.equals(regcode)) {
 				regCodeMatches = false;
 			}
-		}	
+		}
 		if (!regCodeMatches) {
-			errorText = getAppBean().getMessageResourceString("regCodeNotMatches", null);
+			errorText = messageResourcesBean.getMessage("regCodeNotMatches", null);
 			FacesContext.getCurrentInstance().addMessage("baseForm:regcode", new FacesMessage(
-	                FacesMessage.SEVERITY_ERROR, errorText, null));	
+	                FacesMessage.SEVERITY_ERROR, errorText, null));
 			haveErrors = true;
 		}
-		//check username, password, repeatpassword 
+		//check username, password, repeatpassword
 		try {
 			usrFacade.validateRegistrationInfo(username, password, repeatPassword);
-			
+
 			//create Usr object and set properties
 			Usr usr = new Usr();
 			usr.setUsername(username);
@@ -67,32 +80,32 @@ public class RegistrationBean extends Base implements Serializable {
 			usr.setFullname(fullname);
 			usr.setEmail(email);
 			usrFacade.addItem(usr);
-			
+
 		} catch (ValidateRegistrationException e) {
 			if (e.getInvalidUsername()) {
-				errorText = getAppBean().getMessageResourceString("invalidValue", null);
+				errorText = messageResourcesBean.getMessage("invalidValue", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:username", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));				
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 			}
 			if (e.getUsernameExists()) {
-				errorText = getAppBean().getMessageResourceString("usernameExists", null);
+				errorText = messageResourcesBean.getMessage("usernameExists", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:username", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));				
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 			}
 			if (e.getInvalidPassword()) {
-				errorText = getAppBean().getMessageResourceString("invalidValue", null);
+				errorText = messageResourcesBean.getMessage("invalidValue", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:password", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));				
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 			}
 			if (e.getUsernameEqualsPassword()) {
-				errorText = getAppBean().getMessageResourceString("usernameEqualsPassword", null);
+				errorText = messageResourcesBean.getMessage("usernameEqualsPassword", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:password", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));				
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 			}
 			if (e.getInvalidRepeatPassword()) {
-				errorText = getAppBean().getMessageResourceString("passwordNotMatch", null);
+				errorText = messageResourcesBean.getMessage("passwordNotMatch", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:repeatpassword", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));				
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 			}
 			haveErrors = true;
 		} catch (Exception e) {
@@ -104,28 +117,28 @@ public class RegistrationBean extends Base implements Serializable {
 		if (haveErrors) {
 			return "";
 		}
-		
+
 		return "success";
 	}
-	
+
 	public void validateUsername(ActionEvent event) {
 		//check username
 		String errorText;
 		Boolean haveError = false;
 		try {
 			usrFacade.validateRegistrationInfo(username, "", "");
-			
+
 		} catch (ValidateRegistrationException e) {
 			if (e.getInvalidUsername()) {
-				errorText = getAppBean().getMessageResourceString("invalidValue", null);
+				errorText = messageResourcesBean.getMessage("invalidValue", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:username", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));	
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 				haveError = true;
 			}
 			if (e.getUsernameExists()) {
-				errorText = getAppBean().getMessageResourceString("usernameExists", null);
+				errorText = messageResourcesBean.getMessage("usernameExists", null);
 				FacesContext.getCurrentInstance().addMessage("baseForm:username", new FacesMessage(
-		                FacesMessage.SEVERITY_ERROR, errorText, null));	
+		                FacesMessage.SEVERITY_ERROR, errorText, null));
 				haveError = true;
 			}
 		} catch (Exception e) {
@@ -134,12 +147,12 @@ public class RegistrationBean extends Base implements Serializable {
 			}
 		}
 		if (!haveError) {
-			String msg = getAppBean().getMessageResourceString("validUsername", null);
+			String msg = messageResourcesBean.getMessage("validUsername", null);
 			FacesContext.getCurrentInstance().addMessage("baseForm:username", new FacesMessage(
-	                FacesMessage.SEVERITY_WARN, msg, null));	
+	                FacesMessage.SEVERITY_WARN, msg, null));
 		}
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}

@@ -1,54 +1,58 @@
 package com.biol.biolbg.web.managed;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.TimeZone;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.BiolLogger;
-import com.biol.biolbg.web.util.ViewCredentials;
+import com.biol.biolbg.web.util.MessageResourcesBean;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
 import com.biol.biolbg.entity.Usr;
 
-@ManagedBean(name = "AppBean")
+@Named("AppBean")
 @SessionScoped
-public class AppBean implements Serializable {
+public class AppBean extends Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private static final String LOCALE_COOKIE_NAME = "locale";
-	
+
 	private String appLocale;
+
 	private TimeZone timeZone = TimeZone.getDefault(); //"UTC/GMT +3";
+
 	private String username = "";
+
 	private String password = "";
+
 	private Usr loggedUser = new Usr();
+
 	private Boolean isUserLoggedIn = false;
-	private Map<String, ViewCredentials> viewCredentials = new HashMap<String, ViewCredentials>();
-	
+
+	@Inject
+	private MessageResourcesBean messageResourcesBean;
+
 	@EJB
-	private UsrFacade usrFacade; // = EJBLocator.getInstance().lookup(UsrFacade.class);
-	
+	private UsrFacade usrFacade;
+
 	private String getLocaleFromCookie() {
 		String locale = "";
 		FacesContext fc = FacesContext.getCurrentInstance();
 		Cookie cookie[] = ((HttpServletRequest)fc.getExternalContext().
-							getRequest()).getCookies();		
+							getRequest()).getCookies();
 		if (cookie != null && cookie.length > 0) {
 			for (int i = 0; i < cookie.length; i++) {
 				if (cookie[i].getName().equals(LOCALE_COOKIE_NAME)) {
@@ -103,14 +107,14 @@ public class AppBean implements Serializable {
 		return loggedUser;
 	}
 	public String login() {
-	
+
 		BiolLogger.getLogger().info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
-		
+
 		loggedUser = new Usr();
 		isUserLoggedIn = false;
 		//check if username & password is provided
 		if ((username.trim().equals(""))||(password.trim().equals(""))) {
-			String errorText = getMessageResourceString("provideUsernamePassword", null);
+			String errorText = messageResourcesBean.getMessage("provideUsernamePassword", null);
 			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
 			return "error";
@@ -118,8 +122,8 @@ public class AppBean implements Serializable {
 		//get Usr object from database with provided username
 		Usr usr = null;
 		usr = usrFacade.findUsrByUsername(username);
-		
-		//check if Usr is with provided username and password 
+
+		//check if Usr is with provided username and password
 		Boolean res = false;
 		if (usr != null) {
 			if (usr.getUsername().equals(username)) {
@@ -129,7 +133,7 @@ public class AppBean implements Serializable {
 			}
 		}
 		if (!res) {
-			String errorText = getMessageResourceString("invalidUsernamePassword", null);
+			String errorText = messageResourcesBean.getMessage("invalidUsernamePassword", null);
 			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
 			return "error";
@@ -139,7 +143,7 @@ public class AppBean implements Serializable {
 			try {
 				usrFacade.updateUsrAfterLogin(usr, request.getRemoteAddr());
 			} catch (Exception e) {
-				Base.addErrorMessage(e.getMessage());
+				addErrorMessage(e.getMessage());
 				return "error";
 			}
 			loggedUser = usr;
@@ -147,79 +151,52 @@ public class AppBean implements Serializable {
 			return "loginok";
 		}
 	}
+
 	public String logout() {
 		loggedUser = new Usr();
 		isUserLoggedIn = false;
 		return "logout";
 	}
+
 	public Boolean getIsUserLoggedIn() {
 		return isUserLoggedIn;
 	}
+
 	public String getAppPath() {
 		return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 	}
-	public String getViewId() {
-		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-		return viewRoot.getViewId();
-	}
+
 	public Boolean getRenderLoginPanel() {
-		//return (getViewId().equals("/home.xhtml"))&&(isUserLoggedIn == false);
+
 		return (isUserLoggedIn == false);
 	}
+
 	public Boolean getRenderLogoutPanel() {
 		return isUserLoggedIn;
 	}
-	public void storeCredentials(String key, String sortByFieldName, String sortType, Integer showRowsCount, 
-			Integer pageNumber, Integer totalPages, Object customCredentials) {
-		ViewCredentials vc = viewCredentials.get(getViewId());
-		if (vc == null) {
-			vc = new ViewCredentials();
-		}
-		vc.setSortByFieldName(sortByFieldName);
-		vc.setSortType(sortType);
-		vc.setShowRowsCount(showRowsCount);
-		vc.setPageNumber(pageNumber);
-		vc.setTotalPages(totalPages);
-		vc.setCustomCredentials(customCredentials);
-		this.viewCredentials.put(key, vc);
-	}
-	public ViewCredentials restoreCredentials(String key) {
-		return viewCredentials.get(key);
-	}
-	public String getMessageResourceString(String key, Object params[]) {
-		
-		String text = null;
-		FacesContext context = FacesContext.getCurrentInstance();
-		Locale locale = context.getViewRoot().getLocale();
-		ResourceBundle bundle =	ResourceBundle.getBundle("com.biol.biolbg.web.messages.messages", locale);
-		try {
-			text = bundle.getString(key);
-		} catch(MissingResourceException e){
-			text = "?? key " + key + " not found ??";
-		}
-		if(params != null) {
-			MessageFormat mf = new MessageFormat(text, locale);
-			text = mf.format(params, new StringBuffer(), null).toString();
-		}
-		return text;
-	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setTimeZone(TimeZone timeZone) {
 		this.timeZone = timeZone;
 	}
+
 	public TimeZone getTimeZone() {
 		return timeZone;
 	}
-	
+
 }
