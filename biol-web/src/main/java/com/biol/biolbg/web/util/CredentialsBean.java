@@ -12,26 +12,26 @@ import javax.inject.Named;
 
 @Named
 @SessionScoped
-public class CredentialsBean implements Serializable {
-
+public class CredentialsBean implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private Map<String, ViewCredentials> viewCredentials;
 
 	@PostConstruct
-	public void postConstruct() {
-
+	public void postConstruct()
+	{
 		viewCredentials = new HashMap<String, ViewCredentials>();
-
 	}
 
 	public void storeCredentials(String key, String sortByFieldName,
 								String sortType, Integer showRowsCount,
-								Integer pageNumber, Integer totalPages, Object customCredentials) {
-
+								Integer pageNumber, Integer totalPages, Object customCredentials)
+	{
 		ViewCredentials vc = viewCredentials.get(getViewId());
 
-		if (vc == null) {
+		if (vc == null)
+		{
 			vc = new ViewCredentials();
 		}
 
@@ -43,21 +43,16 @@ public class CredentialsBean implements Serializable {
 		vc.setCustomCredentials(customCredentials);
 
 		this.viewCredentials.put(key, vc);
-
 	}
 
-	public ViewCredentials restoreCredentials(String key) {
-
+	public ViewCredentials restoreCredentials(String key)
+	{
 		return viewCredentials.get(key);
-
 	}
 
-	private String getViewId() {
-
+	private String getViewId()
+	{
 		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-
 		return viewRoot.getViewId();
-
 	}
-
 }

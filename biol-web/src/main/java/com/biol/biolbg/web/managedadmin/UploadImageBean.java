@@ -17,8 +17,8 @@ import com.biol.biolbg.ejb.session.ItemFacade;
 
 @Named("UploadImageBean")
 @RequestScoped
-public class UploadImageBean extends BaseEditItem implements Serializable{
-
+public class UploadImageBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Inject
@@ -28,7 +28,8 @@ public class UploadImageBean extends BaseEditItem implements Serializable{
 	private ItemFacade itemFacade;
 
 	@Override
-	public Boolean getIsViewItemOnly() {
+	public Boolean getIsViewItemOnly()
+	{
 		return true;
 	}
 
@@ -39,16 +40,17 @@ public class UploadImageBean extends BaseEditItem implements Serializable{
 		String itemId = getRealItemId().toString();
 
 		FileUtil.deleteImageFilesForItem(imagesPath, itemId, "");
-
 	}
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		return itemFacade.createNewItem();
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		return itemFacade.findItem(id);
 	}
 
@@ -61,21 +63,23 @@ public class UploadImageBean extends BaseEditItem implements Serializable{
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		return true;
 	}
 
 	@Override
-	public void init() {
-		// nothing to do here
+	public void init()
+	{
 	}
 
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
+	{
 		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
 	}
 
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
+	{
 		return itemImagesFilenameMapper;
 	}
-
 }

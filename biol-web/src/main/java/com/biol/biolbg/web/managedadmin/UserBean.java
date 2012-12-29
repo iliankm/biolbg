@@ -13,63 +13,82 @@ import com.biol.biolbg.entity.Usr;
 
 @Named("UserBean")
 @RequestScoped
-public class UserBean extends BaseEditItem implements Serializable {
-
+public class UserBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private UsrFacade usrFacade;
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		return usrFacade.createNewItem();
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		Boolean res = false;
-		try {
+
+		try
+		{
 			Usr item = (Usr)this.getItem();
-			if (item.getId() > 0) {
+			if (item.getId() > 0)
+			{
 				usrFacade.updateItem(item);
-			} else {
+			}
+			else
+			{
 				usrFacade.addItem(item);
 			}
 			res = true;
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
+
 		return res;
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		return usrFacade.findItem(id);
 	}
 
 	@Override
-	public void init() {
-		// nothing to do here
+	public void init()
+	{
 	}
 
-	public Boolean getAdminflag() {
-		if (getItem() instanceof Usr) {
+	public Boolean getAdminflag()
+	{
+		if (getItem() instanceof Usr)
+		{
 			Usr item = (Usr)getItem();
 			return (item.getAdminflag() == 1);
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
 
-	public void setAdminflag(Boolean adminflag) {
-		if (getItem() instanceof Usr) {
+	public void setAdminflag(Boolean adminflag)
+	{
+		if (getItem() instanceof Usr)
+		{
 			Usr item = (Usr)getItem();
-			if (adminflag) {
+			if (adminflag)
+			{
 				item.setAdminflag(1);
-			} else {
+			}
+			else
+			{
 				item.setAdminflag(0);
 			}
 		}
 	}
-
 }

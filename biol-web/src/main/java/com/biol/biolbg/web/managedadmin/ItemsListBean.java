@@ -25,8 +25,8 @@ import com.biol.biolbg.entity.Producer;
 
 @Named("ItemsListBean")
 @RequestScoped
-public class ItemsListBean extends BaseList implements Serializable {
-
+public class ItemsListBean extends BaseList implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private Group group = null;
@@ -55,12 +55,17 @@ public class ItemsListBean extends BaseList implements Serializable {
 	private AppBean appBean;
 
 	@Override
-	public void doDeleteData(List<Integer> itemsToDelete) {
+	public void doDeleteData(List<Integer> itemsToDelete)
+	{
 		Iterator<Integer> iter = itemsToDelete.iterator();
-		while (iter.hasNext()) {
-			try {
+		while (iter.hasNext())
+		{
+			try
+			{
 				itemFacade.removeItem(iter.next());
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				addErrorMessage(e.getMessage());
 			}
 		}
@@ -68,56 +73,73 @@ public class ItemsListBean extends BaseList implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
+	public void doLoadDataItems(Integer fromRow, Integer maxResults)
+	{
 		Integer groupId = 0;
-		if (group != null) {
+		if (group != null)
+		{
 			groupId = group.getId();
 		}
+
 		Integer producerId = 0;
-		if (producer != null) {
+		if (producer != null)
+		{
 			producerId = producer.getId();
 		}
+
 		List<Item> dataItems = itemFacade.getAllItems(groupId, producerId, fromRow, maxResults, getSortByFieldName(), getSortType());
 		setDataItems(dataItems);
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null) {
+		if (getDataItems() != null)
+		{
 			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
 		}
 	}
 
 	@Override
-	public Long getDataItemsTotalCount() {
+	public Long getDataItemsTotalCount()
+	{
 		Integer groupId = 0;
-		if (group != null) {
+		if (group != null)
+		{
 			groupId = group.getId();
 		}
+
 		Integer producerId = 0;
-		if (producer != null) {
+		if (producer != null)
+		{
 			producerId = producer.getId();
 		}
+
 		Long itemsCount = itemFacade.getAllItemsCount(groupId, producerId);
 		return itemsCount;
 	}
 
 	@Override
-	public void init() {
-		if (getSortByFieldName() == "") {
+	public void init()
+	{
+		if (getSortByFieldName() == "")
+		{
 			setSortByFieldName("o.id");
 		}
 
 		//fill groupsSelectItems from GroupBean method
 		groupsSelectItems =
 			getGroupBean().groupsSelectItemList("o.id", SORT_ASC, appBean.getAppLocale());
+
 		//fill producersSelectItems from ProducerBean method
 		producersSelectItems =
 			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, appBean.getAppLocale());
 	}
 
 	@Override
-	public void restoreCustomCredentials(Object customCredentials) {
-		if (customCredentials != null) {
-			if (customCredentials instanceof ItemsListCredentials) {
+	public void restoreCustomCredentials(Object customCredentials)
+	{
+		if (customCredentials != null)
+		{
+			if (customCredentials instanceof ItemsListCredentials)
+			{
 				ItemsListCredentials itemsListCredentials = (ItemsListCredentials)customCredentials;
 				group = itemsListCredentials.getGroup();
 				producer = itemsListCredentials.getProducer();
@@ -126,71 +148,87 @@ public class ItemsListBean extends BaseList implements Serializable {
 	}
 
 	@Override
-	public Object storeCustomCredentials() {
+	public Object storeCustomCredentials()
+	{
 		ItemsListCredentials itemsListCredentials = new ItemsListCredentials();
 		itemsListCredentials.setGroup(group);
 		itemsListCredentials.setProducer(producer);
+
 		return itemsListCredentials;
 	}
 
-	public void setGroup(Group group) {
+	public void setGroup(Group group)
+	{
 		this.group = group;
 	}
 
-	public Group getGroup() {
+	public Group getGroup()
+	{
 		return group;
 	}
 
-	public void setGroupsSelectItems(List<SelectItem> groupsSelectItems) {
+	public void setGroupsSelectItems(List<SelectItem> groupsSelectItems)
+	{
 		this.groupsSelectItems = groupsSelectItems;
 	}
 
-	public List<SelectItem> getGroupsSelectItems() {
+	public List<SelectItem> getGroupsSelectItems()
+	{
 		return groupsSelectItems;
 	}
 
-	public void setProducersSelectItems(List<SelectItem> producersSelectItems) {
+	public void setProducersSelectItems(List<SelectItem> producersSelectItems)
+	{
 		this.producersSelectItems = producersSelectItems;
 	}
 
-	public List<SelectItem> getProducersSelectItems() {
+	public List<SelectItem> getProducersSelectItems()
+	{
 		return producersSelectItems;
 	}
 
-	public Map<Integer, String> getItemsImages() {
+	public Map<Integer, String> getItemsImages()
+	{
 		return itemsImages;
 	}
 
-	public void setProducer(Producer producer) {
+	public void setProducer(Producer producer)
+	{
 		this.producer = producer;
 	}
 
-	public Producer getProducer() {
+	public Producer getProducer()
+	{
 		return producer;
 	}
 
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
+	{
 		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
 	}
 
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
+	{
 		return itemImagesFilenameMapper;
 	}
 
-	public void setGroupBean(GroupBean groupBean) {
+	public void setGroupBean(GroupBean groupBean)
+	{
 		this.groupBean = groupBean;
 	}
 
-	public GroupBean getGroupBean() {
+	public GroupBean getGroupBean()
+	{
 		return groupBean;
 	}
 
-	public void setProducerBean(ProducerBean producerBean) {
+	public void setProducerBean(ProducerBean producerBean)
+	{
 		this.producerBean = producerBean;
 	}
 
-	public ProducerBean getProducerBean() {
+	public ProducerBean getProducerBean()
+	{
 		return producerBean;
 	}
-
 }

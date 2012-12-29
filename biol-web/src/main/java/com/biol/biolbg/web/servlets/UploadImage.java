@@ -23,8 +23,8 @@ import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 /**
  * Servlet implementation class UploadImage
  */
-public class UploadImage extends HttpServlet {
-
+public class UploadImage extends HttpServlet
+{
 	private static final long serialVersionUID = 1L;
 
 	private static final Integer MAX_IMAGE_FILE_SIZE = 300000;
@@ -53,10 +53,13 @@ public class UploadImage extends HttpServlet {
 
 	    out.println("<body>");
 	    FileUpload fu = new FileUpload();
-		if (fu.processFileUpload(request, uploadImagePath, MAX_IMAGE_FILE_SIZE)) {
+		if (fu.processFileUpload(request, uploadImagePath, MAX_IMAGE_FILE_SIZE))
+		{
 			FileUtil.deleteImageFilesForItem(uploadImagePath, fu.itemId, fu.uploadedFileName);
 			out.println("<img src=\"img/ok.jpeg\"/>");
-		} else {
+		}
+		else
+		{
 	    	out.println("<img src=\"img/error.jpg\"/>");
 	    	out.println("<span class=\"errorText\">");
 	    	out.println(fu.getErrText());
@@ -66,30 +69,42 @@ public class UploadImage extends HttpServlet {
 	}
 
 //--------------------------------------------------------------------------------------------
-	private class FileUpload {
+	private class FileUpload
+	{
 		private String errText = "";
+
 		private String uploadedFileName = "";
+
 		private String itemId = "";
 
 		//@SuppressWarnings("unchecked")
-		public Boolean processFileUpload(HttpServletRequest request, String uploadImagePath, Integer maxImageFileSize) {
+		public Boolean processFileUpload(HttpServletRequest request, String uploadImagePath, Integer maxImageFileSize)
+		{
 			errText = "";
 	        //check for parameter 'itemId'
 	        itemId = request.getParameter("itemId");
-	        if (itemId == null) {
+	        if (itemId == null)
+	        {
 	        	errText = "Missing 'itemId' parameter.";
-	        } else {
+	        }
+	        else
+	        {
 	        	Integer iId = -1;
-	        	try {
+	        	try
+	        	{
 	        		iId = Integer.parseInt(itemId);
-	        	} catch (Exception e) {
+	        	}
+	        	catch (Exception e)
+	        	{
 	        		iId = -1;
 	        	}
-	        	if (iId <= 0) {
+	        	if (iId <= 0)
+	        	{
 	        		errText = "Invalid item id value.";
 	        	}
 	        }
-	        if (this.errText != "") {
+	        if (this.errText != "")
+	        {
 	        	return false;
 	        }
 	        // If there are no errors, proceed with writing file.
@@ -102,36 +117,49 @@ public class UploadImage extends HttpServlet {
 
 	    	// Parse the request
 	    	List<?> items = null;
-	    	try {
+	    	try
+	    	{
 	    		items = upload.parseRequest(request);
 
-	    	} catch (Exception e) {
+	    	}
+	    	catch (Exception e)
+	    	{
 	    		errText = e.getMessage();
 	    	}
-	        if (this.errText != "") {
+
+	    	if (this.errText != "")
+	        {
 	        	return false;
 	        }
 			//process the uploaded items
 			Iterator<?> iter = items.iterator();
-			while (iter.hasNext()) {
+			while (iter.hasNext())
+			{
 				FileItem item = (FileItem) iter.next();
-				if (!item.isFormField()) {
-					if (item.getName().equals("")) {
+				if (!item.isFormField())
+				{
+					if (item.getName().equals(""))
+					{
 						item.delete();
 						errText = "Select file to upload.";
 						return false;
 					}
-					if (item.getSize() > maxImageFileSize) {
+
+					if (item.getSize() > maxImageFileSize)
+					{
 						item.delete();
 						errText = "File maximum size is ".concat(maxImageFileSize.toString());
 						return false;
 					}
+
 					String contentType = item.getContentType();
-					if (!contentType.startsWith("image/")) {
+					if (!contentType.startsWith("image/"))
+					{
 						item.delete();
 						errText = "Selected file not an image.";
 						return false;
 					}
+
 					String origFileName = item.getName();
 					//trim the file path
 					origFileName = origFileName.substring(origFileName.lastIndexOf("/") + 1).substring(origFileName.lastIndexOf("\\") + 1);
@@ -139,28 +167,30 @@ public class UploadImage extends HttpServlet {
 					String discrText = "_" + new java.util.Date( ).getTime( ) / 1000;
 					String newFileName = itemId.concat(discrText).concat(".").concat(origFileExt);
 					File uploadedFile = new File(uploadImagePath,newFileName);
-					try {
+					try
+					{
 						item.write(uploadedFile);
 						uploadedFileName = newFileName;
-					} catch (Exception e) {
+					}
+					catch (Exception e)
+					{
 						item.delete();
 						errText = e.getMessage();
 					}
 				}
 			}
-	        if (errText != "") {
+
+			if (errText != "")
+	        {
 	        	return false;
 	        }
+
 			return true;
 		}
-		public String getErrText() {
+
+		public String getErrText()
+		{
 			return errText;
 		}
-		//public String getUploadedFileName() {
-		//	return uploadedFileName;
-		//}
-		//public String getItemId() {
-		//	return itemId;
-		//}
 	}
 }

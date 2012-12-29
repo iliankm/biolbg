@@ -21,8 +21,8 @@ import com.biol.biolbg.entity.Usr;
 
 @Named("OrderForUserBean")
 @RequestScoped
-public class OrderForUserBean extends BaseEditItem implements Serializable{
-
+public class OrderForUserBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private HtmlDataTable orderRowsDataTable;
@@ -37,95 +37,101 @@ public class OrderForUserBean extends BaseEditItem implements Serializable{
 	private AppBean appBean;
 
 	@Override
-	public Boolean getIsViewItemOnly() {
+	public Boolean getIsViewItemOnly()
+	{
 		return true;
 	}
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		Order res = orderFacade.createNewItem();
 		res.setRows(new ArrayList<OrderRow>());
 		res.setUser(new Usr());
 		res.setStatus(new OrderStatus());
+
 		return res;
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		return true;
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		return orderFacade.findItem(id);
 	}
 
-	public Boolean getUserLoggedIn() {
-
+	public Boolean getUserLoggedIn()
+	{
 		return appBean.getIsUserLoggedIn();
-
 	}
-	public Boolean getOrderIsForThisUser() {
 
+	public Boolean getOrderIsForThisUser()
+	{
 		Integer iItemId = getRealItemId();
 
 		Object obj = findItemById(iItemId);
 
-		if (obj instanceof Order) {
-
+		if (obj instanceof Order)
+		{
 			Order order = (Order) obj;
-			if (order.getUser() == null) {
+			if (order.getUser() == null)
+			{
 				return false;
 			}
 
 			return order.getUser().getId() == appBean.getLoggedUser().getId();
-
-		} else {
-
+		}
+		else
+		{
 			return false;
-
 		}
 	}
 
-	public Boolean getRenderView() {
+	public Boolean getRenderView()
+	{
 		return ((getUserLoggedIn())&&(getOrderIsForThisUser()));
 	}
 
 	@Override
-	public void init() {
-		//nothing to do here
+	public void init()
+	{
 	}
 
-	public void cancelOrder(ActionEvent event) {
+	public void cancelOrder(ActionEvent event)
+	{
 		//check if user logged in
-		if (!appBean.getIsUserLoggedIn()) {
-
+		if (!appBean.getIsUserLoggedIn())
+		{
 			addErrorMessage(messageResourcesBean.getMessage("toCancelOrderUserMustLogin", null));
 			return;
-
 		}
 
-		try {
-
+		try
+		{
 			Order updatedOrder = orderFacade.cancelOrder(getRealItemId());
 			setItem(updatedOrder);
 			String text = messageResourcesBean.getMessage("orderCanceled", null);
 			addInfoMessage(text);
 
-		} catch (Exception e) {
-
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
-
 		}
 	}
 
-	//--------------GETTERS AND SETTERS-----------------------
-
-	public void setOrderRowsDataTable(HtmlDataTable orderRowsDataTable) {
+	public void setOrderRowsDataTable(HtmlDataTable orderRowsDataTable)
+	{
 		this.orderRowsDataTable = orderRowsDataTable;
 	}
 
-	public HtmlDataTable getOrderRowsDataTable() {
+	public HtmlDataTable getOrderRowsDataTable()
+	{
 		return orderRowsDataTable;
 	}
 }

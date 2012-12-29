@@ -9,7 +9,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 @MappedSuperclass
-public class BaseEntity implements Serializable{
+public class BaseEntity implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -18,30 +19,42 @@ public class BaseEntity implements Serializable{
 
 	@Transient
 	protected Boolean checked;
-	
-	
-	public void setId(int id) {
+
+	public void setId(int id)
+	{
 		this.id = id;
 	}
-	public int getId() {
+
+	public int getId()
+	{
 		return id;
 	}
-	public void setChecked(Boolean checked) {
+
+	public void setChecked(Boolean checked)
+	{
 		this.checked = checked;
 	}
-	public Boolean getChecked() {
+
+	public Boolean getChecked()
+	{
 		return checked;
 	}
+
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
 			return false;
 		}
-		if (!(obj instanceof BaseEntity)) {
+
+		if (!(obj instanceof BaseEntity))
+		{
 			return false;
 		}
+
 		BaseEntity baseent = (BaseEntity) obj;
 
-		return (this.id == baseent.id);	}
-
+		return (this.id == baseent.id);
+	}
 }

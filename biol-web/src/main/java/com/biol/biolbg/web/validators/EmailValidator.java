@@ -10,11 +10,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-public class EmailValidator implements Validator {
+public class EmailValidator implements Validator
+{
 
 	@Override
-	public void validate(FacesContext arg0, UIComponent arg1, Object arg2) throws ValidatorException {
-
+	public void validate(FacesContext arg0, UIComponent arg1, Object arg2) throws ValidatorException
+	{
 		String enteredEmail = (String)arg2;
 
 		//Set the email pattern string
@@ -26,7 +27,8 @@ public class EmailValidator implements Validator {
         //Check whether match is found
         boolean matchFound = m.matches();
 
-        if (!matchFound) {
+        if (!matchFound)
+        {
             FacesMessage message = new FacesMessage();
 
             FacesContext context = FacesContext.getCurrentInstance();

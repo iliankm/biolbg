@@ -23,8 +23,8 @@ import com.biol.biolbg.entity.OrderStatus;
 
 @Named("OrderBean")
 @RequestScoped
-public class OrderBean extends BaseEditItem implements Serializable{
-
+public class OrderBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private List<SelectItem> orderStatusSelectItems = new ArrayList<SelectItem>();
@@ -41,41 +41,45 @@ public class OrderBean extends BaseEditItem implements Serializable{
 	private OrderFacade orderFacade;
 
 	@Override
-	public Boolean getIsViewItemOnly() {
+	public Boolean getIsViewItemOnly()
+	{
 		return true;
 	}
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		return orderFacade.createNewItem();
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		return true;
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		Order res = null;
 
-		try {
-
+		try
+		{
 			res = orderFacade.findItem(id);
 
 			//mark Order as seen by admin
-			if ((appBean.getLoggedUser().getAdminflag()==1)&&(res.getSeenbyadmin()!=1)) {
-
+			if ((appBean.getLoggedUser().getAdminflag()==1)&&(res.getSeenbyadmin()!=1))
+			{
 				Order res1 = orderFacade.markOrderAsSeenByAdmin(res.getId());
 
-				if (res1 != null) {
+				if (res1 != null)
+				{
 					res = res1;
 				}
-
 			}
 		}
-
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
 
@@ -83,26 +87,26 @@ public class OrderBean extends BaseEditItem implements Serializable{
 	}
 
 	@Override
-	public void init() {
-
+	public void init()
+	{
 		// load orderStatusSelectItems
 		List<OrderStatus> listOrderStatus = orderFacade.getAllOrderStatus();
 
-		if (listOrderStatus != null) {
-
+		if (listOrderStatus != null)
+		{
 			Iterator<OrderStatus> iter = listOrderStatus.iterator();
 
-			while (iter.hasNext()) {
-
+			while (iter.hasNext())
+			{
 				OrderStatus orderStatus = iter.next();
 				String orderStatusName = null;
 
-				if (appBean.getAppLocale().equals("en")) {
-
+				if (appBean.getAppLocale().equals("en"))
+				{
 					orderStatusName = orderStatus.getNameen();
-
-				} else {
-
+				}
+				else
+				{
 					orderStatusName = orderStatus.getNamebg();
 				}
 
@@ -111,34 +115,34 @@ public class OrderBean extends BaseEditItem implements Serializable{
 		}
 	}
 
-	public void updateStatus(ActionEvent event) {
-
+	public void updateStatus(ActionEvent event)
+	{
 		Order order = (Order) getItem();
 
-		try {
-
+		try
+		{
 			order = orderFacade.updateStatus(this.getRealItemId(),order.getStatus());
 			String text = messageResourcesBean.getMessage("dataSavedOK", null);
 			addInfoMessage(text);
-
 		}
-		catch (Exception e) {
-
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
-
 		}
 	}
 
-	//--------------GETTERS AND SETTERS-----------------------
-	public List<SelectItem> getOrderStatusSelectItems() {
+	public List<SelectItem> getOrderStatusSelectItems()
+	{
 		return orderStatusSelectItems;
 	}
 
-	public void setOrderRowsDataTable(HtmlDataTable orderRowsDataTable) {
+	public void setOrderRowsDataTable(HtmlDataTable orderRowsDataTable)
+	{
 		this.orderRowsDataTable = orderRowsDataTable;
 	}
 
-	public HtmlDataTable getOrderRowsDataTable() {
+	public HtmlDataTable getOrderRowsDataTable()
+	{
 		return orderRowsDataTable;
 	}
 }

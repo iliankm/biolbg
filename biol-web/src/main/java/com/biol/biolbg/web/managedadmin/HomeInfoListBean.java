@@ -15,47 +15,60 @@ import com.biol.biolbg.entity.HomeInfo;
 
 @Named("HomeInfoListBean")
 @RequestScoped
-public class HomeInfoListBean extends BaseList implements Serializable {
-
+public class HomeInfoListBean extends BaseList implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private HomeInfoFacade homeInfoFacade;
 
 	@Override
-	public void init() {
-		if (getSortByFieldName() == "") {
+	public void init()
+	{
+		if (getSortByFieldName() == "")
+		{
 			setSortByFieldName("o.id");
 		}
 	}
+
 	@Override
-	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
+	public void doLoadDataItems(Integer fromRow, Integer maxResults)
+	{
 		List<HomeInfo> dataItems = homeInfoFacade.getAllItems(fromRow, maxResults, getSortByFieldName(), getSortType());
 		setDataItems(dataItems);
 	}
+
 	@Override
-	public Long getDataItemsTotalCount() {
+	public Long getDataItemsTotalCount()
+	{
 		return homeInfoFacade.getAllItemsCount();
 	}
+
 	@Override
-	public void doDeleteData(List<Integer> itemsToDelete) {
+	public void doDeleteData(List<Integer> itemsToDelete)
+	{
 		Iterator<Integer> iter = itemsToDelete.iterator();
-		while (iter.hasNext()) {
-			try {
+		while (iter.hasNext())
+		{
+			try
+			{
 				homeInfoFacade.removeItem(iter.next());
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				addErrorMessage(e.getMessage());
 			}
 		}
 	}
+
 	@Override
-	public void restoreCustomCredentials(Object customCredentials) {
-		// nothing to do here
+	public void restoreCustomCredentials(Object customCredentials)
+	{
 	}
+
 	@Override
-	public Object storeCustomCredentials() {
+	public Object storeCustomCredentials()
+	{
 		return null;
 	}
-
-
 }

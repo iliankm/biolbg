@@ -24,8 +24,8 @@ import com.biol.biolbg.entity.Usr;
 
 @Named("AppBean")
 @SessionScoped
-public class AppBean extends Base implements Serializable {
-
+public class AppBean extends Base implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private static final String LOCALE_COOKIE_NAME = "locale";
@@ -48,75 +48,110 @@ public class AppBean extends Base implements Serializable {
 	@EJB
 	private UsrFacade usrFacade;
 
-	private String getLocaleFromCookie() {
+	private String getLocaleFromCookie()
+	{
 		String locale = "";
 		FacesContext fc = FacesContext.getCurrentInstance();
 		Cookie cookie[] = ((HttpServletRequest)fc.getExternalContext().
 							getRequest()).getCookies();
-		if (cookie != null && cookie.length > 0) {
-			for (int i = 0; i < cookie.length; i++) {
-				if (cookie[i].getName().equals(LOCALE_COOKIE_NAME)) {
+
+		if (cookie != null && cookie.length > 0)
+		{
+			for (int i = 0; i < cookie.length; i++)
+			{
+				if (cookie[i].getName().equals(LOCALE_COOKIE_NAME))
+				{
 					locale = cookie[i].getValue();
 				}
 			}
 		}
+
 		return locale;
 	}
-	private void setLocaleInCookie( String locale ) {
+
+	private void setLocaleInCookie( String locale )
+	{
 		Cookie LocaleCookie = new Cookie(LOCALE_COOKIE_NAME, appLocale);
+
 		FacesContext fc = FacesContext.getCurrentInstance();
+
 		((HttpServletResponse)fc.getExternalContext().getResponse()).
 			addCookie(LocaleCookie);
 	}
-	private void addInfoMessageToLog() {
+
+	private void addInfoMessageToLog()
+	{
 		FacesContext facesCtx = FacesContext.getCurrentInstance();
+
 		HttpServletRequest request = (HttpServletRequest)facesCtx.getExternalContext().getRequest();
+
 		String msg = "Site accessed from: ".concat(request.getRemoteAddr());
+
 		BiolLogger.getLogger().info(msg);
 	}
-	public AppBean() {
+
+	public AppBean()
+	{
 		//add info message to log file
 		addInfoMessageToLog();
+
 		//initialize appLocale
 		String LocaleFromCookie = getLocaleFromCookie();
-		if ((LocaleFromCookie != "") && (LocaleFromCookie != null)) {
+
+		if ((LocaleFromCookie != "") && (LocaleFromCookie != null))
+		{
 			appLocale = LocaleFromCookie;
 		}
-		else {
+		else
+		{
 			appLocale = Locale.getDefault().getLanguage();
 		}
 	}
-	public String setBgLocale() {
+
+	public String setBgLocale()
+	{
 		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
 		viewRoot.setLocale(new Locale("bg"));
 		appLocale = "bg";
 		setLocaleInCookie(appLocale);
+
 		return "";
 	}
-	public String setEnLocale() {
+
+	public String setEnLocale()
+	{
 		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
 		viewRoot.setLocale(new Locale("en"));
 		appLocale = "en";
 		setLocaleInCookie(appLocale);
+
 		return "";
 	}
-	public String getAppLocale() {
+
+	public String getAppLocale()
+	{
 		return appLocale;
 	}
-	public Usr getLoggedUser() {
+
+	public Usr getLoggedUser()
+	{
 		return loggedUser;
 	}
-	public String login() {
 
+	public String login()
+	{
 		BiolLogger.getLogger().info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
 
 		loggedUser = new Usr();
 		isUserLoggedIn = false;
+
 		//check if username & password is provided
-		if ((username.trim().equals(""))||(password.trim().equals(""))) {
+		if ((username.trim().equals(""))||(password.trim().equals("")))
+		{
 			String errorText = messageResourcesBean.getMessage("provideUsernamePassword", null);
 			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
+
 			return "error";
 		}
 		//get Usr object from database with provided username
@@ -125,78 +160,102 @@ public class AppBean extends Base implements Serializable {
 
 		//check if Usr is with provided username and password
 		Boolean res = false;
-		if (usr != null) {
-			if (usr.getUsername().equals(username)) {
-				if (usr.getPassword().equals(password)) {
+		if (usr != null)
+		{
+			if (usr.getUsername().equals(username))
+			{
+				if (usr.getPassword().equals(password))
+				{
 					res = true;
 				}
 			}
 		}
-		if (!res) {
+
+		if (!res)
+		{
 			String errorText = messageResourcesBean.getMessage("invalidUsernamePassword", null);
 			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
+
 			return "error";
-		} else {
+		}
+		else
+		{
 			//update Usr entity with ip address and lastlogin date and time
 			HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-			try {
+			try
+			{
 				usrFacade.updateUsrAfterLogin(usr, request.getRemoteAddr());
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				addErrorMessage(e.getMessage());
 				return "error";
 			}
+
 			loggedUser = usr;
 			isUserLoggedIn = true;
+
 			return "loginok";
 		}
 	}
 
-	public String logout() {
+	public String logout()
+	{
 		loggedUser = new Usr();
 		isUserLoggedIn = false;
+
 		return "logout";
 	}
 
-	public Boolean getIsUserLoggedIn() {
+	public Boolean getIsUserLoggedIn()
+	{
 		return isUserLoggedIn;
 	}
 
-	public String getAppPath() {
+	public String getAppPath()
+	{
 		return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 	}
 
-	public Boolean getRenderLoginPanel() {
+	public Boolean getRenderLoginPanel()
+	{
 
 		return (isUserLoggedIn == false);
 	}
 
-	public Boolean getRenderLogoutPanel() {
+	public Boolean getRenderLogoutPanel()
+	{
 		return isUserLoggedIn;
 	}
 
-	public void setUsername(String username) {
+	public void setUsername(String username)
+	{
 		this.username = username;
 	}
 
-	public String getUsername() {
+	public String getUsername()
+	{
 		return username;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password)
+	{
 		this.password = password;
 	}
 
-	public String getPassword() {
+	public String getPassword()
+	{
 		return password;
 	}
 
-	public void setTimeZone(TimeZone timeZone) {
+	public void setTimeZone(TimeZone timeZone)
+	{
 		this.timeZone = timeZone;
 	}
 
-	public TimeZone getTimeZone() {
+	public TimeZone getTimeZone()
+	{
 		return timeZone;
 	}
-
 }

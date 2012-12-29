@@ -21,9 +21,15 @@ import com.biol.biolbg.entity.Producer;
 
 @Named("HomeBean")
 @RequestScoped
-public class HomeBean extends Base implements Serializable {
-
+public class HomeBean extends Base implements Serializable
+{
 	private static final long serialVersionUID = 1L;
+
+	private List<Group> groups = null;
+
+	private List<Producer> producers = null;
+
+	private List<HomeInfo> homeinfos = null;
 
 	@Inject
 	private ArticlesBean articlesBean;
@@ -40,26 +46,22 @@ public class HomeBean extends Base implements Serializable {
 	@EJB
 	private HomeInfoFacade homeInfoFacade;
 
-	private List<Group> groups = null;
-	private List<Producer> producers = null;
-	private List<HomeInfo> homeinfos = null;
-
 	@PostConstruct
-	public void postConstruct() {
-
+	public void postConstruct()
+	{
 		String groupsSortByField = null;
 		String producersSortByField = null;
 
-		if (appBean.getAppLocale().equals("en")) {
+		if (appBean.getAppLocale().equals("en"))
+		{
 
 			groupsSortByField = "o.nameen";
 			producersSortByField = "o.nameen";
-
-		} else {
-
+		}
+		else
+		{
 			groupsSortByField = "o.namebg";
 			producersSortByField = "o.namebg";
-
 		}
 
 		//fill groups
@@ -68,41 +70,45 @@ public class HomeBean extends Base implements Serializable {
 		producers = producerFacade.getAllItems(0, 0, producersSortByField, BaseList.SORT_ASC);
 		//fill home info
 		homeinfos = homeInfoFacade.getAllItems(0, 0, "o.id", BaseList.SORT_ASC);
-
 	}
 
-	public void setGroups(List<Group> groups) {
+	public void setGroups(List<Group> groups)
+	{
 		this.groups = groups;
 	}
 
-	public List<Group> getGroups() {
+	public List<Group> getGroups()
+	{
 		return groups;
 	}
 
-	public void setProducers(List<Producer> producers) {
+	public void setProducers(List<Producer> producers)
+	{
 		this.producers = producers;
 	}
 
-	public List<Producer> getProducers() {
+	public List<Producer> getProducers()
+	{
 		return producers;
 	}
 
-	public ArticlesBean getArticlesBean() {
+	public ArticlesBean getArticlesBean()
+	{
 		return articlesBean;
 	}
 
-	public void setHomeinfos(List<HomeInfo> homeinfos) {
+	public void setHomeinfos(List<HomeInfo> homeinfos)
+	{
 		this.homeinfos = homeinfos;
 	}
 
-	public List<HomeInfo> getHomeinfos() {
+	public List<HomeInfo> getHomeinfos()
+	{
 		return homeinfos;
 	}
 
-	public void setArticlesBean(ArticlesBean articlesBean) {
+	public void setArticlesBean(ArticlesBean articlesBean)
+	{
 		this.articlesBean = articlesBean;
 	}
-
-
-
 }

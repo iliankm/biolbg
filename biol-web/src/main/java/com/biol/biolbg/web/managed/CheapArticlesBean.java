@@ -23,9 +23,10 @@ import com.biol.biolbg.entity.Item;
 
 @Named("CheapArticlesBean")
 @RequestScoped
-public class CheapArticlesBean extends BaseList implements Serializable {
-
+public class CheapArticlesBean extends BaseList implements Serializable
+{
 	private static final long serialVersionUID = 1L;
+
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
 
 	@EJB
@@ -35,74 +36,89 @@ public class CheapArticlesBean extends BaseList implements Serializable {
 	private ItemImagesFilenameMapper itemImagesFilenameMapper;
 
 	@Override
-	public void doDeleteData(List<Integer> itemsToDelete) {
-		// nothing to do here
+	public void doDeleteData(List<Integer> itemsToDelete)
+	{
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
+	public void doLoadDataItems(Integer fromRow, Integer maxResults)
+	{
 		List<Item> dataItems = itemFacade.getCheapestItems(fromRow, maxResults);
+
 		setDataItems(dataItems);
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null) {
+		if (getDataItems() != null)
+		{
 			itemsImages = itemImagesFilenameMapper.getMap((List<Item>)this.getDataItems());
 		}
 	}
 
 	@Override
-	public Long getDataItemsTotalCount() {
+	public Long getDataItemsTotalCount()
+	{
 		return Long.valueOf(5);
 	}
 
 	@Override
-	public void init() {
+	public void init()
+	{
 		getPagerController().setShowRowsCount(1);
 	}
 
 	@Override
-	public void restoreCustomCredentials(Object customCredentials) {
-		// nothing to do here
+	public void restoreCustomCredentials(Object customCredentials)
+	{
 	}
 
 	@Override
-	public Object storeCustomCredentials() {
+	public Object storeCustomCredentials()
+	{
 		return null;
 	}
 
-	public void gotoPage(ActionEvent event) {
+	public void gotoPage(ActionEvent event)
+	{
 		Integer pageNumber = 1;
+
 		FacesContext context = FacesContext.getCurrentInstance();
+
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
 		String sPageNumber = params.get("pageNumber");
 
-		try {
+		try
+		{
 			pageNumber = Integer.parseInt(sPageNumber);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			pageNumber = 1;
 		}
 
 		getPagerController().setPageNumber(pageNumber);
-		loadDataItems();
 
+		loadDataItems();
 	}
 
-	public void setItemsImages(Map<Integer,String> itemsImages) {
+	public void setItemsImages(Map<Integer,String> itemsImages)
+	{
 		this.itemsImages = itemsImages;
 	}
 
-	public Map<Integer,String> getItemsImages() {
+	public Map<Integer,String> getItemsImages()
+	{
 		return itemsImages;
 	}
 
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
+	{
 		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
 	}
 
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
+	{
 		return itemImagesFilenameMapper;
 	}
-
-
 }

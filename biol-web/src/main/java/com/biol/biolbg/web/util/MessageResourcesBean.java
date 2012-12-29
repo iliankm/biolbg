@@ -11,22 +11,25 @@ import javax.inject.Named;
 
 @Named
 @ApplicationScoped
-public class MessageResourcesBean implements Serializable {
-
+public class MessageResourcesBean implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
-	public String getMessage(String key, Object params[]) {
-
+	public String getMessage(String key, Object params[])
+	{
 		String text = null;
 
-		try {
+		try
+		{
 			text = getBundle().getString(key);
 		}
-		catch (MissingResourceException e) {
+		catch (MissingResourceException e)
+		{
 			text = "?? key " + key + " not found ??";
 		}
 
-		if(params != null) {
+		if (params != null)
+		{
 			MessageFormat mf = new MessageFormat(text, getLocale());
 			text = mf.format(params, new StringBuffer(), null).toString();
 		}
@@ -34,21 +37,19 @@ public class MessageResourcesBean implements Serializable {
 		return text;
 	}
 
-	public ResourceBundle getBundle() {
-
+	public ResourceBundle getBundle()
+	{
 		ResourceBundle bundle =	ResourceBundle.getBundle("com.biol.biolbg.web.messages.messages", getLocale());
 
 		return bundle;
 	}
 
-	private Locale getLocale() {
-
+	private Locale getLocale()
+	{
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		Locale locale = context.getViewRoot().getLocale();
 
 		return locale;
-
 	}
-
 }

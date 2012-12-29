@@ -15,8 +15,8 @@ import com.biol.biolbg.entity.Producer;
 
 @Named("GalleryParamsBean")
 @SessionScoped
-public class GalleryParamsBean extends Base implements Serializable {
-
+public class GalleryParamsBean extends Base implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private Group paramGroup;
@@ -27,26 +27,34 @@ public class GalleryParamsBean extends Base implements Serializable {
 	private GroupFacade groupFacade;
 
 	@PostConstruct
-	public void postConstruct() {
+	public void postConstruct()
+	{
 		paramProducer = null;
 		paramGroup = getRandomGroup();
 	}
 
-	public Group getParamGroup() {
+	public Group getParamGroup()
+	{
 		return paramGroup;
 	}
-	public void setParamGroup(Group paramGroup) {
+
+	public void setParamGroup(Group paramGroup)
+	{
 		this.paramGroup = paramGroup;
 	}
-	public Producer getParamProducer() {
+
+	public Producer getParamProducer()
+	{
 		return paramProducer;
 	}
-	public void setParamProducer(Producer paramProducer) {
+
+	public void setParamProducer(Producer paramProducer)
+	{
 		this.paramProducer = paramProducer;
 	}
 
-	private Group getRandomGroup() {
+	private Group getRandomGroup()
+	{
 		return groupFacade.getRandomGroup();
 	}
-
 }

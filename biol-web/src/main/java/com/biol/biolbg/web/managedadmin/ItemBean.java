@@ -19,8 +19,8 @@ import com.biol.biolbg.entity.Item;
 
 @Named("ItemBean")
 @RequestScoped
-public class ItemBean extends BaseEditItem implements Serializable {
-
+public class ItemBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
@@ -40,51 +40,69 @@ public class ItemBean extends BaseEditItem implements Serializable {
 	private AppBean appBean;
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		Item res = itemFacade.createNewItem();
+
 		//if there is instance of Item - set the same Group and Producer in res
-		if (getItem() != null) {
-			if (getItem() instanceof Item) {
+		if (getItem() != null)
+		{
+			if (getItem() instanceof Item)
+			{
 				Item item = (Item)getItem();
 				res.setGroup(item.getGroup());
 				res.setProducer(item.getProducer());
 			}
 		}
+
 		return res;
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		Boolean res = false;
-		try {
+		try
+		{
 			Item item = (Item)getItem();
-			if (item.getId() > 0) {
+
+			if (item.getId() > 0)
+			{
 				itemFacade.updateItem(item);
-			} else {
+			}
+			else
+			{
 				itemFacade.addItem(item);
 			}
 			res = true;
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
+
 		return res;
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		return itemFacade.findItem(id);
 	}
 
-	public List<SelectItem> getGroupsSelectItems() {
+	public List<SelectItem> getGroupsSelectItems()
+	{
 		return groupsSelectItems;
 	}
 
-	public List<SelectItem> getProducersSelectItems() {
+	public List<SelectItem> getProducersSelectItems()
+	{
 		return producersSelectItems;
 	}
 
 	@Override
-	public void init() {
+	public void init()
+	{
 
 		//fill groupsSelectItems from GroupBean method
 		groupsSelectItems =
@@ -93,85 +111,112 @@ public class ItemBean extends BaseEditItem implements Serializable {
 		//fill producersSelectItems from ProducerBean method
 		producersSelectItems =
 			getProducerBean().producersSelectItemList("o.id", BaseList.SORT_ASC, appBean.getAppLocale());
-
 	}
 
-	public Boolean getPromotion() {
-		if (getItem() instanceof Item) {
+	public Boolean getPromotion()
+	{
+		if (getItem() instanceof Item)
+		{
 			Item item = (Item)getItem();
 			return (item.getPromotion() == 1);
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
 
-	public void setPromotion(Boolean promotion) {
-		if (getItem() instanceof Item) {
+	public void setPromotion(Boolean promotion)
+	{
+		if (getItem() instanceof Item)
+		{
 			Item item = (Item)getItem();
-			if (promotion) {
+			if (promotion)
+			{
 				item.setPromotion(1);
-			} else {
+			}
+			else
+			{
 				item.setPromotion(0);
 			}
 		}
-
 	}
-	public Boolean getNewitem() {
-		if (getItem() instanceof Item) {
+
+	public Boolean getNewitem()
+	{
+		if (getItem() instanceof Item)
+		{
 			Item item = (Item)getItem();
 			return (item.getNewitem() == 1);
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
 
-	public void setNewitem(Boolean newitem) {
-		if (getItem() instanceof Item) {
+	public void setNewitem(Boolean newitem)
+	{
+		if (getItem() instanceof Item)
+		{
 			Item item = (Item)getItem();
-			if (newitem) {
+			if (newitem)
+			{
 				item.setNewitem(1);
-			} else {
+			}
+			else
+			{
 				item.setNewitem(0);
 			}
 		}
-
 	}
-	public Boolean getBestsell() {
-		if (getItem() instanceof Item) {
+
+	public Boolean getBestsell()
+	{
+		if (getItem() instanceof Item)
+		{
 			Item item = (Item)getItem();
 			return (item.getBestsell() == 1);
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
 
-	public void setBestsell(Boolean bestsell) {
-		if (getItem() instanceof Item) {
+	public void setBestsell(Boolean bestsell)
+	{
+		if (getItem() instanceof Item)
+		{
 			Item item = (Item)getItem();
-			if (bestsell) {
+			if (bestsell)
+			{
 				item.setBestsell(1);
-			} else {
+			}
+			else
+			{
 				item.setBestsell(0);
 			}
 		}
-
 	}
 
-	public void setGroupBean(GroupBean groupBean) {
+	public void setGroupBean(GroupBean groupBean)
+	{
 		this.groupBean = groupBean;
 	}
 
-	public GroupBean getGroupBean() {
+	public GroupBean getGroupBean()
+	{
 		return groupBean;
 	}
 
-	public void setProducerBean(ProducerBean producerBean) {
+	public void setProducerBean(ProducerBean producerBean)
+	{
 		this.producerBean = producerBean;
 	}
 
-	public ProducerBean getProducerBean() {
+	public ProducerBean getProducerBean()
+	{
 		return producerBean;
 	}
-
-
 }

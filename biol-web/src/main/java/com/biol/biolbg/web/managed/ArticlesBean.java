@@ -28,8 +28,8 @@ import com.biol.biolbg.entity.Producer;
 
 @Named("ArticlesBean")
 @RequestScoped
-public class ArticlesBean extends BaseList implements Serializable {
-
+public class ArticlesBean extends BaseList implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@Inject
@@ -51,64 +51,88 @@ public class ArticlesBean extends BaseList implements Serializable {
 	ItemFacade itemFacade;
 
 	private String name = "";
+
 	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
+
 	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
+
 	private Map<Integer,String> itemsImages = new HashMap<Integer,String>();
 
-	//-----------------CONSTRUCTOR-------------------------------------
-	public ArticlesBean() {
+	public ArticlesBean()
+	{
 		getPagerController().setShowRowsCount(4);
 	}
 
-	//-----------------OVERRIDEN METHODS-------------------------------
 	@Override
-	public void doDeleteData(List<Integer> itemsToDelete) {
-		// nothing to do here
+	public void doDeleteData(List<Integer> itemsToDelete)
+	{
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
-		try {
-			if ((name == null)||("".equals(name))) {
+	public void doLoadDataItems(Integer fromRow, Integer maxResults)
+	{
+		try
+		{
+			if ((name == null)||("".equals(name)))
+			{
 				setDataItems(getItemsByGroupAndProducer(fromRow, maxResults));
-			} else {
+			}
+			else
+			{
 				setDataItems(getItemsByName(fromRow, maxResults));
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null) {
+		if (getDataItems() != null)
+		{
 			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
 		}
 	}
 
 	@Override
-	public Long getDataItemsTotalCount() {
+	public Long getDataItemsTotalCount()
+	{
 		Long itemsCount = Long.valueOf(0);
-		try {
-			if ((name == null)||(name == "")) {
+		try
+		{
+			if ((name == null)||(name == ""))
+			{
 				itemsCount = getAllItemsCount();
-			} else {
+			}
+			else
+			{
 				itemsCount = getItemsByNameCount();
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
+
 		return itemsCount;
 	}
 
 	@Override
-	public void init() {
-		if (getSortByFieldName() == "") {
-			if (appBean.getAppLocale().equals("bg")) {
+	public void init()
+	{
+		if (getSortByFieldName() == "")
+		{
+			if (appBean.getAppLocale().equals("bg"))
+			{
 				setSortByFieldName("o.namebg");
-			} else {
-				if (appBean.getAppLocale().equals("en")) {
+			}
+			else
+			{
+				if (appBean.getAppLocale().equals("en"))
+				{
 					setSortByFieldName("o.nameen");
 				}
 			}
@@ -117,171 +141,208 @@ public class ArticlesBean extends BaseList implements Serializable {
 		//fill groupsSelectItems from GroupBean method
 		String groupsSortByField = null;
 		String producersSortByField = null;
-		if (appBean.getAppLocale().equals("en")) {
+
+		if (appBean.getAppLocale().equals("en"))
+		{
 			groupsSortByField = "o.nameen";
 			producersSortByField = "o.nameen";
-		} else {
+		}
+		else
+		{
 			groupsSortByField = "o.namebg";
 			producersSortByField = "o.namebg";
 		}
-		try {
+
+		try
+		{
 			groupsSelectItems =
 				getGroupBean().groupsSelectItemList(groupsSortByField, SORT_ASC, appBean.getAppLocale());
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
-		//fill producersSelectItems from ProducerBean method
 
-		try {
+		//fill producersSelectItems from ProducerBean method
+		try
+		{
 			producersSelectItems =
 				getProducerBean().producersSelectItemList(producersSortByField, BaseList.SORT_ASC, appBean.getAppLocale());
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
 	}
 
 	@Override
-	public void restoreCustomCredentials(Object customCredentials) {
+	public void restoreCustomCredentials(Object customCredentials)
+	{
 	}
 
 	@Override
-	public Object storeCustomCredentials() {
+	public Object storeCustomCredentials()
+	{
 		return null;
 	}
 
-	public void findItemsByName(ActionEvent event) {
+	public void findItemsByName(ActionEvent event)
+	{
 		name = name.trim();
 		getGalleryParamsBean().setParamGroup(null);
 		getGalleryParamsBean().setParamProducer(null);
 		loadDataItems();
-
-		//if (name.trim() == "") {
-		//	addErrorMessage(getAppBean().getMessageResourceString("enterNameForSearch", null));
-		//} else {
-		//	group = null;
-		//	producer = null;
-		//	loadDataItems();
-		//}
 	}
 
-	//---------------PRIVATE METHODS--------------------------
-	private List<Item> getItemsByGroupAndProducer(Integer fromRow, Integer maxResults) {
+	private List<Item> getItemsByGroupAndProducer(Integer fromRow, Integer maxResults)
+	{
 		Group group = getGalleryParamsBean().getParamGroup();
+
 		Producer producer = getGalleryParamsBean().getParamProducer();
+
 		Integer groupId = 0;
-		if (group != null) {
+		if (group != null)
+		{
 			groupId = group.getId();
 		}
+
 		Integer producerId = 0;
-		if (producer != null) {
+		if (producer != null)
+		{
 			producerId = producer.getId();
 		}
+
 		return itemFacade.getAllItems(groupId, producerId, fromRow, maxResults, getSortByFieldName(), getSortType());
 	}
 
-	private List<Item> getItemsByName(Integer fromRow, Integer maxResults) {
+	private List<Item> getItemsByName(Integer fromRow, Integer maxResults)
+	{
 		return itemFacade.getItemsByName(name, fromRow, maxResults, getSortByFieldName(), getSortType());
 	}
 
-	private Long getItemsByNameCount() {
+	private Long getItemsByNameCount()
+	{
 		return itemFacade.getItemsByNameCount(name);
 	}
 
-	private Long getAllItemsCount() throws NamingException {
+	private Long getAllItemsCount() throws NamingException
+	{
 		Group group = getGalleryParamsBean().getParamGroup();
+
 		Producer producer = getGalleryParamsBean().getParamProducer();
 
 		Integer groupId = 0;
-		if (group != null) {
+		if (group != null)
+		{
 			groupId = group.getId();
 		}
+
 		Integer producerId = 0;
-		if (producer != null) {
+		if (producer != null)
+		{
 			producerId = producer.getId();
 		}
+
 		return itemFacade.getAllItemsCount(groupId, producerId);
 	}
 
-	//------------------GETTERS AND SETTERS---------------------------
-	public Group getGroup() {
+	public Group getGroup()
+	{
 		return getGalleryParamsBean().getParamGroup();
 	}
 
-	public void setGroup(Group group) {
+	public void setGroup(Group group)
+	{
 		getGalleryParamsBean().setParamGroup(group);
 	}
 
-	public Producer getProducer() {
+	public Producer getProducer()
+	{
 		return getGalleryParamsBean().getParamProducer();
 	}
 
-	public void setProducer(Producer producer) {
+	public void setProducer(Producer producer)
+	{
 		getGalleryParamsBean().setParamProducer(producer);
 	}
 
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public List<SelectItem> getGroupsSelectItems() {
+	public List<SelectItem> getGroupsSelectItems()
+	{
 		return groupsSelectItems;
 	}
 
-	public void setGroupsSelectItems(List<SelectItem> groupsSelectItems) {
+	public void setGroupsSelectItems(List<SelectItem> groupsSelectItems)
+	{
 		this.groupsSelectItems = groupsSelectItems;
 	}
 
-	public List<SelectItem> getProducersSelectItems() {
+	public List<SelectItem> getProducersSelectItems()
+	{
 		return producersSelectItems;
 	}
 
-	public void setProducersSelectItems(List<SelectItem> producersSelectItems) {
+	public void setProducersSelectItems(List<SelectItem> producersSelectItems)
+	{
 		this.producersSelectItems = producersSelectItems;
 	}
 
-	public Map<Integer, String> getItemsImages() {
+	public Map<Integer, String> getItemsImages()
+	{
 		return itemsImages;
 	}
 
-	public void setItemsImages(Map<Integer, String> itemsImages) {
+	public void setItemsImages(Map<Integer, String> itemsImages)
+	{
 		this.itemsImages = itemsImages;
 	}
 
-	public void setGalleryParamsBean(GalleryParamsBean galleryParamsBean) {
+	public void setGalleryParamsBean(GalleryParamsBean galleryParamsBean)
+	{
 		this.galleryParamsBean = galleryParamsBean;
 	}
 
-	public GalleryParamsBean getGalleryParamsBean() {
+	public GalleryParamsBean getGalleryParamsBean()
+	{
 		return galleryParamsBean;
 	}
 
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
+	{
 		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
 	}
 
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
+	{
 		return itemImagesFilenameMapper;
 	}
 
-	public void setProducerBean(ProducerBean producerBean) {
+	public void setProducerBean(ProducerBean producerBean)
+	{
 		this.producerBean = producerBean;
 	}
 
-	public ProducerBean getProducerBean() {
+	public ProducerBean getProducerBean()
+	{
 		return producerBean;
 	}
 
-	public void setGroupBean(GroupBean groupBean) {
+	public void setGroupBean(GroupBean groupBean)
+	{
 		this.groupBean = groupBean;
 	}
 
-	public GroupBean getGroupBean() {
+	public GroupBean getGroupBean()
+	{
 		return groupBean;
 	}
-
-
 }

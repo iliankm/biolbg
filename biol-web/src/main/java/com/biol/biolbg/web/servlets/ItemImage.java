@@ -18,8 +18,8 @@ import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 /**
  * Servlet implementation class ItemImage
  */
-public class ItemImage extends HttpServlet {
-
+public class ItemImage extends HttpServlet
+{
 	private static final long serialVersionUID = 1L;
 
 	private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
@@ -29,6 +29,7 @@ public class ItemImage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		EnvVarsResolver envVarsResolver = new EnvVarsResolver();
+
 		String imagesPathUnresolved = request.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
 		String imagesPath = envVarsResolver.resolve(imagesPathUnresolved);
 
@@ -38,7 +39,9 @@ public class ItemImage extends HttpServlet {
 		{
 			return;
 		}
+
 		File imageFile = new File(imagesPath, imageName);
+
 		if (imageFile.exists())
 		{
 			//determine the content type of file - if it's not an image quit

@@ -15,51 +15,61 @@ import com.biol.biolbg.entity.Producer;
 
 @Named("ProducersListBean")
 @RequestScoped
-public class ProducersListBean extends BaseList implements Serializable {
-
+public class ProducersListBean extends BaseList implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private ProducerFacade producerFacade;
 
 	@Override
-	public void doDeleteData(List<Integer> itemsToDelete) {
+	public void doDeleteData(List<Integer> itemsToDelete)
+	{
 		Iterator<Integer> iter = itemsToDelete.iterator();
-		while (iter.hasNext()) {
-			try {
+
+		while (iter.hasNext())
+		{
+			try
+			{
 				producerFacade.removeItem(iter.next());
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				addErrorMessage(e.getMessage());
 			}
 		}
 	}
 
 	@Override
-	public void doLoadDataItems(Integer fromRow, Integer maxResults) {
+	public void doLoadDataItems(Integer fromRow, Integer maxResults)
+	{
 		List<Producer> dataItems = producerFacade.getAllItems(fromRow, maxResults, getSortByFieldName(), getSortType());
 		setDataItems(dataItems);
 	}
 
 	@Override
-	public Long getDataItemsTotalCount() {
+	public Long getDataItemsTotalCount()
+	{
 		return producerFacade.getAllItemsCount();
 	}
 
 	@Override
-	public void init() {
-		if (getSortByFieldName() == "") {
+	public void init()
+	{
+		if (getSortByFieldName() == "")
+		{
 			setSortByFieldName("o.id");
 		}
 	}
 
 	@Override
-	public void restoreCustomCredentials(Object customCredentials) {
-		// nothing to do here
+	public void restoreCustomCredentials(Object customCredentials)
+	{
 	}
 
 	@Override
-	public Object storeCustomCredentials() {
+	public Object storeCustomCredentials()
+	{
 		return null;
 	}
-
 }

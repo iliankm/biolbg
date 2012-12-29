@@ -9,49 +9,50 @@ import javax.faces.context.FacesContext;
 
 import com.biol.biolbg.web.util.cdi.EnvVarsResolver;
 
-public class BiolLogger {
-	
-	private BiolLogger() {
-	}
-	
+public class BiolLogger
+{
 
-	static 
+	private BiolLogger()
+	{
+	}
+
+	static
 	{
 		Logger parentLogger = Logger.getLogger("com.biol");
-		
+
 		FacesContext facesCtx = FacesContext.getCurrentInstance();
 		EnvVarsResolver envVarsResolver = new EnvVarsResolver();
 		String logPathUnresolved = facesCtx.getExternalContext().getInitParameter("logPath");
 		String logPath = envVarsResolver.resolve(logPathUnresolved);
-		try 
+
+		try
 		{
 			int limit = 1024 * 1024;
 			FileHandler handler = new FileHandler(logPath, limit, 1, true);
 			handler.setFormatter(new SimpleFormatter());
 			parentLogger.addHandler(handler);
 			parentLogger.setUseParentHandlers(false);
-		} 
-		catch (SecurityException e) 
+		}
+		catch (SecurityException e)
 		{
 			e.printStackTrace();
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static Logger logger = Logger.getLogger("com.biol.biolbg");
-	
+
 	static
 	{
 		logger.setUseParentHandlers(true);
 		logger.setLevel(Level.ALL);
 	}
-	
-	public static Logger getLogger() {
+
+	public static Logger getLogger()
+	{
 		return logger;
 	}
-	
-
 }

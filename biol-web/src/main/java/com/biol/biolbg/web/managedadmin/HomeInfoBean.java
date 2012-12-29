@@ -13,43 +13,53 @@ import com.biol.biolbg.entity.HomeInfo;
 
 @Named("HomeInfoBean")
 @RequestScoped
-public class HomeInfoBean extends BaseEditItem implements Serializable {
-
+public class HomeInfoBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private HomeInfoFacade homeInfoFacade;
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		return homeInfoFacade.createNewItem();
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		Boolean res = false;
-		try {
+
+		try
+		{
 			HomeInfo item = (HomeInfo)getItem();
-			if (item.getId() > 0) {
+			if (item.getId() > 0)
+			{
 				homeInfoFacade.updateItem(item);
-			} else {
+			}
+			else
+			{
 				homeInfoFacade.addItem(item);
 			}
 			res = true;
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			addErrorMessage(e.getMessage());
 		}
+
 		return res;
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		return homeInfoFacade.findItem(id);
 	}
 
 	@Override
-	public void init() {
-		// nothing to do here
+	public void init()
+	{
 	}
-
 }

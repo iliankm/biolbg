@@ -17,7 +17,6 @@ import com.biol.biolbg.entity.Item;
 @Named("ViewArticleBean")
 @RequestScoped
 public class ViewArticleBean extends BaseEditItem implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@EJB
@@ -30,57 +29,70 @@ public class ViewArticleBean extends BaseEditItem implements Serializable {
 	private AppBean appBean;
 
 	@Override
-	public Boolean getIsViewItemOnly() {
+	public Boolean getIsViewItemOnly()
+	{
 		return true;
 	}
 
 	@Override
-	public Object createNewItem() {
+	public Object createNewItem()
+	{
 		return itemFacade.createNewItem();
 	}
 
 	@Override
-	public Boolean doSaveData() {
+	public Boolean doSaveData()
+	{
 		return true;
 	}
 
 	@Override
-	public Object findItemById(Integer id) {
+	public Object findItemById(Integer id)
+	{
 		return itemFacade.findItem(id);
 	}
 
 	@Override
-	public void init() {
-		// nothing to do here
+	public void init()
+	{
 	}
 
 	//determine the file image for the given itemId
-	public String getImageFileName() {
+	public String getImageFileName()
+	{
 		Item item_ = (Item) getItem();
 
 		return itemImagesFilenameMapper.getSingle(item_);
 	}
 
-	public String getLocalizedItemName() {
+	public String getLocalizedItemName()
+	{
 		Item item = (Item)getItem();
-		if (item != null) {
-			if (appBean.getAppLocale().equals("en")) {
+
+		if (item != null)
+		{
+			if (appBean.getAppLocale().equals("en"))
+			{
 				return item.getNameen();
-			} else {
+			}
+			else
+			{
 				return item.getNamebg();
 			}
-		} else {
+		}
+		else
+		{
 			return "";
 		}
 	}
 
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
+	{
 		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
 	}
 
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
+	{
 		return itemImagesFilenameMapper;
 	}
-
-
 }

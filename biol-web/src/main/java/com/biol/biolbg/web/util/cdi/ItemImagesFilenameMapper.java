@@ -14,8 +14,8 @@ import com.biol.biolbg.entity.Item;
 import com.biol.biolbg.web.util.FileUtil;
 
 @Named("ItemImagesFilenameMapper")
-public class ItemImagesFilenameMapper implements Serializable{
-
+public class ItemImagesFilenameMapper implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	public static final String IMAGES_PATH = "imagesPath";
@@ -65,16 +65,13 @@ public class ItemImagesFilenameMapper implements Serializable{
 		this.envVarsResolver = envVarsResolver;
 	}
 
-
 	public EnvVarsResolver getEnvVarsResolver()
 	{
 		return envVarsResolver;
 	}
 
-
 	public String getImagesPath()
 	{
 		return imagesPath;
 	}
-
 }

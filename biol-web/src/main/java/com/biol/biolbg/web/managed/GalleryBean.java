@@ -26,8 +26,8 @@ import com.biol.biolbg.entity.Producer;
 
 @Named("GalleryBean")
 @RequestScoped
-public class GalleryBean extends Base implements Serializable {
-
+public class GalleryBean extends Base implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private List<Item> items;
@@ -54,9 +54,11 @@ public class GalleryBean extends Base implements Serializable {
 	@EJB
 	private ProducerFacade producerFacade;
 
-	public void preRenderView(javax.faces.event.ComponentSystemEvent event) {
+	public void preRenderView(javax.faces.event.ComponentSystemEvent event)
+	{
 		if (items == null)
 			items = new ArrayList<Item>();
+
 		items.clear();
 
 		groups = getAllGroups();
@@ -64,55 +66,79 @@ public class GalleryBean extends Base implements Serializable {
 
 		Integer groupId = 0;
 		Integer producerId = 0;
-		if (getGalleryParamsBean().getParamGroup() != null) {
+
+		if (getGalleryParamsBean().getParamGroup() != null)
+		{
 			groupId = getGalleryParamsBean().getParamGroup().getId();
 		}
-		if (getGalleryParamsBean().getParamProducer() != null) {
+
+		if (getGalleryParamsBean().getParamProducer() != null)
+		{
 			producerId = getGalleryParamsBean().getParamProducer().getId();
 		}
-		if (groupId == 0 && producerId == 0) {
+
+		if (groupId == 0 && producerId == 0)
+		{
 			items = new ArrayList<Item>();
 		}
-		else {
+		else
+		{
 			items = itemFacade.getAllItems(groupId, producerId, 0, 1000, "o.id", BaseList.SORT_ASC);
 		}
 	}
 
-	public void setParamGroup(Group paramGroup) {
+	public void setParamGroup(Group paramGroup)
+	{
 		getGalleryParamsBean().setParamGroup(paramGroup);
 	}
-	public Group getParamGroup() {
+
+	public Group getParamGroup()
+	{
 		return getGalleryParamsBean().getParamGroup();
 	}
-	public void setParamProducer(Producer paramProducer) {
+
+	public void setParamProducer(Producer paramProducer)
+	{
 		getGalleryParamsBean().setParamProducer(paramProducer);
 	}
-	public Producer getParamProducer() {
+
+	public Producer getParamProducer()
+	{
 		return getGalleryParamsBean().getParamProducer();
 	}
-	public void setItems(List<Item> items) {
+
+	public void setItems(List<Item> items)
+	{
 		this.items = items;
 	}
 	public List<Item> getItems() {
 		return items;
 	}
-	public List<Group> getGroups() {
+
+	public List<Group> getGroups()
+	{
 		return groups;
 	}
-	public void setGroupsSelectItems(List<Group> groups) {
+
+	public void setGroupsSelectItems(List<Group> groups)
+	{
 		this.groups = groups;
 	}
-	public List<Producer> getProducers() {
+
+	public List<Producer> getProducers()
+	{
 		return producers;
 	}
-	public void setProducers(List<Producer> producers) {
+
+	public void setProducers(List<Producer> producers)
+	{
 		this.producers = producers;
 	}
+
 	public Map<Integer, String> getImageName()
 	{
 		Map<Integer, String> res = new AbstractMap<Integer, String>()
 		{
-
 			@Override
 			public String get(Object key)
 			{
@@ -125,6 +151,7 @@ public class GalleryBean extends Base implements Serializable {
 				{
 					itemId = -1;
 				}
+
 				return itemImagesFilenameMapper.getSingle(itemId);
 			}
 
@@ -138,47 +165,55 @@ public class GalleryBean extends Base implements Serializable {
 		return res;
 	}
 
-	//************PRIVATE METHODS************
-	private List<Group> getAllGroups() {
-
+	private List<Group> getAllGroups()
+	{
 		String groupsSortByField;
 
-		if (appBean.getAppLocale().equals("en")) {
+		if (appBean.getAppLocale().equals("en"))
+		{
 			groupsSortByField = "o.nameen";
-		} else {
+		}
+		else
+		{
 			groupsSortByField = "o.namebg";
 		}
 
 		return groupFacade.getAllItems(0, 0, groupsSortByField, BaseList.SORT_ASC);
 	}
 
-	private List<Producer> getAllProducers() {
-
+	private List<Producer> getAllProducers()
+	{
 		String producersSortByField = null;
 
-		if (appBean.getAppLocale().equals("en")) {
+		if (appBean.getAppLocale().equals("en"))
+		{
 			producersSortByField = "o.nameen";
-		} else {
+		}
+		else
+		{
 			producersSortByField = "o.namebg";
 		}
 
 		return producerFacade.getAllItems(0, 0, producersSortByField, BaseList.SORT_ASC);
 	}
 
-	public void setGalleryParamsBean(GalleryParamsBean galleryParamsBean) {
+	public void setGalleryParamsBean(GalleryParamsBean galleryParamsBean)
+	{
 		this.galleryParamsBean = galleryParamsBean;
 	}
 
-	public GalleryParamsBean getGalleryParamsBean() {
+	public GalleryParamsBean getGalleryParamsBean()
+	{
 		return galleryParamsBean;
 	}
 
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper) {
+	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
+	{
 		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
 	}
 
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper() {
+	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
+	{
 		return itemImagesFilenameMapper;
 	}
-
 }
