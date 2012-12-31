@@ -74,6 +74,7 @@
 
 
 	<modules>
+		<module>../biol-util</module>
 		<module>../biol-jpa</module>
 		<module>../biol-ejb-client</module>
 		<module>../biol-ejb</module>
