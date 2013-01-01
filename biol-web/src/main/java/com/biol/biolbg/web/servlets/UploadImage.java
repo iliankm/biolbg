@@ -16,7 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.biol.biolbg.web.util.FileUtil;
-import com.biol.biolbg.web.util.cdi.EnvVarsResolver;
+import com.biol.biolbg.util.configuration.EnvVarsResolver;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 

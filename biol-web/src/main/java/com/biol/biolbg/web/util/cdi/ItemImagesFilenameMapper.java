@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.biol.biolbg.entity.Item;
+import com.biol.biolbg.util.configuration.EnvVarsResolver;
 import com.biol.biolbg.web.util.FileUtil;
 
 @Named("ItemImagesFilenameMapper")

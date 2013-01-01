@@ -2,7 +2,6 @@ package com.biol.biolbg.web.util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -24,7 +23,7 @@ public class EJBLocator
 		}
 		catch (NamingException e)
 		{
-			BiolLogger.getLogger().log(Level.ALL, "", e);
+			e.printStackTrace();
 		}
 		ejbInterfaces = new ConcurrentHashMap<String, Object>();
 	}
@@ -52,7 +51,7 @@ public class EJBLocator
 			}
 			catch (NamingException e)
 			{
-				BiolLogger.getLogger().log(Level.ALL, "", e);
+				e.printStackTrace();
 			}
 			ejbInterfaces.put(facadeInterfaceClassname, ejbInterface);
 		}

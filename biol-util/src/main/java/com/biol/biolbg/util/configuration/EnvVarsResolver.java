@@ -1,4 +1,4 @@
-package com.biol.biolbg.web.util.cdi;
+package com.biol.biolbg.util.configuration;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;

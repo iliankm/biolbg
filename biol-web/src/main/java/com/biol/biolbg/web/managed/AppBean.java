@@ -3,7 +3,9 @@ package com.biol.biolbg.web.managed;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIViewRoot;
@@ -16,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.BiolLogger;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
@@ -45,8 +46,30 @@ public class AppBean extends Base implements Serializable
 	@Inject
 	private MessageResourcesBean messageResourcesBean;
 
+	@Inject
+	private transient Logger log;
+
 	@EJB
 	private UsrFacade usrFacade;
+
+	@PostConstruct
+	public void postConstruct()
+	{
+		//add info message to log file
+		addInfoMessageToLog();
+
+		//initialize appLocale
+		String LocaleFromCookie = getLocaleFromCookie();
+
+		if ((LocaleFromCookie != "") && (LocaleFromCookie != null))
+		{
+			appLocale = LocaleFromCookie;
+		}
+		else
+		{
+			appLocale = Locale.getDefault().getLanguage();
+		}
+	}
 
 	private String getLocaleFromCookie()
 	{
@@ -87,25 +110,7 @@ public class AppBean extends Base implements Serializable
 
 		String msg = "Site accessed from: ".concat(request.getRemoteAddr());
 
-		BiolLogger.getLogger().info(msg);
-	}
-
-	public AppBean()
-	{
-		//add info message to log file
-		addInfoMessageToLog();
-
-		//initialize appLocale
-		String LocaleFromCookie = getLocaleFromCookie();
-
-		if ((LocaleFromCookie != "") && (LocaleFromCookie != null))
-		{
-			appLocale = LocaleFromCookie;
-		}
-		else
-		{
-			appLocale = Locale.getDefault().getLanguage();
-		}
+		log.info(msg);
 	}
 
 	public String setBgLocale()
@@ -140,7 +145,7 @@ public class AppBean extends Base implements Serializable
 
 	public String login()
 	{
-		BiolLogger.getLogger().info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
+		log.info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
 
 		loggedUser = new Usr();
 		isUserLoggedIn = false;

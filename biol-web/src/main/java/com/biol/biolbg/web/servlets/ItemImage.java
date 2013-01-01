@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.biol.biolbg.web.util.cdi.EnvVarsResolver;
+import com.biol.biolbg.util.configuration.EnvVarsResolver;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 /**
