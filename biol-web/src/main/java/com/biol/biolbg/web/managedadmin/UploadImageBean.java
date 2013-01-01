@@ -8,6 +8,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.FileUtil;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
@@ -22,7 +23,10 @@ public class UploadImageBean extends BaseEditItem implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private ItemImagesFilenameMapper itemImagesFilenameMapper;
+	ApplicationConfiguration applicationConfiguration;
+
+	@Inject
+	ItemImagesFilenameMapper itemImagesFilenameMapper;
 
 	@EJB
 	private ItemFacade itemFacade;
@@ -35,7 +39,7 @@ public class UploadImageBean extends BaseEditItem implements Serializable
 
 	public void deleteImage(ActionEvent event)
 	{
-		String imagesPath = itemImagesFilenameMapper.getImagesPath();
+		String imagesPath = applicationConfiguration.getImagesPath();
 
 		String itemId = getRealItemId().toString();
 
@@ -71,15 +75,5 @@ public class UploadImageBean extends BaseEditItem implements Serializable
 	@Override
 	public void init()
 	{
-	}
-
-	public void setItemImagesFilenameMapper(ItemImagesFilenameMapper itemImagesFilenameMapper)
-	{
-		this.itemImagesFilenameMapper = itemImagesFilenameMapper;
-	}
-
-	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
-	{
-		return itemImagesFilenameMapper;
 	}
 }

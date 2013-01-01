@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.biol.biolbg.web.util.FileUtil;
-import com.biol.biolbg.util.configuration.EnvVarsResolver;
-import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
+import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 
 
 /**
@@ -29,6 +29,9 @@ public class UploadImage extends HttpServlet
 
 	private static final Integer MAX_IMAGE_FILE_SIZE = 300000;
 
+	@Inject
+	ApplicationConfiguration applicationConfiguration;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		doPost(request, response);
@@ -36,9 +39,7 @@ public class UploadImage extends HttpServlet
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		EnvVarsResolver envVarsResolver = new EnvVarsResolver();
-		String uploadImagePathUnresolved = request.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
-		String uploadImagePath = envVarsResolver.resolve(uploadImagePathUnresolved);
+		String uploadImagePath = applicationConfiguration.getImagesPath();
 
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter( );

@@ -4,7 +4,10 @@ import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+@Named
 @ApplicationScoped
 public class ApplicationConfiguration
 {
@@ -22,6 +25,13 @@ public class ApplicationConfiguration
 	private static final String LOG_PATH_KEY = "logPath";
 
 	private ResourceBundle configBundle;
+
+	private String imagesPath;
+
+	private String logPath;
+
+	@Inject
+	private EnvVarsResolver envVarsResolver;
 
 	@PostConstruct
 	public void postConstruct()
@@ -46,12 +56,23 @@ public class ApplicationConfiguration
 
 	public String getImagesPath()
 	{
-		return configBundle.getString(IMAGES_PATH_KEY);
+		if (imagesPath == null)
+		{
+			String imagesPathUnresolved = configBundle.getString(IMAGES_PATH_KEY);
+			imagesPath = envVarsResolver.resolve(imagesPathUnresolved);
+		}
+
+		return imagesPath;
 	}
 
 	public String getLogPath()
 	{
-		return configBundle.getString(LOG_PATH_KEY);
-	}
+		if (logPath == null)
+		{
+			String logPathUnresolved = configBundle.getString(LOG_PATH_KEY);
+			logPath = envVarsResolver.resolve(logPathUnresolved);
+		}
 
+		return logPath;
+	}
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;

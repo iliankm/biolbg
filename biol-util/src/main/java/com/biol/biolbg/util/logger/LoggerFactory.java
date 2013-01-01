@@ -12,7 +12,6 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import com.biol.biolbg.util.configuration.ApplicationConfiguration;
-import com.biol.biolbg.util.configuration.EnvVarsResolver;
 
 @ApplicationScoped
 public class LoggerFactory
@@ -23,9 +22,6 @@ public class LoggerFactory
 
 	@Inject
 	private ApplicationConfiguration applicationConfiguration;
-
-	@Inject
-	private EnvVarsResolver envVarsResolver;
 
 	@PostConstruct
 	public void postConstruct()
@@ -46,8 +42,7 @@ public class LoggerFactory
 	{
 		Logger parentLogger = Logger.getLogger(PARENT_LOGGER_NAME);
 
-		String logPathUnresolved = applicationConfiguration.getLogPath();
-		String logPath = envVarsResolver.resolve(logPathUnresolved);
+		String logPath = applicationConfiguration.getLogPath();
 
 		try
 		{

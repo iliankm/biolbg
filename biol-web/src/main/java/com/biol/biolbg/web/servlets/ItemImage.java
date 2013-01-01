@@ -7,13 +7,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.biol.biolbg.util.configuration.EnvVarsResolver;
-import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
+import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 
 /**
  * Servlet implementation class ItemImage
@@ -26,12 +26,12 @@ public class ItemImage extends HttpServlet
 
 	private static final long CACHE_AGE = 30 * 24 * 60 * 60;
 
+	@Inject
+	ApplicationConfiguration applicationConfiguration;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		EnvVarsResolver envVarsResolver = new EnvVarsResolver();
-
-		String imagesPathUnresolved = request.getServletContext().getInitParameter(ItemImagesFilenameMapper.IMAGES_PATH);
-		String imagesPath = envVarsResolver.resolve(imagesPathUnresolved);
+		String imagesPath = applicationConfiguration.getImagesPath();
 
 		//get itemId parameter from request
 		String imageName = request.getParameter("name");

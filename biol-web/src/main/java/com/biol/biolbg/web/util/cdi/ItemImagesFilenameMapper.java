@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.biol.biolbg.entity.Item;
-import com.biol.biolbg.util.configuration.EnvVarsResolver;
+import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 import com.biol.biolbg.web.util.FileUtil;
 
-@Named("ItemImagesFilenameMapper")
+@Named
+@ApplicationScoped
 public class ItemImagesFilenameMapper implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -22,17 +22,7 @@ public class ItemImagesFilenameMapper implements Serializable
 	public static final String IMAGES_PATH = "imagesPath";
 
 	@Inject
-	private EnvVarsResolver envVarsResolver;
-
-	private String imagesPath;
-
-	@PostConstruct
-	public void postConstruct()
-	{
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String imagesPathUnresolved = facesContext.getExternalContext().getInitParameter(IMAGES_PATH);
-		imagesPath = envVarsResolver.resolve(imagesPathUnresolved);
-	}
+	ApplicationConfiguration applicationConfiguration;
 
 	public Map<Integer, String> getMap(List<Item> items)
 	{
@@ -58,21 +48,8 @@ public class ItemImagesFilenameMapper implements Serializable
 
 	public String getSingle(Integer itemId)
 	{
+		String imagesPath = applicationConfiguration.getImagesPath();
+
 		return FileUtil.imageFileName(imagesPath, itemId);
-	}
-
-	public void setEnvVarsResolver(EnvVarsResolver envVarsResolver)
-	{
-		this.envVarsResolver = envVarsResolver;
-	}
-
-	public EnvVarsResolver getEnvVarsResolver()
-	{
-		return envVarsResolver;
-	}
-
-	public String getImagesPath()
-	{
-		return imagesPath;
 	}
 }

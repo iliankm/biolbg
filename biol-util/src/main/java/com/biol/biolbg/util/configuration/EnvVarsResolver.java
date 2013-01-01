@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-@Named("EnvVarsResolver")
+@Named
+@ApplicationScoped
 public class EnvVarsResolver implements Serializable
 {
 	private static final long serialVersionUID = 1L;
