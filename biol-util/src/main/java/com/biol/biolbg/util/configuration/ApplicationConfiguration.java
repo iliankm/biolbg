@@ -2,13 +2,9 @@ package com.biol.biolbg.util.configuration;
 
 import java.util.ResourceBundle;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.enterprise.inject.Alternative;
 
-@Named
-@ApplicationScoped
+@Alternative
 public class ApplicationConfiguration
 {
 
@@ -24,19 +20,31 @@ public class ApplicationConfiguration
 
 	private static final String LOG_PATH_KEY = "logPath";
 
+	private static ApplicationConfiguration instance;
+
 	private ResourceBundle configBundle;
 
 	private String imagesPath;
 
 	private String logPath;
 
-	@Inject
 	private EnvVarsResolver envVarsResolver;
 
-	@PostConstruct
-	public void postConstruct()
+	protected ApplicationConfiguration()
 	{
+		envVarsResolver = new EnvVarsResolver();
+
 		configBundle = ResourceBundle.getBundle(CONFIG_BUNDLE_NAME);
+	}
+
+	public static ApplicationConfiguration getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new ApplicationConfiguration();
+		}
+
+		return instance;
 	}
 
 	public String getApplicationContext()
