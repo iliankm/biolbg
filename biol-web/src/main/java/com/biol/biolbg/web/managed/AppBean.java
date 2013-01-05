@@ -13,11 +13,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.biol.biolbg.web.util.Base;
+import com.biol.biolbg.web.util.CookiesManager;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
@@ -28,8 +27,6 @@ import com.biol.biolbg.entity.Usr;
 public class AppBean extends Base implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-
-	private static final String LOCALE_COOKIE_NAME = "locale";
 
 	private String appLocale;
 
@@ -42,6 +39,9 @@ public class AppBean extends Base implements Serializable
 	private Usr loggedUser = new Usr();
 
 	private Boolean isUserLoggedIn = false;
+
+	@Inject
+	private CookiesManager cookiesManager;
 
 	@Inject
 	private MessageResourcesBean messageResourcesBean;
@@ -58,48 +58,21 @@ public class AppBean extends Base implements Serializable
 		//add info message to log file
 		addInfoMessageToLog();
 
-		//initialize appLocale
-		String LocaleFromCookie = getLocaleFromCookie();
+		FacesContext fc = FacesContext.getCurrentInstance();
 
-		if ((LocaleFromCookie != "") && (LocaleFromCookie != null))
+		//initialize appLocale
+		String localeFromCookie =
+			cookiesManager.getCookieValue(CookiesManager.CookieNames.LOCALE_COOKIE_NAME);
+
+		if (localeFromCookie != null && localeFromCookie != "")
 		{
-			appLocale = LocaleFromCookie;
+			appLocale = localeFromCookie;
 		}
 		else
 		{
-			appLocale = Locale.getDefault().getLanguage();
+			//appLocale = Locale.getDefault().getLanguage();
+			appLocale = fc.getApplication().getDefaultLocale().getLanguage();
 		}
-	}
-
-	private String getLocaleFromCookie()
-	{
-		String locale = "";
-		FacesContext fc = FacesContext.getCurrentInstance();
-		Cookie cookie[] = ((HttpServletRequest)fc.getExternalContext().
-							getRequest()).getCookies();
-
-		if (cookie != null && cookie.length > 0)
-		{
-			for (int i = 0; i < cookie.length; i++)
-			{
-				if (cookie[i].getName().equals(LOCALE_COOKIE_NAME))
-				{
-					locale = cookie[i].getValue();
-				}
-			}
-		}
-
-		return locale;
-	}
-
-	private void setLocaleInCookie( String locale )
-	{
-		Cookie LocaleCookie = new Cookie(LOCALE_COOKIE_NAME, appLocale);
-
-		FacesContext fc = FacesContext.getCurrentInstance();
-
-		((HttpServletResponse)fc.getExternalContext().getResponse()).
-			addCookie(LocaleCookie);
 	}
 
 	private void addInfoMessageToLog()
@@ -118,7 +91,7 @@ public class AppBean extends Base implements Serializable
 		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
 		viewRoot.setLocale(new Locale("bg"));
 		appLocale = "bg";
-		setLocaleInCookie(appLocale);
+		cookiesManager.addCookie(CookiesManager.CookieNames.LOCALE_COOKIE_NAME, appLocale);
 
 		return "";
 	}
@@ -128,7 +101,7 @@ public class AppBean extends Base implements Serializable
 		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
 		viewRoot.setLocale(new Locale("en"));
 		appLocale = "en";
-		setLocaleInCookie(appLocale);
+		cookiesManager.addCookie(CookiesManager.CookieNames.LOCALE_COOKIE_NAME, appLocale);
 
 		return "";
 	}
