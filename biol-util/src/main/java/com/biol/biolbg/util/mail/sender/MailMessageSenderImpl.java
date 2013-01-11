@@ -1,5 +1,12 @@
 package com.biol.biolbg.util.mail.sender;
 
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import com.biol.biolbg.util.mail.message.MailMessage;
 
 @MailSender
@@ -10,9 +17,29 @@ public class MailMessageSenderImpl extends MailMessageAbstractSender<MailMessage
 	@Override
 	public void send(MailMessage mailMessage) throws MailMessageSenderException
 	{
-		// TODO Auto-generated method stub
+		Session session = getMailSession();
 
+		MimeMessage mimeMessage = new MimeMessage(session);
+
+		try
+		{
+			mimeMessage.setFrom(new InternetAddress(mailMessage.getFrom()));
+
+			addRecipientsToMimeMessage(mailMessage, mimeMessage);
+
+			mimeMessage.setSubject(mailMessage.getSubject());
+
+			mimeMessage.setContent(mailMessage.getText(), mailMessage.getTextType());
+
+			Transport.send(mimeMessage);
+		}
+		catch (AddressException e)
+		{
+			throw new MailMessageSenderException(e);
+		}
+		catch (MessagingException e)
+		{
+			throw new MailMessageSenderException(e);
+		}
 	}
-
-
 }

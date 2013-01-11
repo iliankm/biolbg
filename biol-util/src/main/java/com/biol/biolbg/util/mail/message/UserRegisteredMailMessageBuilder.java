@@ -16,6 +16,7 @@ import com.biol.biolbg.util.configuration.ApplicationConfiguration;
  * @author Iliyan Kamilov
  *
  */
+@UserRegistered
 public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<MailMessage>
 {
 	private static final String USER_REGISTERED_MESSAGE_KEY = "userRegistered";
