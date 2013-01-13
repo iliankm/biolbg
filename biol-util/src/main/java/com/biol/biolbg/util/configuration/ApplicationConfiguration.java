@@ -22,8 +22,6 @@ public class ApplicationConfiguration
 
 	private static final String MAIL_FROM_ADDRESS = "mailFromAddress";
 
-	private static final String MAIL_SEND_CONNECTION_TYPE = "mailSendConnectionType";
-
 	private static final String MAIL_ACCOUNT_USERNAME = "mailAccountUsername";
 
 	private static final String MAIL_ACCOUNT_PASSWORD = "mailAccountPassword";
@@ -58,6 +56,7 @@ public class ApplicationConfiguration
 	public String getApplicationContext()
 	{
 		return configBundle.getString(APP_CONTEXT_KEY);
+
 	}
 
 	public String getApplicationWebContext()
@@ -95,11 +94,6 @@ public class ApplicationConfiguration
 	public String getMailFromAddress()
 	{
 		return configBundle.getString(MAIL_FROM_ADDRESS);
-	}
-
-	public String getMailSendConnectionType()
-	{
-		return configBundle.getString(MAIL_SEND_CONNECTION_TYPE);
 	}
 
 	public String getMailAccountUsername()

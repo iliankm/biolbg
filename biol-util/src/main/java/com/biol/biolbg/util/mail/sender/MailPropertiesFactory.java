@@ -1,36 +1,21 @@
 package com.biol.biolbg.util.mail.sender;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.enterprise.inject.Produces;
 
 public class MailPropertiesFactory
 {
+	private static final String MAIL_PROPERTIES_CONFIG_RESOURCE = "com/biol/biolbg/util/mail/mailproperties.properties";
+
 	@Produces
-	@TLSProperties
-	public static Properties createTLSProperties()
+	@MailProperties
+	public static Properties createTLSProperties() throws IOException
 	{
 		Properties props = new Properties();
 
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-
-		return props;
-	}
-
-	@Produces
-	@SSLProperties
-	public static Properties createSSLProperties()
-	{
-		Properties props = new Properties();
-
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
+		props.load(MailPropertiesFactory.class.getClassLoader().getResourceAsStream(MAIL_PROPERTIES_CONFIG_RESOURCE));
 
 		return props;
 	}

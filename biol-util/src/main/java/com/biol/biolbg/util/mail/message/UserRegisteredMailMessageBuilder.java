@@ -16,7 +16,6 @@ import com.biol.biolbg.util.configuration.ApplicationConfiguration;
  * @author Iliyan Kamilov
  *
  */
-@UserRegistered
 public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<MailMessage>
 {
 	private static final String USER_REGISTERED_MESSAGE_KEY = "userRegistered";
@@ -98,7 +97,7 @@ public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<Mail
 				this.applicationHost);
 
 		mailMessage.text = messageString;
-		mailMessage.textType = "text/plain";
+		mailMessage.textType = "text/plain; charset=utf-8";
 		mailMessage.from = applicationConfiguration.getMailFromAddress();
 		mailMessage.recipientsTo = adminEmails;
 		mailMessage.subject = messagesResourceBundle.getString(USER_REGISTERED_SUBJECT_MESSAGE_KEY);

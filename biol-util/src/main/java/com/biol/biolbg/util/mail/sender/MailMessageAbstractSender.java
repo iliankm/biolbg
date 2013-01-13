@@ -21,12 +21,8 @@ public abstract class MailMessageAbstractSender<E extends MailMessage> implement
 	private static final long serialVersionUID = -4859573384243224754L;
 
 	@Inject
-	@TLSProperties
-	private Properties mailTLSProperties;
-
-	@Inject
-	@SSLProperties
-	private Properties mailSSLProperties;
+	@MailProperties
+	private Properties mailProperties;
 
 	@Inject
 	private ApplicationConfiguration applicationConfiguration;
@@ -35,7 +31,7 @@ public abstract class MailMessageAbstractSender<E extends MailMessage> implement
 
 	protected Session getMailSession()
 	{
-		Session session = Session.getInstance(getProperties(),
+		Session session = Session.getInstance(mailProperties,
 							  new javax.mail.Authenticator()
 							  {
 								protected PasswordAuthentication getPasswordAuthentication()
@@ -77,22 +73,4 @@ public abstract class MailMessageAbstractSender<E extends MailMessage> implement
 			}
 		}
 	}
-
-	private Properties getProperties()
-	{
-		if ("TLS".equals(applicationConfiguration.getMailSendConnectionType()))
-		{
-			return mailTLSProperties;
-		}
-		else
-		{
-			if ("SSL".equals(applicationConfiguration.getMailSendConnectionType()))
-			{
-				return mailSSLProperties;
-			}
-		}
-
-		return null;
-	}
-
 }
