@@ -37,6 +37,10 @@
     	<artifactId>biol-jpa</artifactId>
     	<version>${project.version}</version>
     </dependency>
+	  <dependency>
+	  	<groupId>com.biol.biolbg</groupId>
+	  	<artifactId>biol-util</artifactId>
+	  	<version>${project.version}</version>
+	  </dependency>
   </dependencies>
-
 </project>

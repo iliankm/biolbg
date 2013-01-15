@@ -53,6 +53,11 @@
     	<artifactId>biol-ejb-client</artifactId>
     	<version>${project.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>com.biol.biolbg</groupId>
+    	<artifactId>biol-util</artifactId>
+    	<version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <packaging>ejb</packaging>
