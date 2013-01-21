@@ -30,4 +30,6 @@ public interface UsrFacade
 	public void updateUsrAfterLogin(Usr usr, String ipAddress) ;
 
 	public void validateRegistrationInfo(String username, String password, String repeatPassword) throws ValidateRegistrationException;
+
+	public List<String> getAdminEmailAddresses();
 }

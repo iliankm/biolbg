@@ -34,8 +34,6 @@ public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<Mail
 
 	private List<String> adminEmails;
 
-	private String applicationHost;
-
 	public UserRegisteredMailMessageBuilder messageLocale(Locale messageLocale)
 	{
 		this.messageLocale = messageLocale;
@@ -72,12 +70,6 @@ public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<Mail
 		return this;
 	}
 
-	public UserRegisteredMailMessageBuilder applicationHost(String applicationHost)
-	{
-		this.applicationHost = applicationHost;
-		return this;
-	}
-
 	public MailMessage build()
 	{
 		ResourceBundle messagesResourceBundle = ResourceBundle.getBundle(MESSAGES_BUNDLE_NAME, messageLocale);
@@ -90,11 +82,12 @@ public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<Mail
 
 		String messageString = String.format(
 				messagesResourceBundle.getString(USER_REGISTERED_MESSAGE_KEY),
+				"administrator",
 				dateFormatter.format(date),
 				this.name,
 				this.organization,
 				this.username,
-				this.applicationHost);
+				applicationConfiguration.getExternalURL());
 
 		mailMessage.text = messageString;
 		mailMessage.textType = "text/plain; charset=utf-8";

@@ -152,6 +152,7 @@ public class UsrFacadeBean implements UsrFacade
 		}
 	}
 
+
 	private Boolean checkUsername(String username)
 	{
 		return Pattern.matches("[a-z]{1}[a-z0-9._]{2,30}", username);
@@ -166,5 +167,14 @@ public class UsrFacadeBean implements UsrFacade
 	{
 		Usr usr = findUsrByUsername(username);
 		return (usr != null);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getAdminEmailAddresses()
+	{
+		Query query = em.createQuery("SELECT o.email FROM Usr o WHERE o.adminflag=1");
+
+		return query.getResultList();
 	}
 }

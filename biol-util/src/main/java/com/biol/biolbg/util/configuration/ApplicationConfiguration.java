@@ -20,6 +20,8 @@ public class ApplicationConfiguration
 
 	private static final String LOG_PATH_KEY = "logPath";
 
+	private static final String EXTERNAL_URL = "externalURL";
+
 	private static final String MAIL_FROM_ADDRESS = "mailFromAddress";
 
 	private static final String MAIL_ACCOUNT_USERNAME = "mailAccountUsername";
@@ -89,6 +91,11 @@ public class ApplicationConfiguration
 		}
 
 		return logPath;
+	}
+
+	public String getExternalURL()
+	{
+		return configBundle.getString(EXTERNAL_URL);
 	}
 
 	public String getMailFromAddress()

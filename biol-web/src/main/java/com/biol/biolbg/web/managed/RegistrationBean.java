@@ -1,6 +1,9 @@
 package com.biol.biolbg.web.managed;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import javax.ejb.EJB;
@@ -13,10 +16,13 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.biol.biolbg.util.mail.message.MailMessage;
+import com.biol.biolbg.util.mail.message.UserRegisteredMailMessageBuilder;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
 import com.biol.biolbg.ejb.session.UsrFacade;
+import com.biol.biolbg.ejb.session.mail.MailMessageSenderService;
 
 import com.biol.biolbg.entity.Usr;
 import com.biol.biolbg.exception.ValidateRegistrationException;
@@ -46,6 +52,12 @@ public class RegistrationBean extends Base implements Serializable
 
 	@Inject
 	private MessageResourcesBean messageResourcesBean;
+
+	@Inject
+	private UserRegisteredMailMessageBuilder userRegisteredMailMessageBuilder;
+
+	@EJB
+	private MailMessageSenderService mailMessageSenderService;
 
 	public String register()
 	{
@@ -91,7 +103,10 @@ public class RegistrationBean extends Base implements Serializable
 			usr.setOrganisation(organisation);
 			usr.setFullname(fullname);
 			usr.setEmail(email);
+
 			usrFacade.addItem(usr);
+
+			sendEmailWhenUserRegistered(usr);
 		}
 		catch (ValidateRegistrationException e)
 		{
@@ -272,5 +287,22 @@ public class RegistrationBean extends Base implements Serializable
 		res = res.concat(num2.toString());
 
 		return res;
+	}
+
+	private void sendEmailWhenUserRegistered(Usr registeredUser)
+	{
+		List<String> adminEmails = usrFacade.getAdminEmailAddresses();
+
+		MailMessage mailMessage =
+			userRegisteredMailMessageBuilder.
+				adminEmails(adminEmails).
+				date(new Date()).
+				messageLocale(new Locale("bg")).
+				name(registeredUser.getFullname()).
+				organization(registeredUser.getOrganisation()).
+				username(registeredUser.getUsername()).
+				build();
+
+		mailMessageSenderService.send(mailMessage);
 	}
 }
