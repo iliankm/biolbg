@@ -1,6 +1,8 @@
 package com.biol.biolbg.util.mail.message;
 
-public interface MailMessageBuilder<E extends MailMessage>
+import java.io.Serializable;
+
+public interface MailMessageBuilder<E extends MailMessage> extends Serializable
 {
 	public static final String MESSAGES_BUNDLE_NAME = "com.biol.biolbg.util.mail.messages";
 

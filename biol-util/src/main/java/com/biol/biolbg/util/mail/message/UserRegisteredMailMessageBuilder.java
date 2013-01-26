@@ -18,6 +18,8 @@ import com.biol.biolbg.util.configuration.ApplicationConfiguration;
  */
 public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<MailMessage>
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final String USER_REGISTERED_MESSAGE_KEY = "userRegistered";
 
 	private static final String USER_REGISTERED_SUBJECT_MESSAGE_KEY = "userRegisteredSubject";

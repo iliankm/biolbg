@@ -177,4 +177,13 @@ public class UsrFacadeBean implements UsrFacade
 
 		return query.getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Usr> getAllAdminUsers()
+	{
+		Query query = em.createQuery("SELECT o FROM Usr o WHERE o.adminflag=1");
+
+		return query.getResultList();
+	}
 }

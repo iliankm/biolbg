@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -22,13 +24,18 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.biol.biolbg.util.mail.message.MailMessage;
+import com.biol.biolbg.util.mail.message.UserPostedOrderMailMessageBuilder;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
 import com.biol.biolbg.ejb.session.OrderFacade;
+import com.biol.biolbg.ejb.session.UsrFacade;
+import com.biol.biolbg.ejb.session.mail.MailMessageSenderService;
 import com.biol.biolbg.entity.Order;
 import com.biol.biolbg.entity.OrderRow;
+import com.biol.biolbg.entity.Usr;
 
 @Named("CurrentOrderBean")
 @SessionScoped
@@ -51,6 +58,12 @@ public class CurrentOrderBean extends Base implements Serializable
 	@EJB
 	private OrderFacade orderFacade;
 
+	@EJB
+	private UsrFacade usrFacade;
+
+	@EJB
+	private MailMessageSenderService mailMessageSenderService;
+
 	@Inject
 	private ItemImagesFilenameMapper itemImagesFilenameMapper;
 
@@ -59,6 +72,9 @@ public class CurrentOrderBean extends Base implements Serializable
 
 	@Inject
 	private MessageResourcesBean messageResourcesBean;
+
+	@Inject
+	private UserPostedOrderMailMessageBuilder userPostedOrderMailMessageBuilder;
 
 	@PostConstruct
 	public void postConstruct()
@@ -122,13 +138,13 @@ public class CurrentOrderBean extends Base implements Serializable
 		//set for date
 		if (fordate != null)
 		{
-			order.setFordate(new java.sql.Date(fordate.getTime()));
+			order.setFordate(fordate);
 		}
 
 		//set for time
 		if (fortime != null)
 		{
-			order.setFortime(new java.sql.Time(fortime.getTime()));
+			order.setFortime(fortime);
 		}
 
 		//save the order
@@ -142,6 +158,8 @@ public class CurrentOrderBean extends Base implements Serializable
 			{
 				orderFacade.addItem(order);
 			}
+
+			sendEmailToAdminsWhenOrderIsSaved(order);
 
 			String text = messageResourcesBean.getMessage("dataSavedOK", null);
 			addInfoMessage(text);
@@ -314,5 +332,19 @@ public class CurrentOrderBean extends Base implements Serializable
 	public ItemImagesFilenameMapper getItemImagesFilenameMapper()
 	{
 		return itemImagesFilenameMapper;
+	}
+
+	private void sendEmailToAdminsWhenOrderIsSaved(Order order)
+	{
+		List<Usr> adminUsers = usrFacade.getAllAdminUsers();
+
+		MailMessage mailMessage =
+			userPostedOrderMailMessageBuilder.
+				adminUsers(adminUsers).
+				messageLocale(new Locale("bg")).
+				order(order).
+				build();
+
+		mailMessageSenderService.send(mailMessage);
 	}
 }

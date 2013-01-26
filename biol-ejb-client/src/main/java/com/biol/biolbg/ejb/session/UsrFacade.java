@@ -32,4 +32,6 @@ public interface UsrFacade
 	public void validateRegistrationInfo(String username, String password, String repeatPassword) throws ValidateRegistrationException;
 
 	public List<String> getAdminEmailAddresses();
+
+	public List<Usr> getAllAdminUsers();
 }
