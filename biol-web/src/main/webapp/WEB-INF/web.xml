@@ -9,15 +9,17 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  
+
   <context-param>
     <param-name>imagesPath</param-name>
     <param-value>${imagesPath}</param-value>
   </context-param>
+
   <context-param>
   	<param-name>logPath</param-name>
   	<param-value>${logPath}</param-value>
   </context-param>
+
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -34,12 +36,12 @@
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
   </context-param>
-  
+
   <error-page>
     <exception-type>javax.faces.application.ViewExpiredException</exception-type>
     <location>/home.jsf</location>
   </error-page>
-  
+
   <servlet>
     <description></description>
     <display-name>UploadImage</display-name>
@@ -50,7 +52,7 @@
     <servlet-name>UploadImage</servlet-name>
     <url-pattern>/UploadImage</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <description></description>
     <display-name>ItemImage</display-name>
@@ -61,7 +63,7 @@
     <servlet-name>ItemImage</servlet-name>
     <url-pattern>/ItemImage</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <description></description>
     <display-name>RegCodeImage</display-name>
