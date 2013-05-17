@@ -5,8 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:composite="http://java.sun.com/jsf/composite"
-      xmlns:ez="http://java.sun.com/jsf/composite/ezcomp">
+      xmlns:composite="http://java.sun.com/jsf/composite" >
 <head>
 </head>
 <body>
@@ -67,11 +66,6 @@
 						<h:outputText value="&nbsp; / &nbsp;"/>
 						<h:outputText value="#{item.packingen}" rendered="#{cc.attrs.appBean.appLocale == 'en'}"/>
 						<h:outputText value="#{item.packingbg}" rendered="#{cc.attrs.appBean.appLocale == 'bg'}"/>
-						<br/>
-						<ez:orderArticle id ="orderArticle_#{cc.attrs.id}"
-						                 orderArticleController="#{cc.attrs.orderArticleControllerBean}"
-									     articleId="#{item.id}"/>
-
 					</div>
 				</h:column>
 			</h:dataTable>

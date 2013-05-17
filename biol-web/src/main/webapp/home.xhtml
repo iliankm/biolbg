@@ -16,11 +16,11 @@
 	<ui:param name="viewBean" value="#{HomeBean}"/>
 	<ui:define name="viewClasses">
 	</ui:define>
-	
+
 	<ui:define name="sidebar">
 		<div class="boxHeaderDiv">
 			<h:outputText value="#{msgs.itemgroups}"/>
-			
+
 		</div>
 		<div class="boxContentDiv">
 			<ul>
@@ -31,9 +31,9 @@
 							<h:outputText value="#{group.nameen}" rendered="#{AppBean.appLocale == 'en'}"/>
 							<h:outputText value="#{group.namebg}" rendered="#{AppBean.appLocale == 'bg'}"/>
 						</h:outputLink>
-					</li>	
+					</li>
 				</ui:repeat>
-			</ul>	
+			</ul>
 		</div>
 		<br/>
 		<div class="boxHeaderDiv">
@@ -48,10 +48,10 @@
 							<h:outputText value="#{producer.nameen}" rendered="#{AppBean.appLocale == 'en'}"/>
 							<h:outputText value="#{producer.namebg}" rendered="#{AppBean.appLocale == 'bg'}"/>
 						</h:outputLink>
-					</li>	
+					</li>
 				</ui:repeat>
-			</ul>	
-		</div>	
+			</ul>
+		</div>
 	</ui:define>
 	<ui:define name="content">
 		<div id="homeInfoDiv">
@@ -66,10 +66,10 @@
 							<h:outputText value="#{homeinfo.infotexten}" rendered="#{AppBean.appLocale == 'en'}" escape="false" />
 							<h:outputText value="#{homeinfo.infotextbg}" rendered="#{AppBean.appLocale == 'bg'}" escape="false"/>
 						</div>
-					</li>	
+					</li>
 				</ui:repeat>
 			</ul>
-			
+
 			<script type="text/javascript" src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
 			</script>
 
@@ -80,13 +80,13 @@
 					<f:param name="redir" value="2"/>
 					<f:param name="key" value="61fcc6d054548b30e571b849e3cbb0ef"/>
 					<h:outputText value="bgmaps.com" />
-				</h:outputLink> 
+				</h:outputLink>
 				<h:outputLink value="http://bgmaps.com/services/maps/redir.asp" rendered="#{AppBean.appLocale == 'en'}">
 					<f:param name="redir" value="2"/>
 					<f:param name="key" value="801ef4371e5b5550b85355bead27dbaf"/>
 					<h:outputText value="bgmaps.com" />
-				</h:outputLink> 
-				
+				</h:outputLink>
+
 				<h:outputLink value="skype:lili.at.ilieva?call" >
 					<h:graphicImage value="http://mystatus.skype.com/smallclassic/lili%2Eat.ilieva" />
 				</h:outputLink>
@@ -98,18 +98,18 @@
 					<div class="boxHeaderDiv">
 						<h:outputText value="#{msgs.newArticles}"/>
 					</div>
-					<div class="boxContentDiv">
+					<div class="boxContentDiv fiveTabbedPanelContent">
 						<ez:fiveTabbedPanel id="fiveTabbedNewArticles"
 											baseListBean="#{NewArticlesBean}"
 											orderArticleControllerBean="#{OrderArticleController}"
 											appBean="#{AppBean}" />
-					</div>					
-				</h:panelGroup>	
+					</div>
+				</h:panelGroup>
 				<h:panelGroup rendered="#{CheapArticlesBean.dataItemsCount>0}" >
 					<div class="boxHeaderDiv">
 						<h:outputText value="#{msgs.cheapesArticles}"/>
 					</div>
-					<div class="boxContentDiv">
+					<div class="boxContentDiv fiveTabbedPanelContent">
 						<ez:fiveTabbedPanel id="fiveTabbedCheapArticles"
 											baseListBean="#{CheapArticlesBean}"
 											orderArticleControllerBean="#{OrderArticleController}"
@@ -121,22 +121,22 @@
 					<div class="boxHeaderDiv">
 						<h:outputText value="#{msgs.bestSellArticles}"/>
 					</div>
-					<div class="boxContentDiv">
+					<div class="boxContentDiv fiveTabbedPanelContent">
 						<ez:fiveTabbedPanel id="fiveTabbedBestSellArticles"
 											baseListBean="#{BestSellArticlesBean}"
 											orderArticleControllerBean="#{OrderArticleController}"
 											appBean="#{AppBean}"
-											rendered="#{BestSellArticlesBean.dataItemsCount>0}" />	
+											rendered="#{BestSellArticlesBean.dataItemsCount>0}" />
 					</div>
-				</h:panelGroup>	
+				</h:panelGroup>
 			</h:panelGrid>
-									
+
 		</div>
 		<div id="homeRightSidebarDiv">
 			<ui:include src="templates/promotions.xhtml"/>
-		</div> 
+		</div>
 	</ui:define>
-	
+
 </ui:composition>
 </h:body>
 </html>
