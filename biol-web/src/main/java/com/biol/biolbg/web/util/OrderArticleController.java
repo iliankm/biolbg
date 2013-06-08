@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -37,7 +36,7 @@ public class OrderArticleController extends Base implements Serializable
 
 	//increments the amount of ordered article
 	//if not found - create it
-	public void incArticle(ActionEvent event)
+	public String incArticle()
 	{
 		Integer attribArticleId = getArticleId();
 
@@ -57,7 +56,7 @@ public class OrderArticleController extends Base implements Serializable
 			Item item = getItemById(attribArticleId);
 			if (item == null)
 			{
-				return;
+				return "";
 			}
 
 			OrderRow newOrderRow = new OrderRow();
@@ -72,11 +71,13 @@ public class OrderArticleController extends Base implements Serializable
 			double am = orderrow.getAmount().doubleValue() + 1;
 			orderrow.setAmount(am);
 		}
+
+		return "";
 	}
 
 	//decrement the amount of ordered article
 	//if amount is 1 then delete it form the list
-	public void decArticle(ActionEvent event)
+	public String decArticle()
 	{
 		Integer attribArticleId = getArticleId();
 		Iterator<OrderRow> iter = getCurrentOrderBean().getOrder().getRows().iterator();
@@ -97,6 +98,8 @@ public class OrderArticleController extends Base implements Serializable
 				break;
 			}
 		}
+
+		return "";
 	}
 
 	public Map<String, String> getOrderedAmount()

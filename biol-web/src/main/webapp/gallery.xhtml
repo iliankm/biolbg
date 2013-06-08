@@ -14,7 +14,7 @@
 	<ui:param name="title" value="#{msgs.articles}"/>
 	<ui:param name="sidebarWidth" value="20%"/>
 	<ui:param name="viewBean" value="#{GalleryBean}"/>
-	
+
 	<ui:define name="metadata" >
 		<f:metadata>
 			<f:viewParam name="group" value="#{GalleryBean.paramGroup}">
@@ -26,17 +26,17 @@
 		</f:metadata>
 		<f:event type="preRenderView" listener="#{GalleryBean.preRenderView}"/>
 	</ui:define>
-	
+
 	<ui:define name="cssIncludes">
 		<link rel="stylesheet" type="text/css" href="resources/css/jcarousel/skin.css" />
 	</ui:define>
 
 	<ui:define name="viewClasses">
 	</ui:define>
-	
+
 	<ui:define name="viewScripts">
 		<h:outputScript name="js/jquery.jcarousel.min.js"/>
-		<script type="text/javascript">	
+		<script type="text/javascript">
 			function mycarousel_itemLoadCallback(carousel, state)
 			{
 			}
@@ -53,13 +53,13 @@
 					}
 				}
  			}
-			
+
 			function loadItemImage(itemId)
 			{
 				$("#itemImageContainer_"+itemId).css("background", "");
 				$(".itemImage_"+itemId).fadeIn("slow");
 			}
-		
+
 			$(document).ready(function() {
 			    $('#mycarousel').jcarousel({
 			    	scroll: 1,
@@ -67,19 +67,19 @@
 			        itemLoadCallback: mycarousel_itemLoadCallback,
 			        itemVisibleInCallback: {
 			        	  onAfterAnimation: mycarousel_itemVisibleInCallback
-			        	} 
-			        	
-			        	
-			        	
+			        	}
+
+
+
 			    });
 			});
 		</script>
 	</ui:define>
-	
+
 	<ui:define name="sidebar">
 		<div class="boxHeaderDiv">
 			<h:outputText value="#{msgs.itemgroups}"/>
-			
+
 		</div>
 		<div class="boxContentDiv">
 			<ul>
@@ -94,9 +94,9 @@
 							<f:param name="group" value="#{group.id}"/>
 							<f:param name="producer" value="0"/>
 						</h:link>
-					</li>	
+					</li>
 				</ui:repeat>
-			</ul>	
+			</ul>
 		</div>
 		<br/>
 		<div class="boxHeaderDiv">
@@ -115,10 +115,10 @@
 							<f:param name="group" value="0"/>
 							<f:param name="producer" value="#{producer.id}"/>
 						</h:link>
-					</li>	
+					</li>
 				</ui:repeat>
-			</ul>	
-		</div>	
+			</ul>
+		</div>
 	</ui:define>
 	<ui:define name="content">
 			<ul id="mycarousel" class="jcarousel-skin-tango">
@@ -129,7 +129,7 @@
 							<img src="" style="max-width: 290px; display: none;" class="itemImage_#{item.id}" onload="loadItemImage(#{item.id})" />
 						</div>
 						<div id="itemInfoContainer_#{item.id}" style="position:relative; float:right; width: 200px">
-						
+
 							<div id="homeInfoHeaderDiv">
 								<h:outputText value="#{item.nameen}" rendered="#{AppBean.appLocale=='en'}"/>
 								<h:outputText value="#{item.namebg}" rendered="#{AppBean.appLocale=='bg'}"/>
@@ -171,7 +171,7 @@
 									<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
 								</h:outputText>
 								<h:outputText value=" #{item.measureuniten}" rendered="#{AppBean.appLocale=='en'}"/>
-								<h:outputText value=" #{item.measureunitbg}" rendered="#{AppBean.appLocale=='bg'}"/>	
+								<h:outputText value=" #{item.measureunitbg}" rendered="#{AppBean.appLocale=='bg'}"/>
 								<br/>
 								<h:outputText value="#{msgs.priceforpacking}: "/>
 								<h:outputText value="#{item.priceforpacking}">
@@ -190,11 +190,11 @@
 											     articleId="#{item.id}"/>
 							</div>
 						</div>
-					</div>	
+					</div>
 				</li>
 				</ui:repeat>
 			</ul>
 	</ui:define>
-</ui:composition>	
+</ui:composition>
 </body>
 </html>

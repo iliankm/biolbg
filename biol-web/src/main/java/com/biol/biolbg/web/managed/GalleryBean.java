@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -25,7 +25,7 @@ import com.biol.biolbg.entity.Item;
 import com.biol.biolbg.entity.Producer;
 
 @Named("GalleryBean")
-@RequestScoped
+@SessionScoped
 public class GalleryBean extends Base implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -56,11 +56,6 @@ public class GalleryBean extends Base implements Serializable
 
 	public void preRenderView(javax.faces.event.ComponentSystemEvent event)
 	{
-		if (items == null)
-			items = new ArrayList<Item>();
-
-		items.clear();
-
 		groups = getAllGroups();
 		producers = getAllProducers();
 

@@ -22,7 +22,7 @@
 		<div class="orderArticle">
 			<div class="buttons">
 				<h:commandLink id="btnIncAmount"
-								actionListener="#{OrderArticleController.incArticle}"
+								action="#{OrderArticleController.incArticle}"
 								title="#{msgs.addAmountOfArticleInOrder}"
 								styleClass="orderArticleButton"
 								onclick="orderArticle.showOrderArticleLoadingMask('#{ComponentLookup.clientIds[loadingMaskId]}')">
@@ -32,7 +32,7 @@
 				</h:commandLink>
 
 				<h:commandLink id="btnDecAmount"
-								actionListener="#{OrderArticleController.decArticle}"
+								action="#{OrderArticleController.decArticle}"
 								title="#{msgs.decAmountOfArticleInOrder}"
 								styleClass="orderArticleButton"
 								onclick="orderArticle.showOrderArticleLoadingMask('#{ComponentLookup.clientIds[loadingMaskId]}')">
