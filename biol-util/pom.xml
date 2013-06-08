@@ -4,7 +4,7 @@
   <parent>
     <artifactId>biol-parent</artifactId>
     <groupId>com.biol.biolbg</groupId>
-    <version>1.3</version>
+    <version>1.4</version>
     <relativePath>../biol-parent/pom.xml</relativePath>
   </parent>
 

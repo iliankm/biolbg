@@ -10,7 +10,7 @@
   	<groupId>com.biol.biolbg</groupId>
   	<artifactId>biol-parent</artifactId>
   	<relativePath>../biol-parent/pom.xml</relativePath>
-  	<version>1.3</version>
+  	<version>1.4</version>
   </parent>
 
   <properties>
