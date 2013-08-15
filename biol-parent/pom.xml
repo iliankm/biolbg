@@ -72,6 +72,16 @@
 	</pluginManagement>
 	</build>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.4</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 
 	<modules>
 		<module>../biol-util</module>
@@ -80,5 +90,7 @@
 		<module>../biol-ejb</module>
 		<module>../biol-web</module>
 		<module>../biol-ear</module>
+		<module>../biol-business-api</module>
+		<module>../biol-business</module>
 	</modules>
 </project>

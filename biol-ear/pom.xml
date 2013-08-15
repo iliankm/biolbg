@@ -43,6 +43,10 @@
 					<groupId>com.biol.biolbg</groupId>
 					<artifactId>biol-ejb</artifactId>
 				</ejbModule>
+				<ejbModule>
+					<groupId>com.biol.biolbg</groupId>
+					<artifactId>biol-business</artifactId>
+				</ejbModule>
 				<webModule>
             		<groupId>com.biol.biolbg</groupId>
             		<artifactId>biol-web</artifactId>
@@ -112,6 +116,17 @@
   	<dependency>
   		<groupId>com.biol.biolbg</groupId>
   		<artifactId>biol-ejb</artifactId>
+  		<type>ejb</type>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.biol.biolbg</groupId>
+  		<artifactId>biol-business-api</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.biol.biolbg</groupId>
+  		<artifactId>biol-business</artifactId>
   		<type>ejb</type>
   		<version>${project.version}</version>
   	</dependency>
