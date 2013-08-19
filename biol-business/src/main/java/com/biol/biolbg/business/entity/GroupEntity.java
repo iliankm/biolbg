@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="grp")
-public class GroupEntity extends BaseEntity
+public class GroupEntity extends BaseEntity implements Group
 {
 
 	private static final long serialVersionUID = 7833652000774985122L;
@@ -28,26 +28,31 @@ public class GroupEntity extends BaseEntity
 		this.id = id;
 	}
 
+	@Override
 	public int getId()
 	{
 		return id;
 	}
 
+	@Override
 	public String getNamebg()
 	{
 		return namebg;
 	}
 
+	@Override
 	public void setNamebg(String namebg)
 	{
 		this.namebg = namebg;
 	}
 
+	@Override
 	public String getNameen()
 	{
 		return nameen;
 	}
 
+	@Override
 	public void setNameen(String nameen)
 	{
 		this.nameen = nameen;
@@ -58,52 +63,53 @@ public class GroupEntity extends BaseEntity
 		this.version = version;
 	}
 
+	@Override
 	public int getVersion()
 	{
 		return version;
 	}
-	
+
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((namebg == null) ? 0 : namebg.hashCode());
 		result = prime * result + ((nameen == null) ? 0 : nameen.hashCode());
-		
+
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) 
+	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		GroupEntity other = (GroupEntity) obj;
-		if (namebg == null) 
+		if (namebg == null)
 		{
 			if (other.namebg != null)
 				return false;
-		} 
+		}
 		else if (!namebg.equals(other.namebg))
 			return false;
-		
-		if (nameen == null) 
+
+		if (nameen == null)
 		{
 			if (other.nameen != null)
 				return false;
-		} 
+		}
 		else if (!nameen.equals(other.nameen))
 			return false;
-		
+
 		return true;
 	}
-	
+
 }

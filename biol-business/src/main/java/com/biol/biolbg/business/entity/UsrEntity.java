@@ -9,9 +9,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="usr")
-public class UsrEntity extends BaseEntity
+public class UsrEntity extends BaseEntity implements Usr
 {
-	
+
 	private static final long serialVersionUID = 5352163629701855656L;
 
 	@Id
@@ -51,101 +51,120 @@ public class UsrEntity extends BaseEntity
 	@Column(name="adminflag")
 	private int adminflag;
 
-	public int getId() 
+	@Override
+	public int getId()
 	{
 		return id;
 	}
 
-	public void setId(int id) 
+	public void setId(int id)
 	{
 		this.id = id;
 	}
 
+	@Override
 	public String getUsername()
 	{
 		return username;
 	}
 
+	@Override
 	public void setUsername(String username)
 	{
 		this.username = username;
 	}
 
+	@Override
 	public String getPassword()
 	{
 		return password;
 	}
 
+	@Override
 	public void setPassword(String password)
 	{
 		this.password = password;
 	}
 
+	@Override
 	public String getFullname()
 	{
 		return fullname;
 	}
 
+	@Override
 	public void setFullname(String fullname)
 	{
 		this.fullname = fullname;
 	}
 
+	@Override
 	public String getOrganisation()
 	{
 		return organisation;
 	}
 
+	@Override
 	public void setOrganisation(String organisation)
 	{
 		this.organisation = organisation;
 	}
 
+	@Override
 	public String getEmail()
 	{
 		return email;
 	}
 
+	@Override
 	public void setEmail(String email)
 	{
 		this.email = email;
 	}
 
+	@Override
 	public Date getLastlogindate()
 	{
 		return lastlogindate;
 	}
 
+	@Override
 	public void setLastlogindate(Date lastlogindate)
 	{
 		this.lastlogindate = lastlogindate;
 	}
 
+	@Override
 	public Date getLastlogintime()
 	{
 		return lastlogintime;
 	}
 
+	@Override
 	public void setLastlogintime(Date lastlogintime)
 	{
 		this.lastlogintime = lastlogintime;
 	}
 
+	@Override
 	public String getLastloginip()
 	{
 		return lastloginip;
 	}
 
+	@Override
 	public void setLastloginip(String lastloginip)
 	{
 		this.lastloginip = lastloginip;
 	}
 
+	@Override
 	public int getAdminflag()
 	{
 		return adminflag;
 	}
 
+	@Override
 	public void setAdminflag(int adminflag)
 	{
 		this.adminflag = adminflag;
@@ -156,13 +175,14 @@ public class UsrEntity extends BaseEntity
 		this.version = version;
 	}
 
+	@Override
 	public int getVersion()
 	{
 		return version;
 	}
 
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
@@ -173,51 +193,51 @@ public class UsrEntity extends BaseEntity
 				+ ((organisation == null) ? 0 : organisation.hashCode());
 		result = prime * result
 				+ ((username == null) ? 0 : username.hashCode());
-		
+
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) 
+	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		UsrEntity other = (UsrEntity) obj;
-		if (email == null) 
+		if (email == null)
 		{
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		
-		if (fullname == null) 
+
+		if (fullname == null)
 		{
 			if (other.fullname != null)
 				return false;
 		} else if (!fullname.equals(other.fullname))
 			return false;
-		
-		if (organisation == null) 
+
+		if (organisation == null)
 		{
 			if (other.organisation != null)
 				return false;
 		} else if (!organisation.equals(other.organisation))
 			return false;
-		
-		if (username == null) 
+
+		if (username == null)
 		{
 			if (other.username != null)
 				return false;
 		} else if (!username.equals(other.username))
 			return false;
-		
+
 		return true;
 	}
 }

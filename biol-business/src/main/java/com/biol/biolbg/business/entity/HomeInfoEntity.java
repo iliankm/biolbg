@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "homeinfo")
-public class HomeInfoEntity extends BaseEntity
+public class HomeInfoEntity extends BaseEntity implements HomeInfo
 {
 
 	private static final long serialVersionUID = -8713362248865289063L;
@@ -34,46 +34,55 @@ public class HomeInfoEntity extends BaseEntity
 		this.id = id;
 	}
 
+	@Override
 	public int getId()
 	{
 		return id;
 	}
 
+	@Override
 	public String getHeadertextbg()
 	{
 		return headertextbg;
 	}
 
+	@Override
 	public void setHeadertextbg(String headertextbg)
 	{
 		this.headertextbg = headertextbg;
 	}
 
+	@Override
 	public String getInfotextbg()
 	{
 		return infotextbg;
 	}
 
+	@Override
 	public void setInfotextbg(String infotextbg)
 	{
 		this.infotextbg = infotextbg;
 	}
 
+	@Override
 	public String getHeadertexten()
 	{
 		return headertexten;
 	}
 
+	@Override
 	public void setHeadertexten(String headertexten)
 	{
 		this.headertexten = headertexten;
 	}
 
+	@Override
 	public String getInfotexten()
 	{
 		return infotexten;
 	}
 
+	@Override
 	public void setInfotexten(String infotexten)
 	{
 		this.infotexten = infotexten;
@@ -84,13 +93,14 @@ public class HomeInfoEntity extends BaseEntity
 		this.version = version;
 	}
 
+	@Override
 	public int getVersion()
 	{
 		return version;
 	}
 
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
@@ -102,55 +112,55 @@ public class HomeInfoEntity extends BaseEntity
 				+ ((infotextbg == null) ? 0 : infotextbg.hashCode());
 		result = prime * result
 				+ ((infotexten == null) ? 0 : infotexten.hashCode());
-		
+
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) 
+	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		HomeInfoEntity other = (HomeInfoEntity) obj;
-		if (headertextbg == null) 
+		if (headertextbg == null)
 		{
 			if (other.headertextbg != null)
 				return false;
-		} 
+		}
 		else if (!headertextbg.equals(other.headertextbg))
 			return false;
-		
-		if (headertexten == null) 
+
+		if (headertexten == null)
 		{
 			if (other.headertexten != null)
 				return false;
-		} 
+		}
 		else if (!headertexten.equals(other.headertexten))
 			return false;
-		
-		if (infotextbg == null) 
+
+		if (infotextbg == null)
 		{
 			if (other.infotextbg != null)
 				return false;
-		} 
+		}
 		else if (!infotextbg.equals(other.infotextbg))
 			return false;
-		
-		if (infotexten == null) 
+
+		if (infotexten == null)
 		{
 			if (other.infotexten != null)
 				return false;
-		} 
+		}
 		else if (!infotexten.equals(other.infotexten))
 			return false;
-		
+
 		return true;
 	}
 }

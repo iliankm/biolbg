@@ -3,15 +3,17 @@ package com.biol.biolbg.business.entity;
 import static javax.persistence.TemporalType.DATE;
 import static javax.persistence.TemporalType.TIME;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="orderm")
-public class OrderEntity extends BaseEntity
+public class OrderEntity extends BaseEntity implements Order
 {
 
 	private static final long serialVersionUID = 5786594537574474297L;
@@ -59,6 +61,7 @@ public class OrderEntity extends BaseEntity
 			mappedBy="order")
 	private List<OrderRowEntity> rows;
 
+	@Override
 	public int getId()
 	{
 		return id;
@@ -69,46 +72,55 @@ public class OrderEntity extends BaseEntity
 		this.id = id;
 	}
 
+	@Override
 	public Date getPostdate()
 	{
 		return postdate;
 	}
 
+	@Override
 	public void setPostdate(Date postdate)
 	{
 		this.postdate = postdate;
 	}
 
+	@Override
 	public Date getPosttime()
 	{
 		return posttime;
 	}
 
+	@Override
 	public void setPosttime(Date posttime)
 	{
 		this.posttime = posttime;
 	}
 
+	@Override
 	public Date getFordate()
 	{
 		return fordate;
 	}
 
+	@Override
 	public void setFordate(Date fordate)
 	{
 		this.fordate = fordate;
 	}
 
+	@Override
 	public Date getFortime()
 	{
 		return fortime;
 	}
 
+	@Override
 	public void setFortime(Date fortime)
 	{
 		this.fortime = fortime;
 	}
 
+	@Override
 	public UsrEntity getUser()
 	{
 		return user;
@@ -119,6 +131,7 @@ public class OrderEntity extends BaseEntity
 		this.user = user;
 	}
 
+	@Override
 	public OrderStatusEntity getStatus()
 	{
 		return status;
@@ -129,16 +142,18 @@ public class OrderEntity extends BaseEntity
 		this.status = status;
 	}
 
-	public List<OrderRowEntity> getRows()
+	@Override
+	public List<? extends OrderRow> getRows()
 	{
-		return rows;
+		return Collections.unmodifiableList(getRowsEntities());
 	}
 
-	public void setRows(List<OrderRowEntity> rows)
+	public List<OrderRowEntity> getRowsEntities()
 	{
-		this.rows = rows;
+		return rows == null ? new LinkedList<OrderRowEntity>() : rows;
 	}
 
+	@Override
 	@Transient
 	public Double getTotalValue()
 	{
@@ -147,18 +162,20 @@ public class OrderEntity extends BaseEntity
 
 		while (iter.hasNext())
 		{
-			OrderRowEntity orderrow = iter.next();
+			OrderRow orderrow = iter.next();
 			res = res + orderrow.getValue();
 		}
 
 		return res;
 	}
 
+	@Override
 	public void setDeliveryAddress(String deliveryAddress)
 	{
 		this.deliveryAddress = deliveryAddress;
 	}
 
+	@Override
 	public String getDeliveryAddress()
 	{
 		return deliveryAddress;
@@ -169,6 +186,7 @@ public class OrderEntity extends BaseEntity
 		this.version = version;
 	}
 
+	@Override
 	public int getVersion()
 	{
 		return version;
@@ -179,13 +197,14 @@ public class OrderEntity extends BaseEntity
 		this.seenbyadmin = seenbyadmin;
 	}
 
+	@Override
 	public int getSeenbyadmin()
 	{
 		return seenbyadmin;
 	}
 
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
@@ -198,65 +217,65 @@ public class OrderEntity extends BaseEntity
 		result = prime * result
 				+ ((posttime == null) ? 0 : posttime.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		
+
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) 
+	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		OrderEntity other = (OrderEntity) obj;
-		if (deliveryAddress == null) 
+		if (deliveryAddress == null)
 		{
 			if (other.deliveryAddress != null)
 				return false;
 		} else if (!deliveryAddress.equals(other.deliveryAddress))
 			return false;
-		
-		if (fordate == null) 
+
+		if (fordate == null)
 		{
 			if (other.fordate != null)
 				return false;
 		} else if (!fordate.equals(other.fordate))
 			return false;
-		
-		if (fortime == null) 
+
+		if (fortime == null)
 		{
 			if (other.fortime != null)
 				return false;
 		} else if (!fortime.equals(other.fortime))
 			return false;
-		
-		if (postdate == null) 
+
+		if (postdate == null)
 		{
 			if (other.postdate != null)
 				return false;
 		} else if (!postdate.equals(other.postdate))
 			return false;
-		
-		if (posttime == null) 
+
+		if (posttime == null)
 		{
 			if (other.posttime != null)
 				return false;
 		} else if (!posttime.equals(other.posttime))
 			return false;
-		
-		if (user == null) 
+
+		if (user == null)
 		{
 			if (other.user != null)
 				return false;
 		} else if (!user.equals(other.user))
 			return false;
-		
+
 		return true;
 	}
 }
