@@ -9,10 +9,27 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="usr")
+@NamedQueries({
+	@NamedQuery(name=UsrEntity.QueryNames.GET_ALL_USERS_COUNT, 
+		query="SELECT COUNT(o.id) FROM UsrEntity o"),
+	
+	@NamedQuery(name=UsrEntity.QueryNames.FIND_USER_BY_USERNAME, 
+		query="SELECT o FROM UsrEntity o WHERE (o.username=:username)"),
+		
+	@NamedQuery(name=UsrEntity.QueryNames.FIND_BY_ADMIN_FLAG,
+		query="SELECT o FROM UsrEntity o WHERE o.adminflag=:adminflag")	
+})
 public class UsrEntity extends BaseEntity implements Usr
 {
 
 	private static final long serialVersionUID = 5352163629701855656L;
+	
+	public interface QueryNames
+	{
+		public static final String GET_ALL_USERS_COUNT = "UsrEntity.getAllUsersCount";
+		public static final String FIND_USER_BY_USERNAME = "UsrEntity.findUserByUsername";
+		public static final String FIND_BY_ADMIN_FLAG = "UsrEntity.findByAdminFlag";
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

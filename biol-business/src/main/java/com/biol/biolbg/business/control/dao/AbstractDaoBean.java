@@ -16,7 +16,7 @@ import javax.persistence.Query;
 public abstract class AbstractDaoBean<T> 
 {
 	@PersistenceContext
-	private EntityManager em;
+	protected EntityManager em;
 
 	abstract protected Class<T> getClazz();
 
@@ -48,13 +48,13 @@ public abstract class AbstractDaoBean<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public <O> List<O> findObjectsByNamedQuery(final String namedQueryName) 
+	protected <O> List<O> findObjectsByNamedQuery(final String namedQueryName) 
 	{
 		return em.createNamedQuery(namedQueryName).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
-	public <O> List<O> findObjectsByNamedQuery(final String namedQueryName,
+	protected <O> List<O> findObjectsByNamedQuery(final String namedQueryName,
 			final Map<String, Object> parameters) 
 	{
 		Query query = em.createNamedQuery(namedQueryName);
@@ -65,7 +65,7 @@ public abstract class AbstractDaoBean<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public <O> List<O> findObjectsByNamedQuery(final String namedQueryName,
+	protected <O> List<O> findObjectsByNamedQuery(final String namedQueryName,
 			final int maxResultsLimit, final int firstResult) 
 	{
 		Query query = em.createNamedQuery(namedQueryName);
@@ -76,7 +76,7 @@ public abstract class AbstractDaoBean<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public <O> List<O> findObjectsByNamedQuery(final String namedQueryName,
+	protected <O> List<O> findObjectsByNamedQuery(final String namedQueryName,
 			final Map<String, Object> parameters, final int maxResultsLimit,
 			final int firstResult) 
 	{
@@ -89,7 +89,7 @@ public abstract class AbstractDaoBean<T>
 		return query.getResultList();
 	}
 
-	private void addParametersToQuery(Query query,
+	protected void addParametersToQuery(Query query,
 			final Map<String, Object> parameters) 
 	{
 		if (parameters != null && !parameters.isEmpty()) 
@@ -101,7 +101,7 @@ public abstract class AbstractDaoBean<T>
 		}
 	}
 
-	private void setResultsLimitToQuery(Query query, final int maxResultsLimit,
+	protected void setResultsLimitToQuery(Query query, final int maxResultsLimit,
 			final int firstResult) 
 	{
 		if (maxResultsLimit > 0) 
