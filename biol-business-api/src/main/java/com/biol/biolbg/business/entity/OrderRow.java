@@ -21,4 +21,6 @@ public interface OrderRow
 	@Transient
 	public Double getValue();
 
+	public void setId(int id);
+
 }

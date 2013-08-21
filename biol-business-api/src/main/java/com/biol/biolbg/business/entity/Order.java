@@ -42,4 +42,8 @@ public interface Order
 
 	public int getSeenbyadmin();
 
+	public void setVersion(int version);
+
+	public void setId(int id);
+
 }

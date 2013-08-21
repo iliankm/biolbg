@@ -12,4 +12,6 @@ public interface OrderStatus
 
 	public void setNameen(String nameen);
 
+	public void setId(int id);
+
 }

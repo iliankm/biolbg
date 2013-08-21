@@ -25,6 +25,7 @@ public class OrderStatusEntity extends BaseEntity implements OrderStatus
 		return id;
 	}
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;

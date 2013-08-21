@@ -35,6 +35,7 @@ public class ProducerEntity extends BaseEntity implements Producer
 		return id;
 	}
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
@@ -64,6 +65,7 @@ public class ProducerEntity extends BaseEntity implements Producer
 		this.nameen = nameen;
 	}
 
+	@Override
 	public void setVersion(int version)
 	{
 		this.version = version;

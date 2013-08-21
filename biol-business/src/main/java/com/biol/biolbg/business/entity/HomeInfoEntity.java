@@ -29,6 +29,7 @@ public class HomeInfoEntity extends BaseEntity implements HomeInfo
 	@Column(name="infotexten")
 	private String infotexten;
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
@@ -88,6 +89,7 @@ public class HomeInfoEntity extends BaseEntity implements HomeInfo
 		this.infotexten = infotexten;
 	}
 
+	@Override
 	public void setVersion(int version)
 	{
 		this.version = version;

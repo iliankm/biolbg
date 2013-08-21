@@ -33,6 +33,7 @@ public class OrderRowEntity extends BaseEntity implements OrderRow
 		return id;
 	}
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;

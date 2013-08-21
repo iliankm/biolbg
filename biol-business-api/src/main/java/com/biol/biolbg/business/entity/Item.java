@@ -62,4 +62,8 @@ public interface Item
 
 	public int getVersion();
 
+	public void setVersion(int version);
+
+	public void setId(int id);
+
 }

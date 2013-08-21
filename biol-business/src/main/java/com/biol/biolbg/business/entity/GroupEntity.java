@@ -23,6 +23,7 @@ public class GroupEntity extends BaseEntity implements Group
 	@Column(name="nameen")
 	private String nameen;
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
@@ -58,6 +59,7 @@ public class GroupEntity extends BaseEntity implements Group
 		this.nameen = nameen;
 	}
 
+	@Override
 	public void setVersion(int version)
 	{
 		this.version = version;

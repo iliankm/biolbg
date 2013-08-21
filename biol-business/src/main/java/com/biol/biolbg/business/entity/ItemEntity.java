@@ -64,6 +64,8 @@ public class ItemEntity extends BaseEntity implements Item
 	@Column(name="bestsell")
 	private int bestsell;
 
+
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
@@ -253,6 +255,7 @@ public class ItemEntity extends BaseEntity implements Item
 		return bestsell;
 	}
 
+	@Override
 	public void setVersion(int version)
 	{
 		this.version = version;

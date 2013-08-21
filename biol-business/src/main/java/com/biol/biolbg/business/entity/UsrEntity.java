@@ -10,20 +10,20 @@ import javax.persistence.*;
 @Entity
 @Table(name="usr")
 @NamedQueries({
-	@NamedQuery(name=UsrEntity.QueryNames.GET_ALL_USERS_COUNT, 
+	@NamedQuery(name=UsrEntity.QueryNames.GET_ALL_USERS_COUNT,
 		query="SELECT COUNT(o.id) FROM UsrEntity o"),
-	
-	@NamedQuery(name=UsrEntity.QueryNames.FIND_USER_BY_USERNAME, 
+
+	@NamedQuery(name=UsrEntity.QueryNames.FIND_USER_BY_USERNAME,
 		query="SELECT o FROM UsrEntity o WHERE (o.username=:username)"),
-		
+
 	@NamedQuery(name=UsrEntity.QueryNames.FIND_BY_ADMIN_FLAG,
-		query="SELECT o FROM UsrEntity o WHERE o.adminflag=:adminflag")	
+		query="SELECT o FROM UsrEntity o WHERE o.adminflag=:adminflag")
 })
 public class UsrEntity extends BaseEntity implements Usr
 {
 
 	private static final long serialVersionUID = 5352163629701855656L;
-	
+
 	public interface QueryNames
 	{
 		public static final String GET_ALL_USERS_COUNT = "UsrEntity.getAllUsersCount";
@@ -74,6 +74,7 @@ public class UsrEntity extends BaseEntity implements Usr
 		return id;
 	}
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
@@ -187,6 +188,7 @@ public class UsrEntity extends BaseEntity implements Usr
 		this.adminflag = adminflag;
 	}
 
+	@Override
 	public void setVersion(int version)
 	{
 		this.version = version;

@@ -67,6 +67,7 @@ public class OrderEntity extends BaseEntity implements Order
 		return id;
 	}
 
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
@@ -181,6 +182,7 @@ public class OrderEntity extends BaseEntity implements Order
 		return deliveryAddress;
 	}
 
+	@Override
 	public void setVersion(int version)
 	{
 		this.version = version;
