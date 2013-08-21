@@ -20,7 +20,7 @@ public abstract class AbstractDaoBean<T>
 
 	abstract protected Class<T> getClazz();
 
-	public T findById(final int id) 
+	public T findById(final Integer id) 
 	{
 		return em.find(getClazz(), id);
 	}
@@ -30,7 +30,7 @@ public abstract class AbstractDaoBean<T>
 		return em.merge(entity);
 	}
 
-	public void delete(final int id) 
+	public void delete(final Integer id) 
 	{
 		em.remove(em.getReference(getClazz(), id));
 	}

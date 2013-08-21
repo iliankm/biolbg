@@ -5,15 +5,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
 @Table(name="producer")
+@NamedQueries({
+	@NamedQuery(name=ProducerEntity.QueryNames.GET_ALL_COUNT,
+		query="SELECT COUNT(o.id) FROM ProducerEntity o")
+})
 public class ProducerEntity extends BaseEntity implements Producer
 {
 
 	private static final long serialVersionUID = 8357147660843130376L;
+	
+	public interface QueryNames
+	{
+		public static final String GET_ALL_COUNT = "ProducerEntity.getAllCount";
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
