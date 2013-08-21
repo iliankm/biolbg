@@ -34,12 +34,6 @@ public interface UserFacade
 	public void validateRegistrationInfo(String username, String password,
 			String repeatPassword) throws ValidateRegistrationException;
 
-	public Boolean checkUsername(String username);
-
-	public Boolean checkPassword(String password);
-
-	public Boolean usernameExists(String username);
-
 	public List<String> getAdministratorsEmailAddresses();
 
 	public List<? extends Usr> getAllAdministrators();
