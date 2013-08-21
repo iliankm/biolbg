@@ -4,10 +4,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "homeinfo")
+@NamedQueries({
+	@NamedQuery(name=HomeInfoEntity.QueryNames.GET_ALL_COUNT,
+		query="SELECT COUNT(o.id) FROM HomeInfoEntity o")
+})
 public class HomeInfoEntity extends BaseEntity implements HomeInfo
 {
 
 	private static final long serialVersionUID = -8713362248865289063L;
+	
+	public interface QueryNames
+	{
+		public static final String GET_ALL_COUNT = "HomeInfoEntity.getAllCount";
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
