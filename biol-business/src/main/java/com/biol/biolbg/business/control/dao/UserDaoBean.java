@@ -23,7 +23,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<UsrEntity> findAllUsers(final int maxResultsLimit, final int firstResult, SortCriteria sortCriteria)
+	public List<UsrEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM UsrEntity o ORDER BY %s %s";
 		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
@@ -35,7 +35,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 		return query.getResultList();
 	}
 	
-	public Long getAllUsersCount()
+	public Long getAllCount()
 	{
 		List<Long> results = this.findObjectsByNamedQuery(UsrEntity.QueryNames.GET_ALL_USERS_COUNT);
 		
@@ -47,7 +47,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 		return Long.valueOf(0);
 	}
 	
-	public UsrEntity findUserByUsername(final String username)
+	public UsrEntity findByUsername(final String username)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
@@ -62,7 +62,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 		return null;
 	}
 	
-	public List<UsrEntity> findUsersByAdminFlag(final int adminFlag)
+	public List<UsrEntity> findByAdminFlag(final int adminFlag)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("adminflag", Integer.valueOf(adminFlag));
