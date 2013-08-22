@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.biol.biolbg.business.control.dao.UserDaoBean;
-import com.biol.biolbg.business.control.service.UserService;
+import com.biol.biolbg.business.control.service.UserServiceBean;
 import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.business.entity.UsrEntity;
 import com.biol.biolbg.business.exception.ValidateRegistrationException;
@@ -19,7 +19,7 @@ public class UserFacadeBean implements UserFacade
 	private UserDaoBean userDaoBean;
 
 	@EJB
-	private UserService userService;
+	private UserServiceBean userService;
 
 
 	@Override
