@@ -4,10 +4,44 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="item")
+@NamedQueries({
+	@NamedQuery(name=ItemEntity.QueryNames.GET_ALL_COUNT,
+		query="SELECT COUNT(o.id) FROM ItemEntity o"),
+
+	@NamedQuery(name=ItemEntity.QueryNames.FIND_PROMOTION_ITEMS,
+		query="SELECT o FROM ItemEntity o WHERE o.promotion=1 ORDER BY o.id ASC"),
+
+	@NamedQuery(name=ItemEntity.QueryNames.GET_PROMOTION_ITEMS_COUNT,
+		query="SELECT COUNT(o.id) FROM ItemEntity o WHERE o.promotion=1"),
+
+	@NamedQuery(name=ItemEntity.QueryNames.FIND_NEW,
+		query="SELECT o FROM ItemEntity o WHERE o.newitem=1 ORDER BY o.id ASC"),
+
+	@NamedQuery(name=ItemEntity.QueryNames.GET_NEW_COUNT,
+		query="SELECT COUNT(o.id) FROM ItemEntity o WHERE o.newitem=1"),
+		
+	@NamedQuery(name=ItemEntity.QueryNames.FIND_BEST_SELL,
+		query="SELECT o FROM ItemEntity o WHERE o.bestsell=1 ORDER BY o.id ASC"),
+		
+	@NamedQuery(name=ItemEntity.QueryNames.GET_BEST_SELL_COUNT,
+		query="SELECT COUNT(o.id) FROM ItemEntity o WHERE o.bestsell=1")	
+
+})
 public class ItemEntity extends BaseEntity implements Item
 {
 
 	private static final long serialVersionUID = 6077654513083484055L;
+
+	public interface QueryNames
+	{
+		public static final String GET_ALL_COUNT = "ItemEntity.getAllCount";
+		public static final String FIND_PROMOTION_ITEMS = "ItemEntity.findPromotionItems";
+		public static final String GET_PROMOTION_ITEMS_COUNT = "ItemEntity.getPromotionItemsCount";
+		public static final String FIND_BEST_SELL = "ItemEntity.findBestSell";
+		public static final String GET_BEST_SELL_COUNT = "ItemEntity.getBestSellCount";
+		public static final String FIND_NEW = "ItemEntity.findNew";
+		public static final String GET_NEW_COUNT = "ItemEntity.getNewCount";
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
