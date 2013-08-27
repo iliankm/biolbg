@@ -2,13 +2,15 @@ package com.biol.biolbg.business.boundary.facade;
 
 import java.util.List;
 
+import javax.ejb.Local;
+
 import com.biol.biolbg.business.entity.Item;
 import com.biol.biolbg.business.util.FindItemCriteria;
 import com.biol.biolbg.business.util.SortCriteria;
 
-public interface ItemFacade 
+@Local
+public interface ItemFacade
 {
-
 	public Item create(Item item);
 
 	public Item createLocal();

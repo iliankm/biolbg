@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import com.biol.biolbg.business.control.query.builder.OrderQueryBuilder;
 import com.biol.biolbg.business.entity.OrderEntity;
+import com.biol.biolbg.business.entity.OrderStatusEntity;
 import com.biol.biolbg.business.util.FindOrderCriteria;
 import com.biol.biolbg.business.util.SortCriteria;
 
@@ -81,6 +82,16 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 		}
 
 		return Long.valueOf(0);
+	}
+
+	public List<OrderStatusEntity> findAllOrderStatuses()
+	{
+		return this.findObjectsByNamedQuery(OrderStatusEntity.QueryNames.FIND_ALL);
+	}
+
+	public OrderStatusEntity findOrderStatusById(final Integer id)
+	{
+		return em.find(OrderStatusEntity.class, id);
 	}
 
 }

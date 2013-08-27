@@ -10,7 +10,6 @@ import com.biol.biolbg.business.util.SortCriteria;
 @Local
 public interface ProducerFacade
 {
-
 	public Producer createLocal();
 
 	public Producer create(Producer producer);

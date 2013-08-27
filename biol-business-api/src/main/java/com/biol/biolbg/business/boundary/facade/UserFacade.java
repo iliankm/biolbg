@@ -11,7 +11,6 @@ import com.biol.biolbg.business.util.SortCriteria;
 @Local
 public interface UserFacade
 {
-
 	public Usr createLocal();
 
 	public Usr create(Usr user);

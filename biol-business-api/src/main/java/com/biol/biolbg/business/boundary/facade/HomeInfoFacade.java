@@ -10,7 +10,6 @@ import com.biol.biolbg.business.util.SortCriteria;
 @Local
 public interface HomeInfoFacade
 {
-
 	public HomeInfo createLocal();
 
 	public HomeInfo create(HomeInfo homeInfo);

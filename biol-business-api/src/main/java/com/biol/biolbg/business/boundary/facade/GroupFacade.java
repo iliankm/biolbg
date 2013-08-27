@@ -8,9 +8,8 @@ import com.biol.biolbg.business.entity.Group;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Local
-public interface GroupFacade 
+public interface GroupFacade
 {
-
 	public Group createLocal();
 
 	public Group create(Group group);

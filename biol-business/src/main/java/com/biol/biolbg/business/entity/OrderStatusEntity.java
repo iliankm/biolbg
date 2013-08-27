@@ -4,10 +4,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="orderstatus")
+@NamedQueries({
+	@NamedQuery(name=OrderStatusEntity.QueryNames.FIND_ALL,
+		query="SELECT o FROM OrderStatusEntity o ORDER BY o.id ASC")
+})
 public class OrderStatusEntity extends BaseEntity implements OrderStatus
 {
-
 	private static final long serialVersionUID = 7162974088599900550L;
+
+	public interface QueryNames
+	{
+		public static final String FIND_ALL = "OrderStatusEntity.findAll";
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
