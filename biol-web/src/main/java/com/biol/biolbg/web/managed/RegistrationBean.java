@@ -16,13 +16,13 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.biol.biolbg.util.mail.message.MailMessage;
-import com.biol.biolbg.util.mail.message.UserRegisteredMailMessageBuilder;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
+import com.biol.biolbg.business.boundary.facade.MailMessageSenderFacade;
+import com.biol.biolbg.business.entity.mail.MailMessage;
+import com.biol.biolbg.business.entity.mail.UserRegisteredMailMessageBuilder;
 import com.biol.biolbg.ejb.session.UsrFacade;
-import com.biol.biolbg.ejb.session.mail.MailMessageSenderService;
 
 import com.biol.biolbg.entity.Usr;
 import com.biol.biolbg.exception.ValidateRegistrationException;
@@ -57,7 +57,7 @@ public class RegistrationBean extends Base implements Serializable
 	private UserRegisteredMailMessageBuilder userRegisteredMailMessageBuilder;
 
 	@EJB
-	private MailMessageSenderService mailMessageSenderService;
+	private MailMessageSenderFacade mailMessageSenderService;
 
 	public String register()
 	{

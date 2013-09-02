@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.sender;
+package com.biol.biolbg.business.control.mail.sender;
 
 import java.io.IOException;
 import java.util.Properties;

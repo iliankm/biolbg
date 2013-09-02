@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.sender;
+package com.biol.biolbg.business.control.mail.sender;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -14,7 +14,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.biol.biolbg.util.mail.message.MailMessageWithAttachment;
+import com.biol.biolbg.business.entity.mail.MailMessageWithAttachment;
+import com.biol.biolbg.business.exception.MailMessageSenderException;
+import com.biol.biolbg.business.util.annotations.MailSenderWithAttachment;
 
 @MailSenderWithAttachment
 public class MailMessageWithAttachmentSenderImpl extends MailMessageAbstractSender<MailMessageWithAttachment>

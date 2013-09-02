@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.sender;
+package com.biol.biolbg.business.control.mail.sender;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -7,7 +7,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.biol.biolbg.util.mail.message.MailMessage;
+import com.biol.biolbg.business.entity.mail.MailMessage;
+import com.biol.biolbg.business.exception.MailMessageSenderException;
+import com.biol.biolbg.business.util.annotations.MailSender;
 
 @MailSender
 public class MailMessageSenderImpl extends MailMessageAbstractSender<MailMessage>

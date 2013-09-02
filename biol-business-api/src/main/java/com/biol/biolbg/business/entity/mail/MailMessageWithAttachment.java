@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.message;
+package com.biol.biolbg.business.entity.mail;
 
 import java.util.List;
 

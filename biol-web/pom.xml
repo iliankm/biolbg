@@ -97,6 +97,13 @@
     		<version>${project.version}</version>
     		<scope>provided</scope>
     	</dependency>
+    	
+        <dependency>
+        	<groupId>com.biol.biolbg</groupId>
+        	<artifactId>biol-business-api</artifactId>
+    		<version>${project.version}</version>
+    		<scope>provided</scope>
+        </dependency>
 
     	<dependency>
     		<groupId>com.biol.biolbg</groupId>

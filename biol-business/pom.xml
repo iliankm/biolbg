@@ -36,6 +36,13 @@
     		<version>${project.version}</version>
     		<scope>provided</scope>
         </dependency>
+        
+	    <dependency>
+    		<groupId>com.biol.biolbg</groupId>
+    		<artifactId>biol-util</artifactId>
+    		<version>${project.version}</version>
+    	</dependency>
+        
     </dependencies>
 
     <build>

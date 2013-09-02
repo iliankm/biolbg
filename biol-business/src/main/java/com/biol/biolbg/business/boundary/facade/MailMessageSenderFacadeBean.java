@@ -1,4 +1,4 @@
-package com.biol.biolbg.ejb.session.mail;
+package com.biol.biolbg.business.boundary.facade;
 
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -12,17 +12,19 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.inject.Inject;
 
-import com.biol.biolbg.util.mail.message.MailMessage;
-import com.biol.biolbg.util.mail.message.MailMessageWithAttachment;
-import com.biol.biolbg.util.mail.sender.MailMessageSender;
-import com.biol.biolbg.util.mail.sender.MailMessageSenderException;
-import com.biol.biolbg.util.mail.sender.MailSender;
-import com.biol.biolbg.util.mail.sender.MailSenderWithAttachment;
+import com.biol.biolbg.business.control.mail.sender.MailMessageSender;
+import com.biol.biolbg.business.entity.mail.MailMessage;
+import com.biol.biolbg.business.entity.mail.MailMessageWithAttachment;
+import com.biol.biolbg.business.entity.mail.MailStatus;
+import com.biol.biolbg.business.exception.MailMessageSenderException;
+import com.biol.biolbg.business.util.annotations.MailSender;
+import com.biol.biolbg.business.util.annotations.MailSenderWithAttachment;
+
 
 @Stateless
 @TransactionManagement(javax.ejb.TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class MailMessageSenderServiceBean implements MailMessageSenderService
+public class MailMessageSenderFacadeBean implements MailMessageSenderFacade
 {
 	@Inject
 	@MailSender

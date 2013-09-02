@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.sender;
+package com.biol.biolbg.business.exception;
 
 public class MailMessageSenderException extends Exception
 {

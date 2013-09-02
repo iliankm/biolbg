@@ -24,18 +24,19 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.biol.biolbg.util.mail.message.MailMessage;
-import com.biol.biolbg.util.mail.message.UserPostedOrderMailMessageBuilder;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
+import com.biol.biolbg.business.boundary.facade.MailMessageSenderFacade;
+import com.biol.biolbg.business.boundary.facade.UserFacade;
+import com.biol.biolbg.business.entity.Usr;
+import com.biol.biolbg.business.entity.mail.MailMessage;
+import com.biol.biolbg.business.entity.mail.UserPostedOrderMailMessageBuilder;
 import com.biol.biolbg.ejb.session.OrderFacade;
 import com.biol.biolbg.ejb.session.UsrFacade;
-import com.biol.biolbg.ejb.session.mail.MailMessageSenderService;
 import com.biol.biolbg.entity.Order;
 import com.biol.biolbg.entity.OrderRow;
-import com.biol.biolbg.entity.Usr;
 
 @Named("CurrentOrderBean")
 @SessionScoped
@@ -59,10 +60,10 @@ public class CurrentOrderBean extends Base implements Serializable
 	private OrderFacade orderFacade;
 
 	@EJB
-	private UsrFacade usrFacade;
+	private UserFacade userFacade;
 
 	@EJB
-	private MailMessageSenderService mailMessageSenderService;
+	private MailMessageSenderFacade mailMessageSenderService;
 
 	@Inject
 	private ItemImagesFilenameMapper itemImagesFilenameMapper;
@@ -336,13 +337,13 @@ public class CurrentOrderBean extends Base implements Serializable
 
 	private void sendEmailToAdminsWhenOrderIsSaved(Order order)
 	{
-		List<Usr> adminUsers = usrFacade.getAllAdminUsers();
+		List<? extends Usr> adminUsers = userFacade.getAllAdministrators();
 
 		MailMessage mailMessage =
 			userPostedOrderMailMessageBuilder.
 				adminUsers(adminUsers).
 				messageLocale(new Locale("bg")).
-				order(order).
+				order((com.biol.biolbg.business.entity.Order)order).
 				build();
 
 		mailMessageSenderService.send(mailMessage);

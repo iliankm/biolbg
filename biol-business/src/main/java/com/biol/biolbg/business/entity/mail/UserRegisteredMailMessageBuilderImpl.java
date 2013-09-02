@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.message;
+package com.biol.biolbg.business.entity.mail;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.enterprise.inject.Default;
+
+import com.biol.biolbg.business.entity.mail.MailMessage;
 import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 
 /**
@@ -16,7 +19,8 @@ import com.biol.biolbg.util.configuration.ApplicationConfiguration;
  * @author Iliyan Kamilov
  *
  */
-public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<MailMessage>
+@Default
+public class UserRegisteredMailMessageBuilderImpl implements UserRegisteredMailMessageBuilder
 {
 	private static final long serialVersionUID = 1L;
 
@@ -36,45 +40,52 @@ public class UserRegisteredMailMessageBuilder implements MailMessageBuilder<Mail
 
 	private List<String> adminEmails;
 
+	@Override
 	public UserRegisteredMailMessageBuilder messageLocale(Locale messageLocale)
 	{
 		this.messageLocale = messageLocale;
 		return this;
 	}
 
+	@Override
 	public UserRegisteredMailMessageBuilder username(String username)
 	{
 		this.username = username;
 		return this;
 	}
 
+	@Override
 	public UserRegisteredMailMessageBuilder name(String name)
 	{
 		this.name = name;
 		return this;
 	}
 
+	@Override
 	public UserRegisteredMailMessageBuilder adminEmails(List<String> adminEmails)
 	{
 		this.adminEmails = adminEmails;
 		return this;
 	}
 
+	@Override
 	public UserRegisteredMailMessageBuilder organization(String organization)
 	{
 		this.organization = organization;
 		return this;
 	}
 
+	@Override
 	public UserRegisteredMailMessageBuilder date(Date date)
 	{
 		this.date = date;
 		return this;
 	}
 
+	@Override
 	public MailMessage build()
 	{
-		ResourceBundle messagesResourceBundle = ResourceBundle.getBundle(MESSAGES_BUNDLE_NAME, messageLocale);
+		ResourceBundle messagesResourceBundle = ResourceBundle.getBundle(MailMessageBuilder.MESSAGES_BUNDLE_NAME, messageLocale);
 
 		ApplicationConfiguration applicationConfiguration = ApplicationConfiguration.getInstance();
 

@@ -1,6 +1,8 @@
-package com.biol.biolbg.util.mail.message;
+package com.biol.biolbg.business.entity.mail;
 
 import java.util.List;
+
+import com.biol.biolbg.business.entity.mail.MailMessage;
 
 public class MailMessageImpl implements MailMessage
 {

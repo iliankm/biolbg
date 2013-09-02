@@ -170,7 +170,6 @@ public class UsrFacadeBean implements UsrFacade
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<String> getAdminEmailAddresses()
 	{
 		Query query = em.createQuery("SELECT o.email FROM Usr o WHERE o.adminflag=1");
@@ -179,7 +178,6 @@ public class UsrFacadeBean implements UsrFacade
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<Usr> getAllAdminUsers()
 	{
 		Query query = em.createQuery("SELECT o FROM Usr o WHERE o.adminflag=1");

@@ -1,4 +1,4 @@
-package com.biol.biolbg.util.mail.message;
+package com.biol.biolbg.business.entity.mail;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import com.biol.biolbg.entity.Order;
-import com.biol.biolbg.entity.OrderRow;
-import com.biol.biolbg.entity.Usr;
+import javax.enterprise.inject.Default;
+
+import com.biol.biolbg.business.entity.Order;
+import com.biol.biolbg.business.entity.OrderRow;
+import com.biol.biolbg.business.entity.Usr;
+import com.biol.biolbg.business.entity.mail.MailMessage;
 import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 
-public class UserPostedOrderMailMessageBuilder implements MailMessageBuilder<MailMessage>
+@Default
+public class UserPostedOrderMailMessageBuilderImpl implements UserPostedOrderMailMessageBuilder
 {
 	private static final long serialVersionUID = 1L;
 
@@ -22,10 +26,11 @@ public class UserPostedOrderMailMessageBuilder implements MailMessageBuilder<Mai
 
 	private Locale messageLocale;
 
-	private List<Usr> adminUsers;
+	private List<? extends Usr> adminUsers;
 
 	private Order order;
 
+	@Override
 	public UserPostedOrderMailMessageBuilder messageLocale(Locale locale)
 	{
 		this.messageLocale = locale;
@@ -33,13 +38,15 @@ public class UserPostedOrderMailMessageBuilder implements MailMessageBuilder<Mai
 		return this;
 	}
 
-	public UserPostedOrderMailMessageBuilder adminUsers(List<Usr> adminUsers)
+	@Override
+	public UserPostedOrderMailMessageBuilder adminUsers(List<? extends Usr> adminUsers)
 	{
 		this.adminUsers = adminUsers;
 
 		return this;
 	}
 
+	@Override
 	public UserPostedOrderMailMessageBuilder order(Order order)
 	{
 		this.order = order;
@@ -47,6 +54,7 @@ public class UserPostedOrderMailMessageBuilder implements MailMessageBuilder<Mai
 		return this;
 	}
 
+	@Override
 	public MailMessage build()
 	{
 		ResourceBundle messagesResourceBundle = ResourceBundle.getBundle(MESSAGES_BUNDLE_NAME, messageLocale);
@@ -114,7 +122,7 @@ public class UserPostedOrderMailMessageBuilder implements MailMessageBuilder<Mai
 		return orderedArticlesString;
 	}
 
-	private List<String> getAdminUsersEmails(List<Usr> adminUsers)
+	private List<String> getAdminUsersEmails(List<? extends Usr> adminUsers)
 	{
 		List<String> adminUsersEmails = new ArrayList<String>();
 
