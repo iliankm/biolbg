@@ -13,7 +13,7 @@
 		<ui:param name="title" value="#{msgs.item}"/>
 		<ui:param name="sidebarWidth" value="15%"/>
 		<ui:param name="viewBean" value="#{ItemBean}"/>
-		
+
 		<ui:define name="viewParams">
 			<f:metadata>
 				<f:viewParam name="id" value="#{ItemBean.itemId}">
@@ -22,7 +22,7 @@
 			</f:metadata>
 			<f:event type="preRenderView" listener="#{ItemBean.preRenderView}"/>
 		</ui:define>
-		
+
 		<ui:define name="sidebar">
 			<ui:include src="/templates/adminsidebar.xhtml"/>
 		</ui:define>
@@ -31,7 +31,7 @@
 			<h:panelGrid columns="3">
 				<h:outputText value="* #{msgs.itemgroup}" />
 				<h:selectOneMenu id="group"
-								 value="#{ItemBean.item.group}"
+								 value="#{ItemBean.group}"
 								 required="true" >
 					<f:converter binding="#{GroupConverter}"/>
 					<f:selectItems value="#{ItemBean.groupsSelectItems}"/>
@@ -39,7 +39,7 @@
 				<h:message for="group" styleClass="errorText"/>
 
 				<h:outputText value="* #{msgs.nameen}" />
-				<h:inputText id="nameen" 
+				<h:inputText id="nameen"
 							 size="60"
 							 maxlength="50"
 							 required="true"
@@ -48,29 +48,29 @@
 				<h:message for="nameen" styleClass="errorText"/>
 
 				<h:outputText value="* #{msgs.namebg}" />
-				<h:inputText id="namebg" 
+				<h:inputText id="namebg"
 							 size="60"
 							 maxlength="50"
 							 required="true"
 							 value="#{ItemBean.item.namebg}">
 				</h:inputText>
 				<h:message for="namebg" styleClass="errorText"/>
-				
+
 				<h:outputText value="* #{msgs.producer}" />
 				<h:selectOneMenu id="producer"
-								 value="#{ItemBean.item.producer}" 
+								 value="#{ItemBean.producer}"
 								 required="true" >
 					<f:converter binding="#{ProducerConverter}"/>
 					<f:selectItems value="#{ItemBean.producersSelectItems}"/>
 				</h:selectOneMenu>
 				<h:message for="producer" styleClass="errorText"/>
-				
-				
+
+
 				<h:outputText value="#{msgs.descriptionen}" />
 				<h:inputTextarea id="descriptionen"
 							 rows="6"
 							 cols="40"
-							 maxlength="300"	 
+							 maxlength="300"
 							 value="#{ItemBean.item.descriptionen}">
 				</h:inputTextarea>
 				<h:message for="descriptionen" styleClass="errorText"/>
@@ -79,13 +79,13 @@
 				<h:inputTextarea id="descriptionbg"
 							 rows="6"
 							 cols="40"
-							 maxlength="300"	 
+							 maxlength="300"
 							 value="#{ItemBean.item.descriptionbg}">
 				</h:inputTextarea>
 				<h:message for="descriptionbg" styleClass="errorText"/>
 
 				<h:outputText value="* #{msgs.packingen}" />
-				<h:inputText id="packingen" 
+				<h:inputText id="packingen"
 							 size="60"
 							 maxlength="50"
 							 required="true"
@@ -94,7 +94,7 @@
 				<h:message for="packingen" styleClass="errorText"/>
 
 				<h:outputText value="* #{msgs.packingbg}" />
-				<h:inputText id="packingbg" 
+				<h:inputText id="packingbg"
 							 size="60"
 							 maxlength="50"
 							 required="true"
@@ -103,7 +103,7 @@
 				<h:message for="packingbg" styleClass="errorText"/>
 
 				<h:outputText value="* #{msgs.measureuniten}" />
-				<h:inputText id="measureuniten" 
+				<h:inputText id="measureuniten"
 							 size="30"
 							 maxlength="20"
 							 required="true"
@@ -112,40 +112,40 @@
 				<h:message for="measureuniten" styleClass="errorText"/>
 
 				<h:outputText value="* #{msgs.measureunitbg}" />
-				<h:inputText id="measureunitbg" 
+				<h:inputText id="measureunitbg"
 							 size="30"
 							 maxlength="20"
 							 required="true"
 							 value="#{ItemBean.item.measureunitbg}">
 				</h:inputText>
 				<h:message for="measureunitbg" styleClass="errorText"/>
-				
+
 				<h:outputText value="* #{msgs.amountinpacking}" />
-				<h:inputText id="amountinpacking" 
+				<h:inputText id="amountinpacking"
 							 size="15"
 							 maxlength="7"
 							 required="true"
 							 value="#{ItemBean.item.amountinpacking}">
-					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>			 
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
 					<f:validateDoubleRange minimum="0" maximum="1000"/>
 				</h:inputText>
 				<h:message for="amountinpacking" styleClass="errorText"/>
-				
+
 				<h:outputText value="* #{msgs.priceforpacking}" />
-				<h:inputText id="priceforpacking" 
+				<h:inputText id="priceforpacking"
 							 size="15"
 							 maxlength="7"
 							 required="true"
 							 value="#{ItemBean.item.priceforpacking}">
-					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>			 
+					<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
 					<f:validateDoubleRange minimum="0" maximum="1000"/>
 				</h:inputText>
 				<h:message for="priceforpacking" styleClass="errorText"/>
-				
+
 				<h:outputText value="#{msgs.promotion}" />
 				<h:selectBooleanCheckbox id="promotion" value="#{ItemBean.promotion}"/>
 				<h:message for="promotion" styleClass="errorText"/>
-				
+
 				<h:outputText value="#{msgs.newArticles}" />
 				<h:selectBooleanCheckbox id="newart" value="#{ItemBean.newitem}"/>
 				<h:message for="newart" styleClass="errorText"/>
@@ -153,9 +153,9 @@
 				<h:outputText value="#{msgs.bestSellArticles}" />
 				<h:selectBooleanCheckbox id="bestsell" value="#{ItemBean.bestsell}"/>
 				<h:message for="bestsell" styleClass="errorText"/>
-				
+
 			</h:panelGrid>
 		</ui:define>
-	</ui:composition>		
+	</ui:composition>
 </h:body>
 </html>

@@ -11,7 +11,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Group;
 import com.biol.biolbg.business.entity.Item;
+import com.biol.biolbg.business.entity.Producer;
 import com.biol.biolbg.web.managed.AppBean;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.BaseList;
@@ -22,10 +24,6 @@ import com.biol.biolbg.web.util.BaseList;
 public class ItemBean extends BaseEditItem implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-
-	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
-
-	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
 
 	@EJB
 	private ItemFacade itemFacade;
@@ -39,16 +37,18 @@ public class ItemBean extends BaseEditItem implements Serializable
 	@Inject
 	private AppBean appBean;
 
+	private List<SelectItem> groupsSelectItems = new ArrayList<SelectItem>();
+
+	private List<SelectItem> producersSelectItems = new ArrayList<SelectItem>();
+
+	private Group group;
+
+	private Producer producer;
+
 	@Override
 	public Object createNewItem()
 	{
 		Item res = itemFacade.createLocal();
-
-		//if there is instance of Item - set the same Group and Producer in res
-		if (getItem() != null)
-		{
-			itemFacade.assignGroupAndProducerLocal(res, ((Item)getItem()).getGroup().getId(), ((Item)getItem()).getProducer().getId());
-		}
 
 		return res;
 	}
@@ -60,6 +60,8 @@ public class ItemBean extends BaseEditItem implements Serializable
 		try
 		{
 			Item item = (Item)getItem();
+
+			itemFacade.assignGroupAndProducerLocal(item, group.getId(), producer.getId());
 
 			if (item.getId() > 0)
 			{
@@ -82,7 +84,13 @@ public class ItemBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return itemFacade.findById(id);
+		Item item = itemFacade.findById(id);
+
+		producer = item.getProducer();
+
+		group = item.getGroup();
+
+		return item;
 	}
 
 	public List<SelectItem> getGroupsSelectItems()
@@ -214,4 +222,25 @@ public class ItemBean extends BaseEditItem implements Serializable
 	{
 		return producerBean;
 	}
+
+	public Group getGroup()
+	{
+		return group;
+	}
+
+	public void setGroup(Group group)
+	{
+		this.group = group;
+	}
+
+	public Producer getProducer()
+	{
+		return producer;
+	}
+
+	public void setProducer(Producer producer)
+	{
+		this.producer = producer;
+	}
+
 }
