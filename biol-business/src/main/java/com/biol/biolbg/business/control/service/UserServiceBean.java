@@ -21,7 +21,7 @@ public class UserServiceBean
 	@EJB
 	private UserDaoBean userDaoBean;
 
-	public void validateRegistrationInfo(final String username, final String password, final String repeatPassword) throws ValidateRegistrationException
+	public void validateRegistrationInfo(String username, String password, String repeatPassword) throws ValidateRegistrationException
 	{
 		ValidateRegistrationException exception = new ValidateRegistrationException();
 		Boolean res = true;
@@ -67,24 +67,24 @@ public class UserServiceBean
 		}
 	}
 
-	public Boolean checkUsername(final String username)
+	public Boolean checkUsername(String username)
 	{
 		return Pattern.matches("[a-z]{1}[a-z0-9._]{2,30}", username);
 	}
 
-	public Boolean checkPassword(final String password)
+	public Boolean checkPassword(String password)
 	{
 		return Pattern.matches("[a-zA-Z0-9\\p{Punct}]{6,30}", password);
 	}
 
-	public Boolean usernameExists(final String username)
+	public Boolean usernameExists(String username)
 	{
 		UsrEntity user = userDaoBean.findByUsername(username);
 
 		return (user != null && user.getUsername().equals(username));
 	}
-	
-	public UsrEntity updateAfterLogin(final int id, final String ipAddress)
+
+	public UsrEntity updateAfterLogin(int id, String ipAddress)
 	{
 		UsrEntity user = userDaoBean.findById(id);
 
@@ -95,7 +95,7 @@ public class UserServiceBean
 
 		return userDaoBean.update(user);
 	}
-	
+
 	public List<String> getAdministratorsEmailAddresses()
 	{
 		List<String> result = new LinkedList<String>();

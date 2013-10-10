@@ -13,16 +13,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
-
-import com.biol.biolbg.ejb.session.GroupFacade;
-import com.biol.biolbg.ejb.session.ItemFacade;
-import com.biol.biolbg.ejb.session.ProducerFacade;
-
-import com.biol.biolbg.entity.Group;
-import com.biol.biolbg.entity.Item;
-import com.biol.biolbg.entity.Producer;
+import com.biol.biolbg.business.boundary.facade.GroupFacade;
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.boundary.facade.ProducerFacade;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.entity.Item;
+import com.biol.biolbg.business.entity.Producer;
+import com.biol.biolbg.business.util.FindItemCriteria;
+import com.biol.biolbg.business.util.SortCriteria;
 
 @Named("GalleryBean")
 @SessionScoped
@@ -57,6 +56,7 @@ public class GalleryBean extends Base implements Serializable
 	public void preRenderView(javax.faces.event.ComponentSystemEvent event)
 	{
 		groups = getAllGroups();
+
 		producers = getAllProducers();
 
 		Integer groupId = 0;
@@ -78,7 +78,9 @@ public class GalleryBean extends Base implements Serializable
 		}
 		else
 		{
-			items = itemFacade.getAllItems(groupId, producerId, 0, 1000, "o.id", BaseList.SORT_ASC);
+			FindItemCriteria findItemCriteria = new FindItemCriteria(producerId, groupId, null);
+			SortCriteria sortCriteria = new SortCriteria("o.id", SortCriteria.DIRECTION_ASC);
+			items = itemFacade.findByCriteria(findItemCriteria, 1000, 0, sortCriteria);
 		}
 	}
 
@@ -106,7 +108,9 @@ public class GalleryBean extends Base implements Serializable
 	{
 		this.items = items;
 	}
-	public List<Item> getItems() {
+
+	public List<Item> getItems()
+	{
 		return items;
 	}
 
@@ -163,7 +167,6 @@ public class GalleryBean extends Base implements Serializable
 	private List<Group> getAllGroups()
 	{
 		String groupsSortByField;
-
 		if (appBean.getAppLocale().equals("en"))
 		{
 			groupsSortByField = "o.nameen";
@@ -173,13 +176,14 @@ public class GalleryBean extends Base implements Serializable
 			groupsSortByField = "o.namebg";
 		}
 
-		return groupFacade.getAllItems(0, 0, groupsSortByField, BaseList.SORT_ASC);
+		SortCriteria sortCriteria = new SortCriteria(groupsSortByField, SortCriteria.DIRECTION_ASC);
+
+		return groupFacade.findAll(1000, 0, sortCriteria);
 	}
 
 	private List<Producer> getAllProducers()
 	{
 		String producersSortByField = null;
-
 		if (appBean.getAppLocale().equals("en"))
 		{
 			producersSortByField = "o.nameen";
@@ -189,7 +193,9 @@ public class GalleryBean extends Base implements Serializable
 			producersSortByField = "o.namebg";
 		}
 
-		return producerFacade.getAllItems(0, 0, producersSortByField, BaseList.SORT_ASC);
+		SortCriteria sortCriteria = new SortCriteria(producersSortByField, SortCriteria.DIRECTION_ASC);
+
+		return producerFacade.findAll(1000, 0, sortCriteria);
 	}
 
 	public void setGalleryParamsBean(GalleryParamsBean galleryParamsBean)

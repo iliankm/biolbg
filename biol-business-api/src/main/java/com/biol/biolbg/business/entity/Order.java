@@ -29,7 +29,7 @@ public interface Order
 
 	public OrderStatus getStatus();
 
-	public List<? extends OrderRow> getRows();
+	public List<OrderRow> getRows();
 
 	@Transient
 	public Double getTotalValue();

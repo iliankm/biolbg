@@ -21,7 +21,7 @@ public interface UserFacade
 
 	public Usr update(Usr user);
 
-	public List<? extends Usr> findAll(int maxResultsLimit, int firstResult,
+	public List<Usr> findAll(int maxResultsLimit, int firstResult,
 			SortCriteria sortCriteria);
 
 	public Long getAllCount();
@@ -35,6 +35,6 @@ public interface UserFacade
 
 	public List<String> getAdministratorsEmailAddresses();
 
-	public List<? extends Usr> getAllAdministrators();
+	public List<Usr> getAllAdministrators();
 
 }

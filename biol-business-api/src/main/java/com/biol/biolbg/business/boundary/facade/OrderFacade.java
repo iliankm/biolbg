@@ -13,39 +13,45 @@ import com.biol.biolbg.business.util.SortCriteria;
 @Local
 public interface OrderFacade
 {
-	public Order create(final Order order);
+	public Order create(Order order);
 
 	public Order createLocal(Usr user);
 
-	public Order findById(final Integer id);
+	public Order findById(Integer id);
 
-	public void deleteById(final Integer id);
+	public void deleteById(Integer id);
 
-	public Order update(final Order order);
+	public Order update(Order order);
 
-	public List<? extends Order> findAll(final int maxResultsLimit,
-			final int firstResult, final SortCriteria sortCriteria);
+	public List<Order> findAll(int maxResultsLimit,
+			int firstResult, SortCriteria sortCriteria);
 
 	public Long getAllCount();
 
-	public List<? extends Order> findByCriteria(
-			final FindOrderCriteria findItemCriteria,
-			final int maxResultsLimit, final int firstResult,
-			final SortCriteria sortCriteria);
+	public List<Order> findByCriteria(
+			FindOrderCriteria findItemCriteria,
+			int maxResultsLimit, final int firstResult,
+			SortCriteria sortCriteria);
 
-	public Long getByCriteriaCount(final FindOrderCriteria findOrderCriteria);
+	public Long getByCriteriaCount(FindOrderCriteria findOrderCriteria);
 
-	public List<? extends OrderStatus> findAllOrderStatuses();
+	public List<OrderStatus> findAllOrderStatuses();
 
-	public OrderStatus findOrderStatusById(final Integer id);
+	public OrderStatus findOrderStatusById(Integer id);
 
-	public Order updateStatus(final Integer orderId,
-			final Integer newOrderStatusId);
+	public Order updateStatus(Integer orderId,
+			Integer newOrderStatusId);
 
-	public Order cancelOrder(final Integer orderId);
+	public Order cancelOrder(Integer orderId);
 
-	public String getLastDeliveryAddressForUser(final Integer userId);
+	public String getLastDeliveryAddressForUser(Integer userId);
 
-	public Order markOrderAsSeenByAdmin(final Integer orderId);
+	public Order markOrderAsSeenByAdmin(Integer orderId);
+
+	public void deleteRowByArticleIdLocal(Order order, Integer articleId);
+
+	public void incrementArticleAmountLocal(Order order, Integer articleId);
+
+	public void decrementArticleAmountLocal(Order order, Integer articleId);
 
 }

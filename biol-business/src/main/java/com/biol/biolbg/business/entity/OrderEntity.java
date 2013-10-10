@@ -144,9 +144,9 @@ public class OrderEntity extends BaseEntity implements Order
 	}
 
 	@Override
-	public List<? extends OrderRow> getRows()
+	public List<OrderRow> getRows()
 	{
-		return Collections.unmodifiableList(getRowsEntities());
+		return Collections.<OrderRow>unmodifiableList(getRowsEntities());
 	}
 
 	public List<OrderRowEntity> getRowsEntities()

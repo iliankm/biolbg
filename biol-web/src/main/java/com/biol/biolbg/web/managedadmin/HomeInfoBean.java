@@ -6,10 +6,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.HomeInfoFacade;
+import com.biol.biolbg.business.entity.HomeInfo;
 import com.biol.biolbg.web.util.BaseEditItem;
 
-import com.biol.biolbg.ejb.session.HomeInfoFacade;
-import com.biol.biolbg.entity.HomeInfo;
 
 @Named("HomeInfoBean")
 @RequestScoped
@@ -23,7 +23,7 @@ public class HomeInfoBean extends BaseEditItem implements Serializable
 	@Override
 	public Object createNewItem()
 	{
-		return homeInfoFacade.createNewItem();
+		return homeInfoFacade.createLocal();
 	}
 
 	@Override
@@ -36,11 +36,11 @@ public class HomeInfoBean extends BaseEditItem implements Serializable
 			HomeInfo item = (HomeInfo)getItem();
 			if (item.getId() > 0)
 			{
-				homeInfoFacade.updateItem(item);
+				homeInfoFacade.update(item);
 			}
 			else
 			{
-				homeInfoFacade.addItem(item);
+				homeInfoFacade.create(item);
 			}
 			res = true;
 		}
@@ -55,7 +55,7 @@ public class HomeInfoBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return homeInfoFacade.findItem(id);
+		return homeInfoFacade.findById(id);
 	}
 
 	@Override

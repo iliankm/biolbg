@@ -20,7 +20,6 @@ public class ProducerDaoBean extends AbstractDaoBean<ProducerEntity>
 		return ProducerEntity.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<ProducerEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM ProducerEntity o ORDER BY %s %s";
@@ -30,7 +29,7 @@ public class ProducerDaoBean extends AbstractDaoBean<ProducerEntity>
 
 		setResultsLimitToQuery(query, maxResultsLimit, firstResult);
 
-		return query.getResultList();
+		return getResultList(query.getResultList());
 	}
 
 	public Long getAllCount()

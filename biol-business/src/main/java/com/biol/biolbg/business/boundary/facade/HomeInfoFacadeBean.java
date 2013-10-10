@@ -1,5 +1,6 @@
 package com.biol.biolbg.business.boundary.facade;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -48,9 +49,9 @@ public class HomeInfoFacadeBean implements HomeInfoFacade
 	}
 
 	@Override
-	public List<HomeInfoEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<HomeInfo> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
-		return homeInfoDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria);
+		return Collections.<HomeInfo>unmodifiableList(homeInfoDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria));
 	}
 
 	@Override

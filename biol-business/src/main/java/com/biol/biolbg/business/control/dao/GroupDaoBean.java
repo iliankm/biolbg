@@ -20,7 +20,6 @@ public class GroupDaoBean extends AbstractDaoBean<GroupEntity>
 		return GroupEntity.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<GroupEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM GroupEntity o ORDER BY %s %s";
@@ -30,7 +29,7 @@ public class GroupDaoBean extends AbstractDaoBean<GroupEntity>
 
 		setResultsLimitToQuery(query, maxResultsLimit, firstResult);
 
-		return query.getResultList();
+		return getResultList(query.getResultList());
 	}
 
 	public Long getAllCount()

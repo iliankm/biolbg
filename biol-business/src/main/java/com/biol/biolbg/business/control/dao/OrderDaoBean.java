@@ -26,7 +26,6 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 		return OrderEntity.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<OrderEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = orderQueryBuilder.select().sortCriteria(sortCriteria).build();
@@ -35,7 +34,7 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 
 		setResultsLimitToQuery(query, maxResultsLimit, firstResult);
 
-		return query.getResultList();
+		return getResultList(query.getResultList());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -55,7 +54,6 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 		return Long.valueOf(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<OrderEntity> findByCriteria(final FindOrderCriteria findOrderCriteria, final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = orderQueryBuilder.select().findOrderCriteria(findOrderCriteria).sortCriteria(sortCriteria).build();
@@ -64,7 +62,7 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 
 		setResultsLimitToQuery(query, maxResultsLimit, firstResult);
 
-		return query.getResultList();
+		return getResultList(query.getResultList());
 	}
 
 	@SuppressWarnings("unchecked")

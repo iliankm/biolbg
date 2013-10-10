@@ -7,16 +7,16 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Item;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
-import com.biol.biolbg.ejb.session.ItemFacade;
-
-import com.biol.biolbg.entity.Item;
 
 @Named("ViewArticleBean")
 @RequestScoped
-public class ViewArticleBean extends BaseEditItem implements Serializable {
+public class ViewArticleBean extends BaseEditItem implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EJB
@@ -37,7 +37,7 @@ public class ViewArticleBean extends BaseEditItem implements Serializable {
 	@Override
 	public Object createNewItem()
 	{
-		return itemFacade.createNewItem();
+		return itemFacade.createLocal();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class ViewArticleBean extends BaseEditItem implements Serializable {
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return itemFacade.findItem(id);
+		return itemFacade.findById(id);
 	}
 
 	@Override

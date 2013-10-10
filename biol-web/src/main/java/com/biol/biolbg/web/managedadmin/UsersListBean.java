@@ -8,10 +8,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.UserFacade;
+import com.biol.biolbg.business.entity.Usr;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseList;
-
-import com.biol.biolbg.ejb.session.UsrFacade;
-import com.biol.biolbg.entity.Usr;
 
 @Named("UsersListBean")
 @RequestScoped
@@ -20,7 +20,7 @@ public class UsersListBean extends BaseList implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private UsrFacade usrFacade;
+	private UserFacade usrFacade;
 
 	@Override
 	public void doDeleteData(List<Integer> itemsToDelete)
@@ -30,7 +30,7 @@ public class UsersListBean extends BaseList implements Serializable
 		{
 			try
 			{
-				usrFacade.removeItem(iter.next());
+				usrFacade.deleteById(iter.next());
 			}
 			catch (Exception e)
 			{
@@ -42,14 +42,17 @@ public class UsersListBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<Usr> dataItems = usrFacade.getAllItems(fromRow, maxResults, getSortByFieldName(), getSortType());
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
+
+		List<Usr> dataItems = usrFacade.findAll(maxResults, fromRow, sortCriteria);
+
 		this.setDataItems(dataItems);
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		return usrFacade.getAllItemsCount();
+		return usrFacade.getAllCount();
 	}
 
 	@Override

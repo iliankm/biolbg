@@ -16,16 +16,15 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.biol.biolbg.business.boundary.facade.MailMessageSenderFacade;
+import com.biol.biolbg.business.boundary.facade.UserFacade;
+import com.biol.biolbg.business.entity.Usr;
+import com.biol.biolbg.business.entity.mail.MailMessage;
+import com.biol.biolbg.business.entity.mail.UserRegisteredMailMessageBuilder;
+import com.biol.biolbg.business.exception.ValidateRegistrationException;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
-import com.biol.biolbg.business.boundary.facade.MailMessageSenderFacade;
-import com.biol.biolbg.business.entity.mail.MailMessage;
-import com.biol.biolbg.business.entity.mail.UserRegisteredMailMessageBuilder;
-import com.biol.biolbg.ejb.session.UsrFacade;
-
-import com.biol.biolbg.entity.Usr;
-import com.biol.biolbg.exception.ValidateRegistrationException;
 
 @Named("RegistrationBean")
 @RequestScoped
@@ -48,7 +47,7 @@ public class RegistrationBean extends Base implements Serializable
 	private String regcode;
 
 	@EJB
-	private UsrFacade usrFacade;
+	private UserFacade usrFacade;
 
 	@Inject
 	private MessageResourcesBean messageResourcesBean;
@@ -97,14 +96,15 @@ public class RegistrationBean extends Base implements Serializable
 			usrFacade.validateRegistrationInfo(username, password, repeatPassword);
 
 			//create Usr object and set properties
-			Usr usr = new Usr();
+			Usr usr = usrFacade.createLocal();
+
 			usr.setUsername(username);
 			usr.setPassword(password);
 			usr.setOrganisation(organisation);
 			usr.setFullname(fullname);
 			usr.setEmail(email);
 
-			usrFacade.addItem(usr);
+			usrFacade.create(usr);
 
 			sendEmailWhenUserRegistered(usr);
 		}
@@ -291,7 +291,7 @@ public class RegistrationBean extends Base implements Serializable
 
 	private void sendEmailWhenUserRegistered(Usr registeredUser)
 	{
-		List<String> adminEmails = usrFacade.getAdminEmailAddresses();
+		List<String> adminEmails = usrFacade.getAdministratorsEmailAddresses();
 
 		MailMessage mailMessage =
 			userRegisteredMailMessageBuilder.

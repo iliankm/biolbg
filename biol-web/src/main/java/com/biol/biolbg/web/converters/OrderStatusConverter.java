@@ -11,8 +11,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import com.biol.biolbg.ejb.session.OrderFacade;
-import com.biol.biolbg.entity.OrderStatus;
+import com.biol.biolbg.business.boundary.facade.OrderFacade;
+import com.biol.biolbg.business.entity.OrderStatus;
+
 
 @ManagedBean(name="OrderStatusConverter")
 @RequestScoped
@@ -39,7 +40,7 @@ public class OrderStatusConverter implements Converter
 			throw new ConverterException(getMessage());
 		}
 
-		OrderStatus res = orderFacade.findOrderStatus(id);
+		OrderStatus res = orderFacade.findOrderStatusById(id);
 
 		if (res == null)
 		{

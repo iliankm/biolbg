@@ -26,7 +26,7 @@ public class UserPostedOrderMailMessageBuilderImpl implements UserPostedOrderMai
 
 	private Locale messageLocale;
 
-	private List<? extends Usr> adminUsers;
+	private List<Usr> adminUsers;
 
 	private Order order;
 
@@ -39,7 +39,7 @@ public class UserPostedOrderMailMessageBuilderImpl implements UserPostedOrderMai
 	}
 
 	@Override
-	public UserPostedOrderMailMessageBuilder adminUsers(List<? extends Usr> adminUsers)
+	public UserPostedOrderMailMessageBuilder adminUsers(List<Usr> adminUsers)
 	{
 		this.adminUsers = adminUsers;
 
@@ -122,7 +122,7 @@ public class UserPostedOrderMailMessageBuilderImpl implements UserPostedOrderMai
 		return orderedArticlesString;
 	}
 
-	private List<String> getAdminUsersEmails(List<? extends Usr> adminUsers)
+	private List<String> getAdminUsersEmails(List<Usr> adminUsers)
 	{
 		List<String> adminUsersEmails = new ArrayList<String>();
 

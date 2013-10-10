@@ -1,5 +1,6 @@
 package com.biol.biolbg.business.boundary.facade;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -17,10 +18,10 @@ public class GroupFacadeBean implements GroupFacade
 
 	@EJB
 	private GroupDaoBean groupDaoBean;
-	
+
 	@EJB
 	private GroupServiceBean groupService;
-	
+
 
 	@Override
 	public GroupEntity createLocal()
@@ -53,9 +54,9 @@ public class GroupFacadeBean implements GroupFacade
 	}
 
 	@Override
-	public List<GroupEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Group> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
-		return groupDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria);
+		return Collections.<Group>unmodifiableList(groupDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria));
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class GroupFacadeBean implements GroupFacade
 	{
 		return groupDaoBean.getAllCount();
 	}
-	
+
 	@Override
 	public GroupEntity getRandomGroup()
 	{

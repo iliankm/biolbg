@@ -32,7 +32,7 @@ public class FileUtil
 		return res;
 	}
 
-	public static void deleteImageFilesForItem(String dirName, String itemId, String newFileName)
+	public static void deleteImageFilesForItem(String dirName, Integer itemId, String newFileName)
 	{
 		List<File> files = allFilesFromDirectory(dirName);
 		Iterator<File> iter = files.iterator();
@@ -41,7 +41,7 @@ public class FileUtil
 		{
 			File file = iter.next();
 			String fileName = file.getName();
-			if (fileName.startsWith(itemId.concat("_")))
+			if (fileName.startsWith(itemId.toString().concat("_")))
 			{
 				if (!fileName.equals(newFileName))
 				{

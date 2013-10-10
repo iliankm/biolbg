@@ -9,7 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.biol.biolbg.entity.Item;
+import com.biol.biolbg.business.entity.Item;
 import com.biol.biolbg.util.configuration.ApplicationConfiguration;
 import com.biol.biolbg.web.util.FileUtil;
 
@@ -28,13 +28,16 @@ public class ItemImagesFilenameMapper implements Serializable
 	{
 		Map<Integer, String> result = new HashMap<Integer, String>();
 
-		for (Item item : items)
+		if (items != null)
 		{
-			String imageFileName = getSingle(item);
-
-			if (imageFileName != null)
+			for (Item item : items)
 			{
-				result.put(item.getId(), imageFileName);
+				String imageFileName = getSingle(item);
+
+				if (imageFileName != null)
+				{
+					result.put(item.getId(), imageFileName);
+				}
 			}
 		}
 

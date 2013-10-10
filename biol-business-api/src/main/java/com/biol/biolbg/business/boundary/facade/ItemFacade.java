@@ -21,26 +21,28 @@ public interface ItemFacade
 
 	public Item update(Item item);
 
-	public List<? extends Item> findAll(int maxResultsLimit, int firstResult,
+	public List<Item> findAll(int maxResultsLimit, int firstResult,
 			SortCriteria sortCriteria);
 
 	public Long getAllCount();
 
-	public List<? extends Item> findByCriteria(FindItemCriteria findItemCriteria,
+	public List<Item> findByCriteria(FindItemCriteria findItemCriteria,
 			int maxResultsLimit, int firstResult, SortCriteria sortCriteria);
 
 	public Long getByCriteriaCount(FindItemCriteria findItemCriteria);
 
-	public List<? extends Item> findPromotions(int maxResultsLimit, int firstResult);
+	public List<Item> findPromotions(int maxResultsLimit, int firstResult);
 
 	public Long getPromotionsCount();
 
-	public List<? extends Item> findBestSell(int maxResultsLimit, int firstResult);
+	public List<Item> findBestSell(int maxResultsLimit, int firstResult);
 
 	public Long getBestSellCount();
 
-	public List<? extends Item> findNew(int maxResultsLimit, int firstResult);
+	public List<Item> findNew(int maxResultsLimit, int firstResult);
 
 	public Long getNewCount();
+
+	public void assignGroupAndProducerLocal(Item item, Integer groupId, Integer producerId);
 
 }

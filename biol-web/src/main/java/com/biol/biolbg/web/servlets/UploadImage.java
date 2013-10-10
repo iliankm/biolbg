@@ -56,7 +56,7 @@ public class UploadImage extends HttpServlet
 	    FileUpload fu = new FileUpload();
 		if (fu.processFileUpload(request, uploadImagePath, MAX_IMAGE_FILE_SIZE))
 		{
-			FileUtil.deleteImageFilesForItem(uploadImagePath, fu.itemId, fu.uploadedFileName);
+			FileUtil.deleteImageFilesForItem(uploadImagePath, Integer.valueOf(fu.itemId), fu.uploadedFileName);
 			out.println("<img src=\"img/ok.jpeg\"/>");
 		}
 		else

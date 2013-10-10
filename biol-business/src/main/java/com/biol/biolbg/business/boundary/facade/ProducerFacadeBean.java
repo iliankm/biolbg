@@ -1,9 +1,11 @@
 package com.biol.biolbg.business.boundary.facade;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
 import com.biol.biolbg.business.control.dao.ProducerDaoBean;
 import com.biol.biolbg.business.entity.Producer;
 import com.biol.biolbg.business.entity.ProducerEntity;
@@ -47,9 +49,9 @@ public class ProducerFacadeBean implements ProducerFacade
 	}
 
 	@Override
-	public List<ProducerEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Producer> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
-		return producerDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria);
+		return Collections.<Producer>unmodifiableList(producerDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria));
 	}
 
 	@Override

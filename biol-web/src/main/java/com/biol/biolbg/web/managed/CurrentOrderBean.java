@@ -2,10 +2,8 @@ package com.biol.biolbg.web.managed;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,16 +25,13 @@ import javax.servlet.http.HttpSession;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
-
 import com.biol.biolbg.business.boundary.facade.MailMessageSenderFacade;
+import com.biol.biolbg.business.boundary.facade.OrderFacade;
 import com.biol.biolbg.business.boundary.facade.UserFacade;
+import com.biol.biolbg.business.entity.Order;
 import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.business.entity.mail.MailMessage;
 import com.biol.biolbg.business.entity.mail.UserPostedOrderMailMessageBuilder;
-import com.biol.biolbg.ejb.session.OrderFacade;
-import com.biol.biolbg.ejb.session.UsrFacade;
-import com.biol.biolbg.entity.Order;
-import com.biol.biolbg.entity.OrderRow;
 
 @Named("CurrentOrderBean")
 @SessionScoped
@@ -44,7 +39,7 @@ public class CurrentOrderBean extends Base implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private Order order = new Order();
+	private Order order;
 
 	private java.util.Date fordate;
 
@@ -52,7 +47,7 @@ public class CurrentOrderBean extends Base implements Serializable
 
 	private HtmlDataTable orderRowsDataTable;
 
-	private Map<Integer,String> orderedAmount = new HashMap<Integer,String>();
+	private Map<Integer,String> orderedAmount;
 
 	private String regcode;
 
@@ -80,7 +75,11 @@ public class CurrentOrderBean extends Base implements Serializable
 	@PostConstruct
 	public void postConstruct()
 	{
-		order.setRows(new ArrayList<OrderRow>());
+		order = orderFacade.createLocal((Usr)appBean.getLoggedUser());
+
+		order.setDeliveryAddress(getLastDeliveryAddressForUser());
+
+		orderedAmount = new HashMap<Integer,String>();
 	}
 
 	public void saveData(ActionEvent event)
@@ -133,9 +132,6 @@ public class CurrentOrderBean extends Base implements Serializable
 			return;
 		}
 
-		//set user
-		order.setUser(appBean.getLoggedUser());
-
 		//set for date
 		if (fordate != null)
 		{
@@ -153,11 +149,11 @@ public class CurrentOrderBean extends Base implements Serializable
 		{
 			if (order.getId() > 0)
 			{
-				orderFacade.updateItem(order);
+				orderFacade.update(order);
 			}
 			else
 			{
-				orderFacade.addItem(order);
+				orderFacade.create(order);
 			}
 
 			sendEmailToAdminsWhenOrderIsSaved(order);
@@ -171,28 +167,20 @@ public class CurrentOrderBean extends Base implements Serializable
 			return;
 		}
 
-		order = new Order();
-		order.setRows(new ArrayList<OrderRow>());
+		order = orderFacade.createLocal((Usr)appBean.getLoggedUser());
+
+		order.setDeliveryAddress(getLastDeliveryAddressForUser());
+
 		orderedAmount.clear();
 	}
 
 	public void deleteRow(ActionEvent event)
 	{
-		Iterator<OrderRow> iter = order.getRows().iterator();
-
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-		String sArticleId = params.get("articleId");
+		Integer articleId = Integer.valueOf(params.get("articleId"));
 
-		while (iter.hasNext())
-		{
-			OrderRow _orderrow = iter.next();
-			if (String.valueOf(_orderrow.getItem().getId()).equals(sArticleId))
-			{
-				iter.remove();
-				break;
-			}
-		}
+		orderFacade.deleteRowByArticleIdLocal(order, articleId);
 	}
 
 	public Boolean getHaveOrderedArticles()
@@ -209,10 +197,9 @@ public class CurrentOrderBean extends Base implements Serializable
 	//get the last posted deliv address
 	private String getLastDeliveryAddressForUser()
 	{
-		Integer loggedUserId = appBean.getLoggedUser().getId();
-		if (loggedUserId > 0)
+		if (appBean.getLoggedUser() != null && appBean.getLoggedUser().getId() > 0)
 		{
-			return orderFacade.getLastDeliveryAddressForUser(loggedUserId);
+			return orderFacade.getLastDeliveryAddressForUser(Integer.valueOf(appBean.getLoggedUser().getId()));
 		}
 		else
 		{
@@ -227,14 +214,6 @@ public class CurrentOrderBean extends Base implements Serializable
 
 	public Order getOrder()
 	{
-		//set the last posted deliv address
-		String delivAddress = order.getDeliveryAddress();
-
-		if ((delivAddress == null)||("".equals(delivAddress)))
-		{
-			order.setDeliveryAddress(getLastDeliveryAddressForUser());
-		}
-
 		return order;
 	}
 
@@ -337,7 +316,7 @@ public class CurrentOrderBean extends Base implements Serializable
 
 	private void sendEmailToAdminsWhenOrderIsSaved(Order order)
 	{
-		List<? extends Usr> adminUsers = userFacade.getAllAdministrators();
+		List<Usr> adminUsers = userFacade.getAllAdministrators();
 
 		MailMessage mailMessage =
 			userPostedOrderMailMessageBuilder.

@@ -8,10 +8,11 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.HomeInfoFacade;
+import com.biol.biolbg.business.entity.HomeInfo;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseList;
 
-import com.biol.biolbg.ejb.session.HomeInfoFacade;
-import com.biol.biolbg.entity.HomeInfo;
 
 @Named("HomeInfoListBean")
 @RequestScoped
@@ -34,14 +35,17 @@ public class HomeInfoListBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<HomeInfo> dataItems = homeInfoFacade.getAllItems(fromRow, maxResults, getSortByFieldName(), getSortType());
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
+
+		List<HomeInfo> dataItems = homeInfoFacade.findAll(maxResults, fromRow, sortCriteria);
+
 		setDataItems(dataItems);
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		return homeInfoFacade.getAllItemsCount();
+		return homeInfoFacade.getAllCount();
 	}
 
 	@Override
@@ -52,7 +56,7 @@ public class HomeInfoListBean extends BaseList implements Serializable
 		{
 			try
 			{
-				homeInfoFacade.removeItem(iter.next());
+				homeInfoFacade.deleteById(iter.next());
 			}
 			catch (Exception e)
 			{

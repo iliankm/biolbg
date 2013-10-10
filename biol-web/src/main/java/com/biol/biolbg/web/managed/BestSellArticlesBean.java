@@ -14,10 +14,8 @@ import javax.inject.Named;
 
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
-
-import com.biol.biolbg.ejb.session.ItemFacade;
-
-import com.biol.biolbg.entity.Item;
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Item;
 
 @Named("BestSellArticlesBean")
 @RequestScoped
@@ -42,22 +40,18 @@ public class BestSellArticlesBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<Item> dataItems = itemFacade.getBestSellItems(fromRow, maxResults);
+		List<Item> dataItems = itemFacade.findBestSell(maxResults, fromRow);
 
 		setDataItems(dataItems);
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null)
-		{
-			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
-		}
+		itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		Long itemsCount = Long.valueOf(0);
-		itemsCount = itemFacade.getBestSellItemsCount();
+		Long itemsCount = itemFacade.getBestSellCount();
 
 		return itemsCount;
 	}

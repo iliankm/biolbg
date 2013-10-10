@@ -2,8 +2,9 @@ package com.biol.biolbg.web.util;
 
 import java.io.Serializable;
 
-import com.biol.biolbg.entity.Group;
-import com.biol.biolbg.entity.Producer;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.entity.Producer;
+
 
 public class ItemsListCredentials implements Serializable
 {

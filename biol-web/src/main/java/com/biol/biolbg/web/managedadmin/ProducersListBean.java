@@ -8,10 +8,11 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.ProducerFacade;
+import com.biol.biolbg.business.entity.Producer;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseList;
 
-import com.biol.biolbg.ejb.session.ProducerFacade;
-import com.biol.biolbg.entity.Producer;
 
 @Named("ProducersListBean")
 @RequestScoped
@@ -31,7 +32,7 @@ public class ProducersListBean extends BaseList implements Serializable
 		{
 			try
 			{
-				producerFacade.removeItem(iter.next());
+				producerFacade.deleteById(iter.next());
 			}
 			catch (Exception e)
 			{
@@ -43,14 +44,17 @@ public class ProducersListBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<Producer> dataItems = producerFacade.getAllItems(fromRow, maxResults, getSortByFieldName(), getSortType());
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
+
+		List<Producer> dataItems = producerFacade.findAll(maxResults, fromRow, sortCriteria);
+
 		setDataItems(dataItems);
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		return producerFacade.getAllItemsCount();
+		return producerFacade.getAllCount();
 	}
 
 	@Override

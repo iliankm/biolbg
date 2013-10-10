@@ -20,7 +20,7 @@ public interface ProducerFacade
 
 	public Producer update(Producer producer);
 
-	public List<? extends Producer> findAll(int maxResultsLimit, int firstResult,
+	public List<Producer> findAll(int maxResultsLimit, int firstResult,
 			SortCriteria sortCriteria);
 
 	public Long getAllCount();

@@ -2,7 +2,6 @@ package com.biol.biolbg.web.managedadmin;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -10,10 +9,11 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.ProducerFacade;
+import com.biol.biolbg.business.entity.Producer;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseEditItem;
 
-import com.biol.biolbg.ejb.session.ProducerFacade;
-import com.biol.biolbg.entity.Producer;
 
 @Named("ProducerBean")
 @RequestScoped
@@ -27,24 +27,27 @@ public class ProducerBean extends BaseEditItem implements Serializable
 	@Override
 	public Object createNewItem()
 	{
-		return producerFacade.createNewItem();
+		return producerFacade.createLocal();
 	}
 
 	@Override
 	public Boolean doSaveData()
 	{
 		Boolean res = false;
+
 		try
 		{
-			Producer item = (Producer)getItem();
-			if (item.getId() > 0)
+			Producer producer = (Producer)getItem();
+
+			if (producer.getId() > 0)
 			{
-				producerFacade.updateItem(item);
+				producerFacade.update(producer);
 			}
 			else
 			{
-				producerFacade.addItem(item);
+				producerFacade.create(producer);
 			}
+
 			res = true;
 		}
 		catch (Exception e)
@@ -58,7 +61,7 @@ public class ProducerBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return producerFacade.findItem(id);
+		return producerFacade.findById(id);
 	}
 
 	@Override
@@ -70,25 +73,17 @@ public class ProducerBean extends BaseEditItem implements Serializable
 	{
 		List<SelectItem> result = new ArrayList<SelectItem>();
 
-		//get all producers in allProducers
-		List<Producer> allProducers = null;
+		SortCriteria sortCriteria = new SortCriteria(sortByFieldName, sortType);
 
-		allProducers = producerFacade.getAllItems(0, 0, sortByFieldName, sortType);
+		List<Producer> allProducers = producerFacade.findAll(0, 0, sortCriteria);
 
-		//iterate over allProducers and form result List with SelectItem instances
-		result.add(new SelectItem(new Producer(),""));
+		result.add(new SelectItem(producerFacade.createLocal(), ""));
 
-		Iterator<Producer> iter = allProducers.iterator();
-		while (iter.hasNext())
+		for (Producer producer : allProducers)
 		{
-			Producer producer = iter.next();
-			String producerName = producer.getNameen();
+			String producerName = localeName != null && localeName.equals("en") ? producer.getNameen() : producer.getNamebg();
 
-			if (localeName.equals("bg"))
-			{
-				producerName = producer.getNamebg();
-			}
-			result.add(new SelectItem(producer,producerName));
+			result.add(new SelectItem(producer, producerName));
 		}
 
 		return result;

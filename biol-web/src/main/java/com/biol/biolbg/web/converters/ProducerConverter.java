@@ -10,8 +10,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import com.biol.biolbg.ejb.session.ProducerFacade;
-import com.biol.biolbg.entity.Producer;
+
+import com.biol.biolbg.business.boundary.facade.ProducerFacade;
+import com.biol.biolbg.business.entity.Producer;
 
 @ManagedBean(name="ProducerConverter")
 @RequestScoped
@@ -38,7 +39,7 @@ public class ProducerConverter implements Converter
 			throw new ConverterException(getMessage());
 		}
 
-		Producer res = producerFacade.findItem(id);
+		Producer res = producerFacade.findById(id);
 
 		if (res == null)
 		{

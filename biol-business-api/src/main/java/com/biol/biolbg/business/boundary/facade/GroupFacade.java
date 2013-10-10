@@ -20,7 +20,7 @@ public interface GroupFacade
 
 	public Group update(Group group);
 
-	public List<? extends Group> findAll(int maxResultsLimit, int firstResult,
+	public List<Group> findAll(int maxResultsLimit, int firstResult,
 			SortCriteria sortCriteria);
 
 	public Long getAllCount();

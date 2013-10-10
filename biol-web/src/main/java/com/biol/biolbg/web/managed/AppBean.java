@@ -15,12 +15,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
+import com.biol.biolbg.business.boundary.facade.UserFacade;
+import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.web.util.Base;
 import com.biol.biolbg.web.util.CookiesManager;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
-import com.biol.biolbg.ejb.session.UsrFacade;
-import com.biol.biolbg.entity.Usr;
 
 @Named("AppBean")
 @SessionScoped
@@ -36,9 +36,9 @@ public class AppBean extends Base implements Serializable
 
 	private String password = "";
 
-	private Usr loggedUser = new Usr();
+	private Usr loggedUser;
 
-	private Boolean isUserLoggedIn = false;
+	private Boolean isUserLoggedIn;
 
 	@Inject
 	private CookiesManager cookiesManager;
@@ -50,7 +50,7 @@ public class AppBean extends Base implements Serializable
 	private transient Logger log;
 
 	@EJB
-	private UsrFacade usrFacade;
+	private UserFacade usrFacade;
 
 	@PostConstruct
 	public void postConstruct()
@@ -73,6 +73,10 @@ public class AppBean extends Base implements Serializable
 			//appLocale = Locale.getDefault().getLanguage();
 			appLocale = fc.getApplication().getDefaultLocale().getLanguage();
 		}
+
+		loggedUser = usrFacade.createLocal();
+
+		isUserLoggedIn = false;
 	}
 
 	private void addInfoMessageToLog()
@@ -120,36 +124,35 @@ public class AppBean extends Base implements Serializable
 	{
 		log.info("User attempt to login with username: '" + username + "' and password: '" + password + "'");
 
-		loggedUser = new Usr();
-		isUserLoggedIn = false;
 
 		//check if username & password is provided
-		if ((username.trim().equals(""))||(password.trim().equals("")))
+		if (username == null || password == null || username.isEmpty() || password.isEmpty())
 		{
 			String errorText = messageResourcesBean.getMessage("provideUsernamePassword", null);
+
 			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
 	                FacesMessage.SEVERITY_ERROR, errorText, null));
 
 			return "error";
 		}
+
 		//get Usr object from database with provided username
-		Usr usr = null;
-		usr = usrFacade.findUsrByUsername(username);
+		Usr usr = usrFacade.findByUsername(username);
 
 		//check if Usr is with provided username and password
-		Boolean res = false;
-		if (usr != null)
+		if (usr != null && username != null && username.equals(usr.getUsername()) && password != null && password.equals(usr.getPassword()))
 		{
-			if (usr.getUsername().equals(username))
-			{
-				if (usr.getPassword().equals(password))
-				{
-					res = true;
-				}
-			}
-		}
+			HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
-		if (!res)
+			usrFacade.updateAfterLogin(usr.getId(), request.getRemoteAddr());
+
+			loggedUser = usr;
+
+			isUserLoggedIn = true;
+
+			return "loginok";
+		}
+		else
 		{
 			String errorText = messageResourcesBean.getMessage("invalidUsernamePassword", null);
 			FacesContext.getCurrentInstance().addMessage("headerForm:usrInput", new FacesMessage(
@@ -157,30 +160,12 @@ public class AppBean extends Base implements Serializable
 
 			return "error";
 		}
-		else
-		{
-			//update Usr entity with ip address and lastlogin date and time
-			HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-			try
-			{
-				usrFacade.updateUsrAfterLogin(usr, request.getRemoteAddr());
-			}
-			catch (Exception e)
-			{
-				addErrorMessage(e.getMessage());
-				return "error";
-			}
-
-			loggedUser = usr;
-			isUserLoggedIn = true;
-
-			return "loginok";
-		}
 	}
 
 	public String logout()
 	{
-		loggedUser = new Usr();
+		loggedUser = usrFacade.createLocal();
+
 		isUserLoggedIn = false;
 
 		return "logout";

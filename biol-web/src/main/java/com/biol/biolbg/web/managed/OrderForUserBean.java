@@ -1,7 +1,6 @@
 package com.biol.biolbg.web.managed;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -10,14 +9,12 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.OrderFacade;
+import com.biol.biolbg.business.entity.Order;
+import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
-import com.biol.biolbg.ejb.session.OrderFacade;
-import com.biol.biolbg.entity.Order;
-import com.biol.biolbg.entity.OrderRow;
-import com.biol.biolbg.entity.OrderStatus;
-import com.biol.biolbg.entity.Usr;
 
 @Named("OrderForUserBean")
 @RequestScoped
@@ -45,10 +42,7 @@ public class OrderForUserBean extends BaseEditItem implements Serializable
 	@Override
 	public Object createNewItem()
 	{
-		Order res = orderFacade.createNewItem();
-		res.setRows(new ArrayList<OrderRow>());
-		res.setUser(new Usr());
-		res.setStatus(new OrderStatus());
+		Order res = orderFacade.createLocal((Usr)appBean.getLoggedUser());
 
 		return res;
 	}
@@ -62,7 +56,7 @@ public class OrderForUserBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return orderFacade.findItem(id);
+		return orderFacade.findById(id);
 	}
 
 	public Boolean getUserLoggedIn()
@@ -72,18 +66,12 @@ public class OrderForUserBean extends BaseEditItem implements Serializable
 
 	public Boolean getOrderIsForThisUser()
 	{
-		Integer iItemId = getRealItemId();
+		Integer itemId = getRealItemId();
 
-		Object obj = findItemById(iItemId);
+		Order order = (Order)findItemById(itemId);
 
-		if (obj instanceof Order)
+		if (order != null && order.getUser() != null)
 		{
-			Order order = (Order) obj;
-			if (order.getUser() == null)
-			{
-				return false;
-			}
-
 			return order.getUser().getId() == appBean.getLoggedUser().getId();
 		}
 		else

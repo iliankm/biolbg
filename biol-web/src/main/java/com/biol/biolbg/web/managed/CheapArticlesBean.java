@@ -7,6 +7,9 @@ import java.util.Map;
 
 
 
+
+
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -14,12 +17,12 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Item;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
-import com.biol.biolbg.ejb.session.ItemFacade;
-
-import com.biol.biolbg.entity.Item;
 
 @Named("CheapArticlesBean")
 @RequestScoped
@@ -44,15 +47,14 @@ public class CheapArticlesBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<Item> dataItems = itemFacade.getCheapestItems(fromRow, maxResults);
+		SortCriteria sortCriteria = new SortCriteria("o.priceforpacking", SortCriteria.DIRECTION_ASC);
+
+		List<Item> dataItems = itemFacade.findAll(maxResults, fromRow, sortCriteria);
 
 		setDataItems(dataItems);
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null)
-		{
-			itemsImages = itemImagesFilenameMapper.getMap((List<Item>)this.getDataItems());
-		}
+		itemsImages = itemImagesFilenameMapper.getMap((List<Item>)this.getDataItems());
 	}
 
 	@Override

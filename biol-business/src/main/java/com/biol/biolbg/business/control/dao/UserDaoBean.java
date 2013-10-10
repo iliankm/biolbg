@@ -17,58 +17,57 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 {
 
 	@Override
-	protected Class<UsrEntity> getClazz() 
+	protected Class<UsrEntity> getClazz()
 	{
 		return UsrEntity.class;
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public List<UsrEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM UsrEntity o ORDER BY %s %s";
 		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
-		
+
 		Query query = em.createQuery(queryText);
-		
+
 		setResultsLimitToQuery(query, maxResultsLimit, firstResult);
 
-		return query.getResultList();
+		return getResultList(query.getResultList());
 	}
-	
+
 	public Long getAllCount()
 	{
 		List<Long> results = this.findObjectsByNamedQuery(UsrEntity.QueryNames.GET_ALL_USERS_COUNT);
-		
+
 		if (results != null && results.size() > 0)
 		{
 			return results.get(0);
 		}
-		
+
 		return Long.valueOf(0);
 	}
-	
+
 	public UsrEntity findByUsername(final String username)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
-		
+
 		List<UsrEntity> results = this.findObjectsByNamedQuery(UsrEntity.QueryNames.FIND_USER_BY_USERNAME, params);
-		
+
 		if (results != null && results.size() > 0)
 		{
 			return results.get(0);
 		}
-		
+
 		return null;
 	}
-	
+
 	public List<UsrEntity> findByAdminFlag(final int adminFlag)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("adminflag", Integer.valueOf(adminFlag));
-		
+
 		return findObjectsByNamedQuery(UsrEntity.QueryNames.FIND_BY_ADMIN_FLAG, params);
 	}
-	
+
 
 }

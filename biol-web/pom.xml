@@ -84,20 +84,6 @@
             <scope>provided</scope>
     	</dependency>
 
-    	<dependency>
-    		<groupId>com.biol.biolbg</groupId>
-    		<artifactId>biol-ejb-client</artifactId>
-    		<version>${project.version}</version>
-    		<scope>provided</scope>
-    	</dependency>
-
-    	<dependency>
-    		<groupId>com.biol.biolbg</groupId>
-    		<artifactId>biol-jpa</artifactId>
-    		<version>${project.version}</version>
-    		<scope>provided</scope>
-    	</dependency>
-    	
         <dependency>
         	<groupId>com.biol.biolbg</groupId>
         	<artifactId>biol-business-api</artifactId>

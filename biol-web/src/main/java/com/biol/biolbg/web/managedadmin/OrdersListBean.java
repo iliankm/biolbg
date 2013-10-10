@@ -13,12 +13,13 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.OrderFacade;
+import com.biol.biolbg.business.entity.Order;
+import com.biol.biolbg.business.util.FindOrderCriteria;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 import com.biol.biolbg.web.util.OrdersListCredentials;
-
-import com.biol.biolbg.ejb.session.OrderFacade;
-import com.biol.biolbg.entity.Order;
 
 @Named("OrdersListBean")
 @RequestScoped
@@ -49,7 +50,7 @@ public class OrdersListBean extends BaseList implements Serializable
 		{
 			try
 			{
-				orderFacade.removeItem(iter.next());
+				orderFacade.deleteById(iter.next());
 			}
 			catch (Exception e)
 			{
@@ -73,11 +74,11 @@ public class OrdersListBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<Order> dataItems =
-			orderFacade.getAllItems(
-					fromRow, maxResults,
-					getSortByFieldName(), getSortType(),
-					fromDate, toDate, username, organisation);
+		FindOrderCriteria findOrderCriteria = new FindOrderCriteria(fromDate, toDate, null, username, organisation);
+
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
+
+		List<Order> dataItems = orderFacade.findByCriteria(findOrderCriteria, maxResults, fromRow, sortCriteria);
 
 		setDataItems(dataItems);
 	}
@@ -85,7 +86,9 @@ public class OrdersListBean extends BaseList implements Serializable
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		return orderFacade.getAllItemsCount(fromDate, toDate, username, organisation);
+		FindOrderCriteria findOrderCriteria = new FindOrderCriteria(fromDate, toDate, null, username, organisation);
+
+		return orderFacade.getByCriteriaCount(findOrderCriteria);
 	}
 
 	@Override

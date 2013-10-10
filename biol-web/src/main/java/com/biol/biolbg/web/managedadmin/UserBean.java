@@ -6,10 +6,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.UserFacade;
+import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.web.util.BaseEditItem;
 
-import com.biol.biolbg.ejb.session.UsrFacade;
-import com.biol.biolbg.entity.Usr;
 
 @Named("UserBean")
 @RequestScoped
@@ -18,12 +18,12 @@ public class UserBean extends BaseEditItem implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private UsrFacade usrFacade;
+	private UserFacade usrFacade;
 
 	@Override
 	public Object createNewItem()
 	{
-		return usrFacade.createNewItem();
+		return usrFacade.createLocal();
 	}
 
 	@Override
@@ -33,15 +33,17 @@ public class UserBean extends BaseEditItem implements Serializable
 
 		try
 		{
-			Usr item = (Usr)this.getItem();
-			if (item.getId() > 0)
+			Usr user = (Usr)this.getItem();
+
+			if (user.getId() > 0)
 			{
-				usrFacade.updateItem(item);
+				usrFacade.update(user);
 			}
 			else
 			{
-				usrFacade.addItem(item);
+				usrFacade.create(user);
 			}
+
 			res = true;
 		}
 		catch (Exception e)
@@ -55,7 +57,7 @@ public class UserBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return usrFacade.findItem(id);
+		return usrFacade.findById(id);
 	}
 
 	@Override

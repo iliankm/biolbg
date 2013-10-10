@@ -20,7 +20,7 @@ public interface HomeInfoFacade
 
 	public HomeInfo update(HomeInfo homeInfo);
 
-	public List<? extends HomeInfo> findAll(int maxResultsLimit, int firstResult,
+	public List<HomeInfo> findAll(int maxResultsLimit, int firstResult,
 			SortCriteria sortCriteria);
 
 	public Long getAllCount();

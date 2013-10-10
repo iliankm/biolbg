@@ -8,9 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-
 import com.biol.biolbg.web.managed.AppBean;
-import com.biol.biolbg.entity.Usr;
 
 
 public class SecureAdminViewsListener implements PhaseListener
@@ -26,25 +24,18 @@ public class SecureAdminViewsListener implements PhaseListener
         //if the accessed view is from /admin/ folder
         if (facesContext.getViewRoot().getViewId().contains("/admin/"))
         {
+        	boolean doRedirect = true;
+
         	AppBean appBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{AppBean}", AppBean.class);
 
-        	Boolean redirect = true;
-
-        	if (appBean != null)
+        	if (appBean != null && appBean.getIsUserLoggedIn() && appBean.getLoggedUser().getAdminflag() == 1)
         	{
-        		Usr loggedUser = appBean.getLoggedUser();
-        		if (loggedUser != null)
-        		{
-        			if (loggedUser.getAdminflag() == 1)
-        			{
-        				redirect = false;
-        			}
-        		}
+       			doRedirect = false;
         	}
 
-        	if (redirect)
-        	{
-		        try
+	        if (doRedirect)
+	        {
+	        	try
 		        {
 		        	String appPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 					externalContext.redirect(appPath.concat("/home.jsf"));
@@ -53,7 +44,7 @@ public class SecureAdminViewsListener implements PhaseListener
 		        {
 					throw new FacesException("Cannot redirect due to IO exception.", e);
 				}
-        	}
+	        }
         }
 	}
 

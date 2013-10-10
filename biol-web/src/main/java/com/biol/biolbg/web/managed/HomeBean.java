@@ -9,15 +9,15 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.GroupFacade;
+import com.biol.biolbg.business.boundary.facade.HomeInfoFacade;
+import com.biol.biolbg.business.boundary.facade.ProducerFacade;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.entity.HomeInfo;
+import com.biol.biolbg.business.entity.Producer;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.Base;
-import com.biol.biolbg.web.util.BaseList;
 
-import com.biol.biolbg.ejb.session.GroupFacade;
-import com.biol.biolbg.ejb.session.HomeInfoFacade;
-import com.biol.biolbg.ejb.session.ProducerFacade;
-import com.biol.biolbg.entity.Group;
-import com.biol.biolbg.entity.HomeInfo;
-import com.biol.biolbg.entity.Producer;
 
 @Named("HomeBean")
 @RequestScoped
@@ -25,11 +25,11 @@ public class HomeBean extends Base implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private List<Group> groups = null;
+	private List<Group> groups;
 
-	private List<Producer> producers = null;
+	private List<Producer> producers;
 
-	private List<HomeInfo> homeinfos = null;
+	private List<HomeInfo> homeinfos;
 
 	@Inject
 	private ArticlesBean articlesBean;
@@ -49,27 +49,23 @@ public class HomeBean extends Base implements Serializable
 	@PostConstruct
 	public void postConstruct()
 	{
-		String groupsSortByField = null;
-		String producersSortByField = null;
-
+		String sortByField;
 		if (appBean.getAppLocale().equals("en"))
 		{
-
-			groupsSortByField = "o.nameen";
-			producersSortByField = "o.nameen";
+			sortByField = "o.nameen";
 		}
 		else
 		{
-			groupsSortByField = "o.namebg";
-			producersSortByField = "o.namebg";
+			sortByField = "o.namebg";
 		}
+		SortCriteria sortCriteria = new SortCriteria(sortByField, SortCriteria.DIRECTION_ASC);
 
-		//fill groups
-		groups = groupFacade.getAllItems(0, 0, groupsSortByField, BaseList.SORT_ASC);
-		//fill producers
-		producers = producerFacade.getAllItems(0, 0, producersSortByField, BaseList.SORT_ASC);
-		//fill home info
-		homeinfos = homeInfoFacade.getAllItems(0, 0, "o.id", BaseList.SORT_ASC);
+		groups = groupFacade.findAll(1000, 0, sortCriteria);
+
+		producers = producerFacade.findAll(1000, 0, sortCriteria);
+
+		SortCriteria sortCriteriaHomeInfo = new SortCriteria("o.id", SortCriteria.DIRECTION_ASC);
+		homeinfos = homeInfoFacade.findAll(1000, 0, sortCriteriaHomeInfo);
 	}
 
 	public void setGroups(List<Group> groups)

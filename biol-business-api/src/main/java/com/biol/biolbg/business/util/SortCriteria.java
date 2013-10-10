@@ -21,6 +21,23 @@ public class SortCriteria implements Serializable
 		this.sortDirection = direction;
 	}
 
+	public SortCriteria(String propertyName, String direction)
+	{
+		this.propertyName = propertyName;
+
+		if ("asc".equals(direction))
+		{
+			this.sortDirection = DIRECTION_ASC;
+		}
+		else
+		{
+			if ("desc".equals(direction))
+			{
+				this.sortDirection = DIRECTION_DESC;
+			}
+		}
+	}
+
 	public String getPropertyName()
 	{
 		return propertyName;
@@ -30,7 +47,7 @@ public class SortCriteria implements Serializable
 	{
 		return sortDirection;
 	}
-	
+
 	public String getSortDirectionForJPA()
 	{
 		if (sortDirection == SortCriteria.DIRECTION_ASC)
@@ -42,9 +59,9 @@ public class SortCriteria implements Serializable
 			if (sortDirection == SortCriteria.DIRECTION_DESC)
 			{
 				return "desc";
-			}	
+			}
 		}
-		
+
 		return "";
 	}
 

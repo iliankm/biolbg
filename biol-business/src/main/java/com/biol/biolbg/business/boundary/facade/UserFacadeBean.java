@@ -1,5 +1,6 @@
 package com.biol.biolbg.business.boundary.facade;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -53,9 +54,9 @@ public class UserFacadeBean implements UserFacade
 	}
 
 	@Override
-	public List<UsrEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Usr> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
-		return userDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria);
+		return Collections.<Usr>unmodifiableList(userDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria));
 	}
 
 	@Override
@@ -89,8 +90,8 @@ public class UserFacadeBean implements UserFacade
 	}
 
 	@Override
-	public List<UsrEntity> getAllAdministrators()
+	public List<Usr> getAllAdministrators()
 	{
-		return userDaoBean.findByAdminFlag(1);
+		return Collections.<Usr>unmodifiableList(userDaoBean.findByAdminFlag(1));
 	}
 }

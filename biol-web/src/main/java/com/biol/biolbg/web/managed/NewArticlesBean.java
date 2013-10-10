@@ -12,12 +12,10 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Item;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
-
-import com.biol.biolbg.ejb.session.ItemFacade;
-
-import com.biol.biolbg.entity.Item;
 
 @Named("NewArticlesBean")
 @RequestScoped
@@ -42,20 +40,18 @@ public class NewArticlesBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		List<Item> dataItems = itemFacade.getNewItems(fromRow, maxResults);
+		List<Item> dataItems = itemFacade.findNew(maxResults, fromRow);
 		setDataItems(dataItems);
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null)
-		{
-			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
-		}
+		itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
+
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		return itemFacade.getNewItemsCount();
+		return itemFacade.getNewCount();
 	}
 
 	@Override

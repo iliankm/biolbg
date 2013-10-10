@@ -1,12 +1,18 @@
 package com.biol.biolbg.business.boundary.facade;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
 import com.biol.biolbg.business.control.dao.OrderDaoBean;
+import com.biol.biolbg.business.control.service.OrderServiceBean;
 import com.biol.biolbg.business.entity.Order;
 import com.biol.biolbg.business.entity.OrderEntity;
+import com.biol.biolbg.business.entity.OrderRowEntity;
+import com.biol.biolbg.business.entity.OrderStatus;
 import com.biol.biolbg.business.entity.OrderStatusEntity;
 import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.business.entity.UsrEntity;
@@ -19,8 +25,11 @@ public class OrderFacadeBean implements OrderFacade
 	@EJB
 	private OrderDaoBean orderDaoBean;
 
+	@EJB
+	private OrderServiceBean orderServiceBean;
+
 	@Override
-	public OrderEntity create(final Order order)
+	public OrderEntity create(Order order)
 	{
 		OrderEntity orderEntity = (OrderEntity)order;
 
@@ -49,27 +58,27 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public OrderEntity findById(final Integer id)
+	public OrderEntity findById(Integer id)
 	{
 		return orderDaoBean.findById(id);
 	}
 
 	@Override
-	public void deleteById(final Integer id)
+	public void deleteById(Integer id)
 	{
 		orderDaoBean.delete(id);
 	}
 
 	@Override
-	public OrderEntity update(final Order order)
+	public OrderEntity update(Order order)
 	{
 		return orderDaoBean.update((OrderEntity)order);
 	}
 
 	@Override
-	public List<OrderEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Order> findAll(int maxResultsLimit, int firstResult, SortCriteria sortCriteria)
 	{
-		return orderDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria);
+		return Collections.<Order>unmodifiableList(orderDaoBean.findAll(maxResultsLimit, firstResult, sortCriteria));
 	}
 
 	@Override
@@ -79,31 +88,31 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public List<OrderEntity> findByCriteria(final FindOrderCriteria findItemCriteria, final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Order> findByCriteria(FindOrderCriteria findItemCriteria, int maxResultsLimit, int firstResult, SortCriteria sortCriteria)
 	{
-		return orderDaoBean.findByCriteria(findItemCriteria, maxResultsLimit, firstResult, sortCriteria);
+		return Collections.<Order>unmodifiableList(orderDaoBean.findByCriteria(findItemCriteria, maxResultsLimit, firstResult, sortCriteria));
 	}
 
 	@Override
-	public Long getByCriteriaCount(final FindOrderCriteria findOrderCriteria)
+	public Long getByCriteriaCount(FindOrderCriteria findOrderCriteria)
 	{
 		return orderDaoBean.getByCriteriaCount(findOrderCriteria);
 	}
 
 	@Override
-	public List<OrderStatusEntity> findAllOrderStatuses()
+	public List<OrderStatus> findAllOrderStatuses()
 	{
-		return orderDaoBean.findAllOrderStatuses();
+		return Collections.<OrderStatus>unmodifiableList(orderDaoBean.findAllOrderStatuses());
 	}
 
 	@Override
-	public OrderStatusEntity findOrderStatusById(final Integer id)
+	public OrderStatusEntity findOrderStatusById(Integer id)
 	{
 		return orderDaoBean.findOrderStatusById(id);
 	}
 
 	@Override
-	public OrderEntity updateStatus(final Integer orderId, final Integer newOrderStatusId)
+	public OrderEntity updateStatus(Integer orderId, Integer newOrderStatusId)
 	{
 		OrderEntity orderEntity = orderDaoBean.findById(orderId);
 
@@ -113,7 +122,7 @@ public class OrderFacadeBean implements OrderFacade
 		{
 			orderEntity.setStatus(orderStatusEntity);
 
-			orderDaoBean.update(orderEntity);
+			orderEntity = orderDaoBean.update(orderEntity);
 
 			return orderEntity;
 		}
@@ -122,7 +131,7 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public OrderEntity cancelOrder(final Integer orderId)
+	public OrderEntity cancelOrder(Integer orderId)
 	{
 		OrderEntity orderEntity = orderDaoBean.findById(orderId);
 
@@ -141,7 +150,7 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public String getLastDeliveryAddressForUser(final Integer userId)
+	public String getLastDeliveryAddressForUser(Integer userId)
 	{
 		FindOrderCriteria findOrderCriteria = new FindOrderCriteria(null, null, userId, null, null);
 
@@ -158,7 +167,7 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public Order markOrderAsSeenByAdmin(final Integer orderId)
+	public Order markOrderAsSeenByAdmin(Integer orderId)
 	{
 		OrderEntity orderEntity = orderDaoBean.findById(orderId);
 
@@ -166,12 +175,66 @@ public class OrderFacadeBean implements OrderFacade
 		{
 			orderEntity.setSeenbyadmin(1);
 
-			orderDaoBean.update(orderEntity);
+			orderEntity = orderDaoBean.update(orderEntity);
 
 			return orderEntity;
 		}
 
 		return null;
+	}
+
+	@Override
+	public void deleteRowByArticleIdLocal(Order order, Integer articleId)
+	{
+		OrderEntity orderEntity = (OrderEntity) order;
+
+		Iterator<OrderRowEntity> iterator = orderEntity.getRowsEntities().iterator();
+
+		while (iterator.hasNext())
+		{
+			OrderRowEntity orderrow = iterator.next();
+			if (Integer.valueOf(orderrow.getItem().getId()).equals(articleId))
+			{
+				iterator.remove();
+			}
+		}
+	}
+
+	@Override
+	public void incrementArticleAmountLocal(Order order, Integer articleId)
+	{
+		OrderEntity orderEntity = (OrderEntity) order;
+
+		OrderRowEntity orderRowEntityForTheArticle = orderServiceBean.getOrderRowForArticleId(orderEntity, articleId);
+
+		if (orderRowEntityForTheArticle == null)
+		{
+			orderRowEntityForTheArticle = orderServiceBean.addOrderRowLocal(orderEntity, articleId);
+		}
+
+		double am = orderRowEntityForTheArticle.getAmount().doubleValue() + 1;
+
+		orderRowEntityForTheArticle.setAmount(am);
+	}
+
+	@Override
+	public void decrementArticleAmountLocal(Order order, Integer articleId)
+	{
+		OrderEntity orderEntity = (OrderEntity) order;
+
+		OrderRowEntity orderRowEntityForTheArticle = orderServiceBean.getOrderRowForArticleId(orderEntity, articleId);
+
+		if (orderRowEntityForTheArticle != null)
+		{
+			double am = orderRowEntityForTheArticle.getAmount().doubleValue() - 1;
+
+			orderRowEntityForTheArticle.setAmount(am);
+
+			if (orderRowEntityForTheArticle.getAmount().doubleValue() <= 0)
+			{
+				orderServiceBean.removeOrderRowLocal(orderEntity, orderRowEntityForTheArticle);
+			}
+		}
 	}
 
 }

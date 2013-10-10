@@ -9,12 +9,14 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.OrderFacade;
+import com.biol.biolbg.business.entity.Order;
+import com.biol.biolbg.business.util.FindOrderCriteria;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 import com.biol.biolbg.web.util.OrdersListCredentials;
 
-import com.biol.biolbg.ejb.session.OrderFacade;
-import com.biol.biolbg.entity.Order;
 
 @Named("OrdersForUserListBean")
 @RequestScoped
@@ -60,11 +62,12 @@ public class OrdersForUserListBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
+		FindOrderCriteria findOrderCriteria = new FindOrderCriteria(fromDate, toDate, Integer.valueOf(getAppBean().getLoggedUser().getId()), null, null);
+
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
+
 		List<Order> dataItems =
-			orderFacade.getOrdersForUser(
-					fromRow, maxResults, getSortByFieldName(),
-					getSortType(), fromDate, toDate,
-					getAppBean().getLoggedUser().getId());
+			orderFacade.findByCriteria(findOrderCriteria, maxResults, fromRow, sortCriteria);
 
 		setDataItems(dataItems);
 	}
@@ -72,8 +75,10 @@ public class OrdersForUserListBean extends BaseList implements Serializable
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		return orderFacade.getOrdersForUserCount(
-				fromDate, toDate, getAppBean().getLoggedUser().getId());
+		FindOrderCriteria findOrderCriteria = new FindOrderCriteria(fromDate, toDate, Integer.valueOf(getAppBean().getLoggedUser().getId()), null, null);
+
+		return orderFacade.getByCriteriaCount(findOrderCriteria);
+
 	}
 
 	@Override

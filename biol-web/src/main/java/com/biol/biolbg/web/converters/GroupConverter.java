@@ -11,63 +11,64 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import com.biol.biolbg.ejb.session.GroupFacade;
-import com.biol.biolbg.entity.Group;
+import com.biol.biolbg.business.boundary.facade.GroupFacade;
+import com.biol.biolbg.business.entity.Group;
+
 
 @ManagedBean(name="GroupConverter")
 @RequestScoped
-public class GroupConverter implements Converter 
+public class GroupConverter implements Converter
 {
 	@EJB
-	private GroupFacade groupFacade;	
+	private GroupFacade groupFacade;
 
 	@Override
-	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) 
+	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2)
 	{
-		if ("0".equals(arg2)) 
+		if ("0".equals(arg2))
 		{
 			return null;
 		}
 
 		Integer id;
-		try 
+		try
 		{
 			id = Integer.parseInt(arg2);
-		} 
-		catch (Exception e) 
+		}
+		catch (Exception e)
 		{
 			throw new ConverterException(getMessage());
 		}
-		
-		Group res = groupFacade.findItem(id);
-		
-		if (res == null) 
+
+		Group res = groupFacade.findById(id);
+
+		if (res == null)
 		{
 			throw new ConverterException(getMessage());
-		} 
-		
+		}
+
 		return res;
 	}
 
 	@Override
-	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) 
+	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2)
 	{
-		if (arg2 != null) 
+		if (arg2 != null)
 		{
-			if (arg2 instanceof Group) 
+			if (arg2 instanceof Group)
 			{
 				Group group = (Group)arg2;
 				return Integer.toString(group.getId());
 			}
 		}
-		
+
 		return "0";
 	}
-	
-	private FacesMessage getMessage() 
+
+	private FacesMessage getMessage()
 	{
         FacesMessage message = new FacesMessage();
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         ResourceBundle bundle =
                   ResourceBundle.getBundle("com.biol.biolbg.web.messages.resources",
@@ -76,7 +77,7 @@ public class GroupConverter implements Converter
         message.setDetail(str);
         message.setSummary(str);
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
-		
+
         return message;
 	}
 }

@@ -13,13 +13,14 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.OrderFacade;
+import com.biol.biolbg.business.entity.Order;
+import com.biol.biolbg.business.entity.OrderStatus;
+import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.web.managed.AppBean;
 import com.biol.biolbg.web.util.BaseEditItem;
 import com.biol.biolbg.web.util.MessageResourcesBean;
 
-import com.biol.biolbg.ejb.session.OrderFacade;
-import com.biol.biolbg.entity.Order;
-import com.biol.biolbg.entity.OrderStatus;
 
 @Named("OrderBean")
 @RequestScoped
@@ -30,6 +31,8 @@ public class OrderBean extends BaseEditItem implements Serializable
 	private List<SelectItem> orderStatusSelectItems = new ArrayList<SelectItem>();
 
 	private HtmlDataTable orderRowsDataTable;
+
+	private OrderStatus orderStatus;
 
 	@Inject
 	private AppBean appBean;
@@ -49,7 +52,7 @@ public class OrderBean extends BaseEditItem implements Serializable
 	@Override
 	public Object createNewItem()
 	{
-		return orderFacade.createNewItem();
+		return orderFacade.createLocal((Usr)appBean.getLoggedUser());
 	}
 
 	@Override
@@ -61,36 +64,33 @@ public class OrderBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		Order res = null;
-
 		try
 		{
-			res = orderFacade.findItem(id);
+			Order order = orderFacade.findById(id);
+
+			orderStatus = order.getStatus();
 
 			//mark Order as seen by admin
-			if ((appBean.getLoggedUser().getAdminflag()==1)&&(res.getSeenbyadmin()!=1))
+			if (appBean.getLoggedUser().getAdminflag() == 1 && order.getSeenbyadmin() != 1)
 			{
-				Order res1 = orderFacade.markOrderAsSeenByAdmin(res.getId());
-
-				if (res1 != null)
-				{
-					res = res1;
-				}
+				order = orderFacade.markOrderAsSeenByAdmin(id);
 			}
+
+			return order;
 		}
 		catch (Exception e)
 		{
 			addErrorMessage(e.getMessage());
 		}
 
-		return res;
+		return null;
 	}
 
 	@Override
 	public void init()
 	{
 		// load orderStatusSelectItems
-		List<OrderStatus> listOrderStatus = orderFacade.getAllOrderStatus();
+		List<OrderStatus> listOrderStatus = orderFacade.findAllOrderStatuses();
 
 		if (listOrderStatus != null)
 		{
@@ -99,7 +99,7 @@ public class OrderBean extends BaseEditItem implements Serializable
 			while (iter.hasNext())
 			{
 				OrderStatus orderStatus = iter.next();
-				String orderStatusName = null;
+				String orderStatusName;
 
 				if (appBean.getAppLocale().equals("en"))
 				{
@@ -117,12 +117,12 @@ public class OrderBean extends BaseEditItem implements Serializable
 
 	public void updateStatus(ActionEvent event)
 	{
-		Order order = (Order) getItem();
-
 		try
 		{
-			order = orderFacade.updateStatus(this.getRealItemId(),order.getStatus());
+			orderFacade.updateStatus(this.getRealItemId(), Integer.valueOf(orderStatus.getId()));
+
 			String text = messageResourcesBean.getMessage("dataSavedOK", null);
+
 			addInfoMessage(text);
 		}
 		catch (Exception e)
@@ -144,5 +144,15 @@ public class OrderBean extends BaseEditItem implements Serializable
 	public HtmlDataTable getOrderRowsDataTable()
 	{
 		return orderRowsDataTable;
+	}
+
+	public OrderStatus getOrderStatus()
+	{
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus)
+	{
+		this.orderStatus = orderStatus;
 	}
 }

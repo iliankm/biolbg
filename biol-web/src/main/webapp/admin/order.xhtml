@@ -15,7 +15,7 @@
 		<ui:param name="viewBean" value="#{OrderBean}"/>
 		<ui:param name="hideSaveButton" value="true"/>
 		<ui:param name="hideCancelButton" value="true"/>
-		
+
 		<ui:define name="viewParams">
 			<f:metadata>
 				<f:viewParam name="id" value="#{OrderBean.itemId}">
@@ -28,7 +28,7 @@
 		<ui:define name="sidebar">
 			<ui:include src="/templates/adminsidebar.xhtml"/>
 		</ui:define>
-		
+
 		<ui:define name="viewClasses">
 	    	.pgc2 {padding-left: 5px; font-weight: bold;}
 	    	.c1 {width: 15px; text-align: center;}
@@ -37,7 +37,7 @@
 	    	.c6 {text-align: right;}
 	    	.tableFooter {text-align: right; font-weight: bold;}
 		</ui:define>
-		
+
 		<ui:define name="itemcontent">
 			<h:panelGrid columns="2" columnClasses=",pgc2">
 				<h:outputText value="#{msgs.postdate}"/>
@@ -48,9 +48,9 @@
 					<h:outputText value=" / "/>
 					<h:outputText value="#{OrderBean.item.posttime}">
 						<f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="#{AppBean.timeZone}"/>
-					</h:outputText>			
+					</h:outputText>
 				</h:panelGrid>
-				
+
 				<h:outputText value="#{msgs.fordate}"/>
 				<h:panelGrid columns="3" columnClasses="pgc2,pgc2,pgc2">
 					<h:outputText value="#{OrderBean.item.fordate}">
@@ -59,22 +59,22 @@
 					<h:outputText value=" / "/>
 					<h:outputText value="#{OrderBean.item.fortime}">
 						<f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="#{AppBean.timeZone}"/>
-					</h:outputText>			
+					</h:outputText>
 				</h:panelGrid>
-				
+
 				<h:outputText value="#{msgs.username}"/>
 				<h:outputText value="#{OrderBean.item.user.username}"/>
-				
+
 				<h:outputText value="#{msgs.organisation}"/>
 				<h:outputText value="#{OrderBean.item.user.organisation}"/>
-				
+
 				<h:outputText value="#{msgs.delivAddress}"/>
 				<h:outputText value="#{OrderBean.item.deliveryAddress}" />
-				
+
 				<h:outputText value="#{msgs.status}"/>
 				<h:panelGrid columns="3">
 					<h:selectOneMenu id="status"
-									 value="#{OrderBean.item.status}" 
+									 value="#{OrderBean.orderStatus}"
 									 required="true" >
 						<f:converter binding="#{OrderStatusConverter}"/>
 						<f:selectItems value="#{OrderBean.orderStatusSelectItems}"/>
@@ -83,7 +83,7 @@
 					<h:message for="status" styleClass="errorText"/>
 				</h:panelGrid>
 			</h:panelGrid>
-			<h:dataTable value="#{OrderBean.item.rows}" 
+			<h:dataTable value="#{OrderBean.item.rows}"
 						 var="rowData"
 						 styleClass="listDataTable"
 						 headerClass="tableHeader"
@@ -116,7 +116,7 @@
 						<h:outputText value="#{msgs.quantity}"/>
 					</f:facet>
 					<h:outputText value="#{rowData.amount}">
-						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>					
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
 					</h:outputText>
 					<h:outputText value=" #{rowData.item.packingen}" rendered="#{AppBean.appLocale=='en'}"/>
 					<h:outputText value=" #{rowData.item.packingbg}" rendered="#{AppBean.appLocale=='bg'}"/>
@@ -126,7 +126,7 @@
 						<h:outputText value="#{msgs.price}"/>
 					</f:facet>
 					<h:outputText value="#{rowData.price}">
-						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>					
+						<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
 					</h:outputText>
 				</h:column>
 				<h:column>
@@ -141,10 +141,10 @@
 							<f:convertNumber type="number" maxIntegerDigits="4" maxFractionDigits="2" minIntegerDigits="1" minFractionDigits="2"/>
 						</h:outputText>
 					</f:facet>
-				</h:column>	
+				</h:column>
 			</h:dataTable>
 			<h:outputText value="#{msgs.pricesAreWoVat}"/>
 		</ui:define>
-	</ui:composition>		
+	</ui:composition>
 </h:body>
 </html>

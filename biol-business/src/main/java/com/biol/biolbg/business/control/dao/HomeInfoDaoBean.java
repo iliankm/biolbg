@@ -20,7 +20,6 @@ public class HomeInfoDaoBean extends AbstractDaoBean<HomeInfoEntity>
 		return HomeInfoEntity.class;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<HomeInfoEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM HomeInfoEntity o ORDER BY %s %s";
@@ -30,7 +29,7 @@ public class HomeInfoDaoBean extends AbstractDaoBean<HomeInfoEntity>
 
 		setResultsLimitToQuery(query, maxResultsLimit, firstResult);
 
-		return query.getResultList();
+		return getResultList(query.getResultList());
 	}
 
 	public Long getAllCount()

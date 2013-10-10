@@ -12,19 +12,18 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.naming.NamingException;
 
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.entity.Item;
+import com.biol.biolbg.business.entity.Producer;
+import com.biol.biolbg.business.util.FindItemCriteria;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.managedadmin.GroupBean;
 import com.biol.biolbg.web.managedadmin.ProducerBean;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
-
-import com.biol.biolbg.ejb.session.ItemFacade;
-
-import com.biol.biolbg.entity.Group;
-import com.biol.biolbg.entity.Item;
-import com.biol.biolbg.entity.Producer;
 
 @Named("ArticlesBean")
 @RequestScoped
@@ -72,17 +71,13 @@ public class ArticlesBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
+
+		FindItemCriteria findItemCriteria = getFindItemCriteria();
+
 		try
 		{
-			if ((name == null)||("".equals(name)))
-			{
-				setDataItems(getItemsByGroupAndProducer(fromRow, maxResults));
-			}
-			else
-			{
-				setDataItems(getItemsByName(fromRow, maxResults));
-			}
-
+			setDataItems(itemFacade.findByCriteria(findItemCriteria, maxResults, fromRow, sortCriteria));
 		}
 		catch (Exception e)
 		{
@@ -90,27 +85,19 @@ public class ArticlesBean extends BaseList implements Serializable
 		}
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null)
-		{
-			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
-		}
+		itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
 		Long itemsCount = Long.valueOf(0);
+
+		FindItemCriteria findItemCriteria = getFindItemCriteria();
+
 		try
 		{
-			if ((name == null)||(name == ""))
-			{
-				itemsCount = getAllItemsCount();
-			}
-			else
-			{
-				itemsCount = getItemsByNameCount();
-			}
-
+			itemsCount = itemFacade.getByCriteriaCount(findItemCriteria);
 		}
 		catch (Exception e)
 		{
@@ -118,6 +105,26 @@ public class ArticlesBean extends BaseList implements Serializable
 		}
 
 		return itemsCount;
+	}
+
+	private FindItemCriteria getFindItemCriteria()
+	{
+		FindItemCriteria findItemCriteria;
+
+		if (name == null || "".equals(name))
+		{
+			Integer producerId = getGalleryParamsBean().getParamProducer() != null ? Integer.valueOf(getGalleryParamsBean().getParamProducer().getId()) : null;
+
+			Integer groupId = getGalleryParamsBean().getParamGroup() != null ? Integer.valueOf(getGalleryParamsBean().getParamGroup().getId()) : null;
+
+			findItemCriteria = new FindItemCriteria(producerId, groupId, null);
+		}
+		else
+		{
+			findItemCriteria = new FindItemCriteria(null, null, name);
+		}
+
+		return findItemCriteria;
 	}
 
 	@Override
@@ -192,58 +199,6 @@ public class ArticlesBean extends BaseList implements Serializable
 		getGalleryParamsBean().setParamGroup(null);
 		getGalleryParamsBean().setParamProducer(null);
 		loadDataItems();
-	}
-
-	private List<Item> getItemsByGroupAndProducer(Integer fromRow, Integer maxResults)
-	{
-		Group group = getGalleryParamsBean().getParamGroup();
-
-		Producer producer = getGalleryParamsBean().getParamProducer();
-
-		Integer groupId = 0;
-		if (group != null)
-		{
-			groupId = group.getId();
-		}
-
-		Integer producerId = 0;
-		if (producer != null)
-		{
-			producerId = producer.getId();
-		}
-
-		return itemFacade.getAllItems(groupId, producerId, fromRow, maxResults, getSortByFieldName(), getSortType());
-	}
-
-	private List<Item> getItemsByName(Integer fromRow, Integer maxResults)
-	{
-		return itemFacade.getItemsByName(name, fromRow, maxResults, getSortByFieldName(), getSortType());
-	}
-
-	private Long getItemsByNameCount()
-	{
-		return itemFacade.getItemsByNameCount(name);
-	}
-
-	private Long getAllItemsCount() throws NamingException
-	{
-		Group group = getGalleryParamsBean().getParamGroup();
-
-		Producer producer = getGalleryParamsBean().getParamProducer();
-
-		Integer groupId = 0;
-		if (group != null)
-		{
-			groupId = group.getId();
-		}
-
-		Integer producerId = 0;
-		if (producer != null)
-		{
-			producerId = producer.getId();
-		}
-
-		return itemFacade.getAllItemsCount(groupId, producerId);
 	}
 
 	public Group getGroup()

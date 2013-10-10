@@ -1,7 +1,7 @@
 package com.biol.biolbg.business.util;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class FindOrderCriteria implements Serializable
 {
@@ -13,9 +13,9 @@ public class FindOrderCriteria implements Serializable
 	private Date toDate;
 
 	private Integer userId;
-	
+
 	private String username;
-	
+
 	private String organization;
 
 	public FindOrderCriteria(final Date fromDate, final Date toDate, final Integer userId, final String username, final String organization)
@@ -23,7 +23,7 @@ public class FindOrderCriteria implements Serializable
 		this.fromDate = fromDate;
 
 		this.toDate = toDate;
-		
+
 		this.userId = userId;
 
 		this.username = username;
@@ -40,7 +40,7 @@ public class FindOrderCriteria implements Serializable
 	{
 		return toDate;
 	}
-	
+
 	public Integer getUserId()
 	{
 		return userId;

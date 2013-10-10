@@ -7,11 +7,11 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.GroupFacade;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.entity.Producer;
 import com.biol.biolbg.web.util.Base;
 
-import com.biol.biolbg.ejb.session.GroupFacade;
-import com.biol.biolbg.entity.Group;
-import com.biol.biolbg.entity.Producer;
 
 @Named("GalleryParamsBean")
 @SessionScoped

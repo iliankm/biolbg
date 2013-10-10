@@ -13,15 +13,17 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.ItemFacade;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.entity.Item;
+import com.biol.biolbg.business.entity.Producer;
+import com.biol.biolbg.business.util.FindItemCriteria;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.managed.AppBean;
 import com.biol.biolbg.web.util.BaseList;
 import com.biol.biolbg.web.util.ItemsListCredentials;
 import com.biol.biolbg.web.util.cdi.ItemImagesFilenameMapper;
 
-import com.biol.biolbg.ejb.session.ItemFacade;
-import com.biol.biolbg.entity.Group;
-import com.biol.biolbg.entity.Item;
-import com.biol.biolbg.entity.Producer;
 
 @Named("ItemsListBean")
 @RequestScoped
@@ -62,7 +64,7 @@ public class ItemsListBean extends BaseList implements Serializable
 		{
 			try
 			{
-				itemFacade.removeItem(iter.next());
+				itemFacade.deleteById(iter.next());
 			}
 			catch (Exception e)
 			{
@@ -75,45 +77,29 @@ public class ItemsListBean extends BaseList implements Serializable
 	@Override
 	public void doLoadDataItems(Integer fromRow, Integer maxResults)
 	{
-		Integer groupId = 0;
-		if (group != null)
-		{
-			groupId = group.getId();
-		}
+		SortCriteria sortCriteria = new SortCriteria(getSortByFieldName(), getSortType());
 
-		Integer producerId = 0;
-		if (producer != null)
-		{
-			producerId = producer.getId();
-		}
+		List<Item> dataItems = itemFacade.findByCriteria(getFindItemCriteria(), maxResults, fromRow, sortCriteria);
 
-		List<Item> dataItems = itemFacade.getAllItems(groupId, producerId, fromRow, maxResults, getSortByFieldName(), getSortType());
 		setDataItems(dataItems);
 
 		//load itemsImages with file names of images
-		if (getDataItems() != null)
-		{
-			itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
-		}
+		itemsImages = getItemImagesFilenameMapper().getMap((List<Item>)this.getDataItems());
 	}
 
 	@Override
 	public Long getDataItemsTotalCount()
 	{
-		Integer groupId = 0;
-		if (group != null)
-		{
-			groupId = group.getId();
-		}
+		return itemFacade.getByCriteriaCount(getFindItemCriteria());
+	}
 
-		Integer producerId = 0;
-		if (producer != null)
-		{
-			producerId = producer.getId();
-		}
+	private FindItemCriteria getFindItemCriteria()
+	{
+		Integer groupId = group != null ? Integer.valueOf(group.getId()) : null;
 
-		Long itemsCount = itemFacade.getAllItemsCount(groupId, producerId);
-		return itemsCount;
+		Integer producerId = producer != null ? Integer.valueOf(producer.getId()) : null;
+
+		return new FindItemCriteria(producerId, groupId, null);
 	}
 
 	@Override

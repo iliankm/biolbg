@@ -10,9 +10,11 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import com.biol.biolbg.business.boundary.facade.GroupFacade;
+import com.biol.biolbg.business.entity.Group;
+import com.biol.biolbg.business.util.SortCriteria;
 import com.biol.biolbg.web.util.BaseEditItem;
-import com.biol.biolbg.ejb.session.GroupFacade;
-import com.biol.biolbg.entity.Group;
+
 
 @Named("GroupBean")
 @RequestScoped
@@ -32,11 +34,11 @@ public class GroupBean extends BaseEditItem implements Serializable
 			Group item = (Group)getItem();
 			if (item.getId() > 0)
 			{
-				groupFacade.updateItem(item);
+				groupFacade.update(item);
 			}
 			else
 			{
-				groupFacade.addItem(item);
+				groupFacade.create(item);
 			}
 			res = true;
 		}
@@ -51,13 +53,13 @@ public class GroupBean extends BaseEditItem implements Serializable
 	@Override
 	public Object findItemById(Integer id)
 	{
-		return groupFacade.findItem(id);
+		return groupFacade.findById(id);
 	}
 
 	@Override
 	public Object createNewItem()
 	{
-		return groupFacade.createNewItem();
+		return groupFacade.createLocal();
 	}
 
 	public List<SelectItem> groupsSelectItemList(String sortByFieldName, String sortType, String localeName)
@@ -66,11 +68,11 @@ public class GroupBean extends BaseEditItem implements Serializable
 		List<SelectItem> result = new ArrayList<SelectItem>();
 
 		//get all groups in allGroups
-		List<Group> allGroups = null;
-		allGroups = groupFacade.getAllItems(0, 0, sortByFieldName, sortType);
+		SortCriteria sortCriteria = new SortCriteria(sortByFieldName, sortType);
+		List<Group> allGroups = groupFacade.findAll(1000, 0, sortCriteria);
 
 		//iterate over allGroups and form result List with SelectItem instances
-		result.add(new SelectItem(new Group(),""));
+		result.add(new SelectItem(groupFacade.createLocal(), ""));
 
 		Iterator<Group> iter = allGroups.iterator();
 		while (iter.hasNext())
