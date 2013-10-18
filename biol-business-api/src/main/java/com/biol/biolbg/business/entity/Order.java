@@ -27,9 +27,17 @@ public interface Order
 
 	public Usr getUser();
 
+	public void setUser(Usr user);
+
 	public OrderStatus getStatus();
 
+	public void setStatus(OrderStatus status);
+
 	public List<OrderRow> getRows();
+
+	public void addRow(OrderRow row);
+
+	public void removeRow(OrderRow row);
 
 	@Transient
 	public Double getTotalValue();
@@ -41,6 +49,8 @@ public interface Order
 	public int getVersion();
 
 	public int getSeenbyadmin();
+
+	public void setSeenbyadmin(int seenbyadmin);
 
 	public void setVersion(int version);
 

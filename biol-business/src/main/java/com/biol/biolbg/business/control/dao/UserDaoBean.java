@@ -8,12 +8,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.business.entity.UsrEntity;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Stateless
 @LocalBean
-public class UserDaoBean extends AbstractDaoBean<UsrEntity>
+public class UserDaoBean extends AbstractDaoBean<Usr>
 {
 
 	@Override
@@ -22,7 +23,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 		return UsrEntity.class;
 	}
 
-	public List<UsrEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Usr> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM UsrEntity o ORDER BY %s %s";
 		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
@@ -46,7 +47,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 		return Long.valueOf(0);
 	}
 
-	public UsrEntity findByUsername(final String username)
+	public Usr findByUsername(final String username)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
@@ -61,7 +62,7 @@ public class UserDaoBean extends AbstractDaoBean<UsrEntity>
 		return null;
 	}
 
-	public List<UsrEntity> findByAdminFlag(final int adminFlag)
+	public List<Usr> findByAdminFlag(final int adminFlag)
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("adminflag", Integer.valueOf(adminFlag));

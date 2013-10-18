@@ -25,13 +25,13 @@ public class ProducerFacadeBean implements ProducerFacade
 	}
 
 	@Override
-	public ProducerEntity create(final Producer producer)
+	public Producer create(final Producer producer)
 	{
 		return producerDaoBean.create((ProducerEntity)producer);
 	}
 
 	@Override
-	public ProducerEntity findById(final Integer id)
+	public Producer findById(final Integer id)
 	{
 		return producerDaoBean.findById(id);
 	}
@@ -43,9 +43,9 @@ public class ProducerFacadeBean implements ProducerFacade
 	}
 
 	@Override
-	public ProducerEntity update(final Producer producer)
+	public Producer update(final Producer producer)
 	{
-		return producerDaoBean.update((ProducerEntity)producer);
+		return producerDaoBean.update(producer);
 	}
 
 	@Override

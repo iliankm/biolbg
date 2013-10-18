@@ -19,7 +19,7 @@ public abstract class AbstractDaoBean<T>
 	@PersistenceContext
 	protected EntityManager em;
 
-	abstract protected Class<T> getClazz();
+	abstract protected Class<? extends T> getClazz();
 
 	public T findById(final Integer id)
 	{

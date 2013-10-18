@@ -11,11 +11,9 @@ import com.biol.biolbg.business.control.dao.OrderDaoBean;
 import com.biol.biolbg.business.control.service.OrderServiceBean;
 import com.biol.biolbg.business.entity.Order;
 import com.biol.biolbg.business.entity.OrderEntity;
-import com.biol.biolbg.business.entity.OrderRowEntity;
+import com.biol.biolbg.business.entity.OrderRow;
 import com.biol.biolbg.business.entity.OrderStatus;
-import com.biol.biolbg.business.entity.OrderStatusEntity;
 import com.biol.biolbg.business.entity.Usr;
-import com.biol.biolbg.business.entity.UsrEntity;
 import com.biol.biolbg.business.util.FindOrderCriteria;
 import com.biol.biolbg.business.util.SortCriteria;
 
@@ -29,36 +27,34 @@ public class OrderFacadeBean implements OrderFacade
 	private OrderServiceBean orderServiceBean;
 
 	@Override
-	public OrderEntity create(Order order)
+	public Order create(Order order)
 	{
-		OrderEntity orderEntity = (OrderEntity)order;
-
 		java.util.Date today = new java.util.Date();
-		orderEntity.setPostdate(new java.util.Date(today.getTime()));
-		orderEntity.setPosttime(new java.util.Date(today.getTime()));
+		order.setPostdate(new java.util.Date(today.getTime()));
+		order.setPosttime(new java.util.Date(today.getTime()));
 
-		if (orderEntity.getStatus() == null)
+		if (order.getStatus() == null)
 		{
-			orderEntity.setStatus(orderDaoBean.findOrderStatusById(1));
+			order.setStatus(orderDaoBean.findOrderStatusById(1));
 		}
 
-		return orderDaoBean.create(orderEntity);
+		return orderDaoBean.create(order);
 	}
 
 	@Override
-	public OrderEntity createLocal(Usr user)
+	public Order createLocal(Usr user)
 	{
-		OrderEntity orderEntity = new OrderEntity();
+		Order order = new OrderEntity();
 
-		orderEntity.setUser((UsrEntity)user);
+		order.setUser(user);
 
-		orderEntity.setStatus(orderDaoBean.findOrderStatusById(1));
+		order.setStatus(orderDaoBean.findOrderStatusById(1));
 
-		return orderEntity;
+		return order;
 	}
 
 	@Override
-	public OrderEntity findById(Integer id)
+	public Order findById(Integer id)
 	{
 		return orderDaoBean.findById(id);
 	}
@@ -70,9 +66,9 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public OrderEntity update(Order order)
+	public Order update(Order order)
 	{
-		return orderDaoBean.update((OrderEntity)order);
+		return orderDaoBean.update(order);
 	}
 
 	@Override
@@ -106,44 +102,44 @@ public class OrderFacadeBean implements OrderFacade
 	}
 
 	@Override
-	public OrderStatusEntity findOrderStatusById(Integer id)
+	public OrderStatus findOrderStatusById(Integer id)
 	{
 		return orderDaoBean.findOrderStatusById(id);
 	}
 
 	@Override
-	public OrderEntity updateStatus(Integer orderId, Integer newOrderStatusId)
+	public Order updateStatus(Integer orderId, Integer newOrderStatusId)
 	{
-		OrderEntity orderEntity = orderDaoBean.findById(orderId);
+		Order order = orderDaoBean.findById(orderId);
 
-		OrderStatusEntity orderStatusEntity = orderDaoBean.findOrderStatusById(newOrderStatusId);
+		OrderStatus orderStatus = orderDaoBean.findOrderStatusById(newOrderStatusId);
 
-		if (orderEntity != null && orderStatusEntity != null)
+		if (order != null && orderStatus != null)
 		{
-			orderEntity.setStatus(orderStatusEntity);
+			order.setStatus(orderStatus);
 
-			orderEntity = orderDaoBean.update(orderEntity);
+			order = orderDaoBean.update(order);
 
-			return orderEntity;
+			return order;
 		}
 
 		return null;
 	}
 
 	@Override
-	public OrderEntity cancelOrder(Integer orderId)
+	public Order cancelOrder(Integer orderId)
 	{
-		OrderEntity orderEntity = orderDaoBean.findById(orderId);
+		Order order = orderDaoBean.findById(orderId);
 
-		OrderStatusEntity canceledStatusEntity = orderDaoBean.findOrderStatusById(5);
+		OrderStatus canceledStatus = orderDaoBean.findOrderStatusById(5);
 
-		if (orderEntity != null && canceledStatusEntity != null)
+		if (order != null && canceledStatus != null)
 		{
-			orderEntity.setStatus(canceledStatusEntity);
+			order.setStatus(canceledStatus);
 
-			orderDaoBean.update(orderEntity);
+			orderDaoBean.update(order);
 
-			return orderEntity;
+			return order;
 		}
 
 		return null;
@@ -156,7 +152,7 @@ public class OrderFacadeBean implements OrderFacade
 
 		SortCriteria sortCriteria = new SortCriteria("o.id", SortCriteria.DIRECTION_DESC);
 
-		List<OrderEntity> orders = orderDaoBean.findByCriteria(findOrderCriteria, 1, 1, sortCriteria);
+		List<Order> orders = orderDaoBean.findByCriteria(findOrderCriteria, 1, 1, sortCriteria);
 
 		if (orders != null && orders.size() > 0)
 		{
@@ -169,15 +165,15 @@ public class OrderFacadeBean implements OrderFacade
 	@Override
 	public Order markOrderAsSeenByAdmin(Integer orderId)
 	{
-		OrderEntity orderEntity = orderDaoBean.findById(orderId);
+		Order order = orderDaoBean.findById(orderId);
 
-		if (orderEntity != null)
+		if (order != null)
 		{
-			orderEntity.setSeenbyadmin(1);
+			order.setSeenbyadmin(1);
 
-			orderEntity = orderDaoBean.update(orderEntity);
+			order = orderDaoBean.update(order);
 
-			return orderEntity;
+			return order;
 		}
 
 		return null;
@@ -186,16 +182,15 @@ public class OrderFacadeBean implements OrderFacade
 	@Override
 	public void deleteRowByArticleIdLocal(Order order, Integer articleId)
 	{
-		OrderEntity orderEntity = (OrderEntity) order;
-
-		Iterator<OrderRowEntity> iterator = orderEntity.getRowsEntities().iterator();
+		Iterator<OrderRow> iterator = order.getRows().iterator();
 
 		while (iterator.hasNext())
 		{
-			OrderRowEntity orderrow = iterator.next();
+			OrderRow orderrow = iterator.next();
 			if (Integer.valueOf(orderrow.getItem().getId()).equals(articleId))
 			{
-				iterator.remove();
+				order.removeRow(orderrow);
+				break;
 			}
 		}
 	}
@@ -203,13 +198,11 @@ public class OrderFacadeBean implements OrderFacade
 	@Override
 	public void incrementArticleAmountLocal(Order order, Integer articleId)
 	{
-		OrderEntity orderEntity = (OrderEntity) order;
-
-		OrderRowEntity orderRowEntityForTheArticle = orderServiceBean.getOrderRowForArticleId(orderEntity, articleId);
+		OrderRow orderRowEntityForTheArticle = orderServiceBean.getOrderRowForArticleId(order, articleId);
 
 		if (orderRowEntityForTheArticle == null)
 		{
-			orderRowEntityForTheArticle = orderServiceBean.addOrderRowLocal(orderEntity, articleId);
+			orderRowEntityForTheArticle = orderServiceBean.addOrderRowLocal(order, articleId);
 		}
 
 		double am = orderRowEntityForTheArticle.getAmount().doubleValue() + 1;
@@ -220,9 +213,7 @@ public class OrderFacadeBean implements OrderFacade
 	@Override
 	public void decrementArticleAmountLocal(Order order, Integer articleId)
 	{
-		OrderEntity orderEntity = (OrderEntity) order;
-
-		OrderRowEntity orderRowEntityForTheArticle = orderServiceBean.getOrderRowForArticleId(orderEntity, articleId);
+		OrderRow orderRowEntityForTheArticle = orderServiceBean.getOrderRowForArticleId(order, articleId);
 
 		if (orderRowEntityForTheArticle != null)
 		{
@@ -232,7 +223,7 @@ public class OrderFacadeBean implements OrderFacade
 
 			if (orderRowEntityForTheArticle.getAmount().doubleValue() <= 0)
 			{
-				orderServiceBean.removeOrderRowLocal(orderEntity, orderRowEntityForTheArticle);
+				orderServiceBean.removeOrderRowLocal(order, orderRowEntityForTheArticle);
 			}
 		}
 	}

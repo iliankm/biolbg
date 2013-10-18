@@ -6,12 +6,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import com.biol.biolbg.business.entity.HomeInfo;
 import com.biol.biolbg.business.entity.HomeInfoEntity;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Stateless
 @LocalBean
-public class HomeInfoDaoBean extends AbstractDaoBean<HomeInfoEntity>
+public class HomeInfoDaoBean extends AbstractDaoBean<HomeInfo>
 {
 
 	@Override
@@ -20,7 +21,7 @@ public class HomeInfoDaoBean extends AbstractDaoBean<HomeInfoEntity>
 		return HomeInfoEntity.class;
 	}
 
-	public List<HomeInfoEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<HomeInfo> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM HomeInfoEntity o ORDER BY %s %s";
 		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());

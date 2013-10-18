@@ -5,8 +5,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import com.biol.biolbg.business.control.dao.ItemDaoBean;
-import com.biol.biolbg.business.entity.ItemEntity;
-import com.biol.biolbg.business.entity.OrderEntity;
+import com.biol.biolbg.business.entity.Item;
+import com.biol.biolbg.business.entity.Order;
+import com.biol.biolbg.business.entity.OrderRow;
 import com.biol.biolbg.business.entity.OrderRowEntity;
 
 @Stateless
@@ -16,42 +17,41 @@ public class OrderServiceBean
 	@EJB
 	private ItemDaoBean itemDaoBean;
 
-	public OrderRowEntity getOrderRowForArticleId(OrderEntity orderEntity, Integer articleId)
+	public OrderRow getOrderRowForArticleId(Order order, Integer articleId)
 	{
-		OrderRowEntity orderRowEntityForTheArticle = null;
+		OrderRow orderRowForTheArticle = null;
 
-		for (OrderRowEntity row : orderEntity.getRowsEntities())
+		for (OrderRow row : order.getRows())
 		{
 			if (row.getItem() != null && Integer.valueOf(row.getItem().getId()).equals(articleId))
 			{
-				orderRowEntityForTheArticle = row;
+				orderRowForTheArticle = row;
 
 				break;
 			}
 		}
 
-		return orderRowEntityForTheArticle;
+		return orderRowForTheArticle;
 	}
 
-	public OrderRowEntity addOrderRowLocal(OrderEntity orderEntity, Integer articleId)
+	public OrderRow addOrderRowLocal(Order order, Integer articleId)
 	{
-		ItemEntity itemEntity = itemDaoBean.findById(articleId);
+		Item item = itemDaoBean.findById(articleId);
 
-		OrderRowEntity orderRowEntity = new OrderRowEntity();
+		OrderRow orderRow = new OrderRowEntity();
 
-		orderEntity.getRowsEntities().add(orderRowEntity);
+		order.addRow(orderRow);
 
-		orderRowEntity.setOrder(orderEntity);
-		orderRowEntity.setItem(itemEntity);
-		orderRowEntity.setAmount(Double.valueOf(0));
-		orderRowEntity.setPrice(itemEntity.getPriceforpacking());
+		orderRow.setItem(item);
+		orderRow.setAmount(Double.valueOf(0));
+		orderRow.setPrice(item.getPriceforpacking());
 
-		return orderRowEntity;
+		return orderRow;
 	}
 
-	public void removeOrderRowLocal(OrderEntity orderEntity, OrderRowEntity orderRowEntity)
+	public void removeOrderRowLocal(Order order, OrderRow orderRow)
 	{
-		orderEntity.getRowsEntities().remove(orderRowEntity);
+		order.removeRow(orderRow);
 	}
 
 }

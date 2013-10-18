@@ -24,19 +24,19 @@ public class GroupFacadeBean implements GroupFacade
 
 
 	@Override
-	public GroupEntity createLocal()
+	public Group createLocal()
 	{
 		return new GroupEntity();
 	}
 
 	@Override
-	public GroupEntity create(final Group group)
+	public Group create(final Group group)
 	{
-		return groupDaoBean.create((GroupEntity)group);
+		return groupDaoBean.create(group);
 	}
 
 	@Override
-	public GroupEntity findById(final Integer id)
+	public Group findById(final Integer id)
 	{
 		return groupDaoBean.findById(id);
 	}
@@ -48,9 +48,9 @@ public class GroupFacadeBean implements GroupFacade
 	}
 
 	@Override
-	public GroupEntity update(final Group group)
+	public Group update(final Group group)
 	{
-		return groupDaoBean.update((GroupEntity)group);
+		return groupDaoBean.update(group);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class GroupFacadeBean implements GroupFacade
 	}
 
 	@Override
-	public GroupEntity getRandomGroup()
+	public Group getRandomGroup()
 	{
 		return groupService.getRandomGroup();
 	}

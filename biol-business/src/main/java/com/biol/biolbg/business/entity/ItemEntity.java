@@ -19,12 +19,12 @@ import javax.persistence.*;
 
 	@NamedQuery(name=ItemEntity.QueryNames.GET_NEW_COUNT,
 		query="SELECT COUNT(o.id) FROM ItemEntity o WHERE o.newitem=1"),
-		
+
 	@NamedQuery(name=ItemEntity.QueryNames.FIND_BEST_SELL,
 		query="SELECT o FROM ItemEntity o WHERE o.bestsell=1 ORDER BY o.id ASC"),
-		
+
 	@NamedQuery(name=ItemEntity.QueryNames.GET_BEST_SELL_COUNT,
-		query="SELECT COUNT(o.id) FROM ItemEntity o WHERE o.bestsell=1")	
+		query="SELECT COUNT(o.id) FROM ItemEntity o WHERE o.bestsell=1")
 
 })
 public class ItemEntity extends BaseEntity implements Item
@@ -51,13 +51,13 @@ public class ItemEntity extends BaseEntity implements Item
 	@Version
 	private int version;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = GroupEntity.class)
 	@JoinColumn(name="group_id")
-	private GroupEntity group;
+	private Group group;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = ProducerEntity.class)
 	@JoinColumn(name="producer_id")
-	private ProducerEntity producer;
+	private Producer producer;
 
 	@Column(name="namebg")
 	private String namebg;
@@ -112,23 +112,25 @@ public class ItemEntity extends BaseEntity implements Item
 	}
 
 	@Override
-	public GroupEntity getGroup()
+	public Group getGroup()
 	{
 		return group;
 	}
 
-	public void setGroup(GroupEntity group)
+	@Override
+	public void setGroup(Group group)
 	{
 		this.group = group;
 	}
 
 	@Override
-	public ProducerEntity getProducer()
+	public Producer getProducer()
 	{
 		return producer;
 	}
 
-	public void setProducer(ProducerEntity producer)
+	@Override
+	public void setProducer(Producer producer)
 	{
 		this.producer = producer;
 	}

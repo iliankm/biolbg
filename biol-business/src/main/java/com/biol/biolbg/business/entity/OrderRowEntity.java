@@ -13,13 +13,13 @@ public class OrderRowEntity extends BaseEntity implements OrderRow
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = OrderEntity.class)
 	@JoinColumn(name="order_id")
-	private OrderEntity order;
+	private Order order;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = ItemEntity.class)
 	@JoinColumn(name="item_id")
-	private ItemEntity item;
+	private Item item;
 
 	@Column(name="amount")
 	private Double amount;
@@ -40,23 +40,25 @@ public class OrderRowEntity extends BaseEntity implements OrderRow
 	}
 
 	@Override
-	public OrderEntity getOrder()
+	public Order getOrder()
 	{
 		return order;
 	}
 
-	public void setOrder(OrderEntity order)
+	@Override
+	public void setOrder(Order order)
 	{
 		this.order = order;
 	}
 
 	@Override
-	public ItemEntity getItem()
+	public Item getItem()
 	{
 		return item;
 	}
 
-	public void setItem(ItemEntity item)
+	@Override
+	public void setItem(Item item)
 	{
 		this.item = item;
 	}

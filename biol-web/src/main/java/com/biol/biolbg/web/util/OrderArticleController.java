@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.biol.biolbg.business.boundary.facade.ItemFacade;
 import com.biol.biolbg.business.boundary.facade.OrderFacade;
 import com.biol.biolbg.business.entity.OrderRow;
 import com.biol.biolbg.web.managed.AppBean;
@@ -29,9 +28,6 @@ public class OrderArticleController extends Base implements Serializable
 
 	@Inject
 	private AppBean appBean;
-
-	@EJB
-	private ItemFacade itemFacade;
 
 	@EJB
 	private OrderFacade orderFacade;

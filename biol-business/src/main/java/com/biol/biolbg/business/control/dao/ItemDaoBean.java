@@ -8,13 +8,14 @@ import javax.inject.Inject;
 import javax.persistence.Query;
 
 import com.biol.biolbg.business.control.query.builder.ItemQueryBuilder;
+import com.biol.biolbg.business.entity.Item;
 import com.biol.biolbg.business.entity.ItemEntity;
 import com.biol.biolbg.business.util.FindItemCriteria;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Stateless
 @LocalBean
-public class ItemDaoBean extends AbstractDaoBean<ItemEntity>
+public class ItemDaoBean extends AbstractDaoBean<Item>
 {
 	@Inject
 	private ItemQueryBuilder itemQueryBuilder;
@@ -25,7 +26,7 @@ public class ItemDaoBean extends AbstractDaoBean<ItemEntity>
 		return ItemEntity.class;
 	}
 
-	public List<ItemEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Item> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = itemQueryBuilder.select().sortCriteria(sortCriteria).build();
 
@@ -53,7 +54,7 @@ public class ItemDaoBean extends AbstractDaoBean<ItemEntity>
 		return Long.valueOf(0);
 	}
 
-	public List<ItemEntity> findByCriteria(final FindItemCriteria findItemCriteria, final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Item> findByCriteria(final FindItemCriteria findItemCriteria, final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = itemQueryBuilder.select().findItemCriteria(findItemCriteria).sortCriteria(sortCriteria).build();
 
@@ -81,7 +82,7 @@ public class ItemDaoBean extends AbstractDaoBean<ItemEntity>
 		return Long.valueOf(0);
 	}
 
-	public List<ItemEntity> findPromotions(final int maxResultsLimit, final int firstResult)
+	public List<Item> findPromotions(final int maxResultsLimit, final int firstResult)
 	{
 		return findObjectsByNamedQuery(ItemEntity.QueryNames.FIND_PROMOTION_ITEMS, maxResultsLimit, firstResult);
 	}
@@ -98,7 +99,7 @@ public class ItemDaoBean extends AbstractDaoBean<ItemEntity>
 		return Long.valueOf(0);
 	}
 
-	public List<ItemEntity> findBestSell(final int maxResultsLimit, final int firstResult)
+	public List<Item> findBestSell(final int maxResultsLimit, final int firstResult)
 	{
 		return findObjectsByNamedQuery(ItemEntity.QueryNames.FIND_BEST_SELL, maxResultsLimit, firstResult);
 	}
@@ -115,7 +116,7 @@ public class ItemDaoBean extends AbstractDaoBean<ItemEntity>
 		return Long.valueOf(0);
 	}
 
-	public List<ItemEntity> findNew(final int maxResultsLimit, final int firstResult)
+	public List<Item> findNew(final int maxResultsLimit, final int firstResult)
 	{
 		return findObjectsByNamedQuery(ItemEntity.QueryNames.FIND_NEW, maxResultsLimit, firstResult);
 	}

@@ -8,7 +8,11 @@ public interface OrderRow
 
 	public Order getOrder();
 
+	public void setOrder(Order order);
+
 	public Item getItem();
+
+	public void setItem(Item item);
 
 	public Double getAmount();
 

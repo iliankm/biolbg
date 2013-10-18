@@ -19,19 +19,19 @@ public class HomeInfoFacadeBean implements HomeInfoFacade
 	private HomeInfoDaoBean homeInfoDaoBean;
 
 	@Override
-	public HomeInfoEntity createLocal()
+	public HomeInfo createLocal()
 	{
 		return new HomeInfoEntity();
 	}
 
 	@Override
-	public HomeInfoEntity create(final HomeInfo homeInfo)
+	public HomeInfo create(final HomeInfo homeInfo)
 	{
-		return homeInfoDaoBean.create((HomeInfoEntity)homeInfo);
+		return homeInfoDaoBean.create(homeInfo);
 	}
 
 	@Override
-	public HomeInfoEntity findById(final Integer id)
+	public HomeInfo findById(final Integer id)
 	{
 		return homeInfoDaoBean.findById(id);
 	}
@@ -43,9 +43,9 @@ public class HomeInfoFacadeBean implements HomeInfoFacade
 	}
 
 	@Override
-	public HomeInfoEntity update(final HomeInfo homeInfo)
+	public HomeInfo update(final HomeInfo homeInfo)
 	{
-		return homeInfoDaoBean.update((HomeInfoEntity)homeInfo);
+		return homeInfoDaoBean.update(homeInfo);
 	}
 
 	@Override

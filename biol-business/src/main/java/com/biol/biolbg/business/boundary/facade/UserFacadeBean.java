@@ -30,13 +30,13 @@ public class UserFacadeBean implements UserFacade
 	}
 
 	@Override
-	public UsrEntity create(final Usr user)
+	public Usr create(final Usr user)
 	{
-		return userDaoBean.create((UsrEntity)user);
+		return userDaoBean.create(user);
 	}
 
 	@Override
-	public UsrEntity findById(final Integer id)
+	public Usr findById(final Integer id)
 	{
 		return userDaoBean.findById(id);
 	}
@@ -48,9 +48,9 @@ public class UserFacadeBean implements UserFacade
 	}
 
 	@Override
-	public UsrEntity update(final Usr user)
+	public Usr update(final Usr user)
 	{
-		return userDaoBean.update((UsrEntity)user);
+		return userDaoBean.update(user);
 	}
 
 	@Override
@@ -66,13 +66,13 @@ public class UserFacadeBean implements UserFacade
 	}
 
 	@Override
-	public UsrEntity findByUsername(final String username)
+	public Usr findByUsername(final String username)
 	{
 		return userDaoBean.findByUsername(username);
 	}
 
 	@Override
-	public UsrEntity updateAfterLogin(final int id, final String ipAddress)
+	public Usr updateAfterLogin(final int id, final String ipAddress)
 	{
 		return userService.updateAfterLogin(id, ipAddress);
 	}

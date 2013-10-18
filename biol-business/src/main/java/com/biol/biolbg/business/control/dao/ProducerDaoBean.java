@@ -6,12 +6,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import com.biol.biolbg.business.entity.Producer;
 import com.biol.biolbg.business.entity.ProducerEntity;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Stateless
 @LocalBean
-public class ProducerDaoBean extends AbstractDaoBean<ProducerEntity>
+public class ProducerDaoBean extends AbstractDaoBean<Producer>
 {
 
 	@Override
@@ -20,7 +21,7 @@ public class ProducerDaoBean extends AbstractDaoBean<ProducerEntity>
 		return ProducerEntity.class;
 	}
 
-	public List<ProducerEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Producer> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM ProducerEntity o ORDER BY %s %s";
 		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());

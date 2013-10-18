@@ -9,10 +9,10 @@ import javax.ejb.Stateless;
 import com.biol.biolbg.business.control.dao.GroupDaoBean;
 import com.biol.biolbg.business.control.dao.ItemDaoBean;
 import com.biol.biolbg.business.control.dao.ProducerDaoBean;
-import com.biol.biolbg.business.entity.GroupEntity;
+import com.biol.biolbg.business.entity.Group;
 import com.biol.biolbg.business.entity.Item;
 import com.biol.biolbg.business.entity.ItemEntity;
-import com.biol.biolbg.business.entity.ProducerEntity;
+import com.biol.biolbg.business.entity.Producer;
 import com.biol.biolbg.business.util.FindItemCriteria;
 import com.biol.biolbg.business.util.SortCriteria;
 
@@ -30,13 +30,13 @@ public class ItemFacadeBean implements ItemFacade
 
 
 	@Override
-	public ItemEntity create(final Item item)
+	public Item create(final Item item)
 	{
-		return itemDaoBean.create((ItemEntity)item);
+		return itemDaoBean.create(item);
 	}
 
 	@Override
-	public ItemEntity createLocal()
+	public Item createLocal()
 	{
 		ItemEntity item = new ItemEntity();
 		item.setNewitem(1);
@@ -45,7 +45,7 @@ public class ItemFacadeBean implements ItemFacade
 	}
 
 	@Override
-	public ItemEntity findById(final Integer id)
+	public Item findById(final Integer id)
 	{
 		return itemDaoBean.findById(id);
 	}
@@ -57,9 +57,9 @@ public class ItemFacadeBean implements ItemFacade
 	}
 
 	@Override
-	public ItemEntity update(final Item item)
+	public Item update(final Item item)
 	{
-		return itemDaoBean.update((ItemEntity)item);
+		return itemDaoBean.update(item);
 	}
 
 	@Override
@@ -126,12 +126,12 @@ public class ItemFacadeBean implements ItemFacade
 	public void assignGroupAndProducerLocal(Item item, Integer groupId,
 			Integer producerId)
 	{
-		GroupEntity groupEntity = groupId != null ? groupDaoBean.findById(groupId) : null;
+		Group group = groupId != null ? groupDaoBean.findById(groupId) : null;
 
-		ProducerEntity producerEntity = producerId != null ? producerDaoBean.findById(producerId) : null;
+		Producer producer = producerId != null ? producerDaoBean.findById(producerId) : null;
 
-		((ItemEntity)item).setGroup(groupEntity);
+		item.setGroup(group);
 
-		((ItemEntity)item).setProducer(producerEntity);
+		item.setProducer(producer);
 	}
 }

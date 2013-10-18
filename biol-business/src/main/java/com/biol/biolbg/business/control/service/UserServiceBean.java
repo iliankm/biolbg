@@ -11,7 +11,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import com.biol.biolbg.business.control.dao.UserDaoBean;
-import com.biol.biolbg.business.entity.UsrEntity;
+import com.biol.biolbg.business.entity.Usr;
 import com.biol.biolbg.business.exception.ValidateRegistrationException;
 
 @Stateless
@@ -79,14 +79,14 @@ public class UserServiceBean
 
 	public Boolean usernameExists(String username)
 	{
-		UsrEntity user = userDaoBean.findByUsername(username);
+		Usr user = userDaoBean.findByUsername(username);
 
 		return (user != null && user.getUsername().equals(username));
 	}
 
-	public UsrEntity updateAfterLogin(int id, String ipAddress)
+	public Usr updateAfterLogin(int id, String ipAddress)
 	{
-		UsrEntity user = userDaoBean.findById(id);
+		Usr user = userDaoBean.findById(id);
 
 		Calendar today = Calendar.getInstance();
 		user.setLastlogindate(new Date(today.getTimeInMillis()));
@@ -100,11 +100,11 @@ public class UserServiceBean
 	{
 		List<String> result = new LinkedList<String>();
 
-		List<UsrEntity> administrators = userDaoBean.findByAdminFlag(1);
+		List<Usr> administrators = userDaoBean.findByAdminFlag(1);
 
 		if (administrators != null && administrators.size() > 0)
 		{
-			for (UsrEntity user : administrators)
+			for (Usr user : administrators)
 			{
 				if (user.getEmail() != null && !user.getEmail().isEmpty())
 					result.add(user.getEmail());

@@ -6,12 +6,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import com.biol.biolbg.business.entity.Group;
 import com.biol.biolbg.business.entity.GroupEntity;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Stateless
 @LocalBean
-public class GroupDaoBean extends AbstractDaoBean<GroupEntity>
+public class GroupDaoBean extends AbstractDaoBean<Group>
 {
 
 	@Override
@@ -20,7 +21,7 @@ public class GroupDaoBean extends AbstractDaoBean<GroupEntity>
 		return GroupEntity.class;
 	}
 
-	public List<GroupEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Group> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = "SELECT o FROM GroupEntity o ORDER BY %s %s";
 		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());

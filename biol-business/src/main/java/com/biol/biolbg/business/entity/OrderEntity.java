@@ -42,13 +42,13 @@ public class OrderEntity extends BaseEntity implements Order
 	@Temporal(TIME)
 	private Date fortime;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = UsrEntity.class)
 	@JoinColumn(name="usr_id")
-	private UsrEntity user;
+	private Usr user;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = OrderStatusEntity.class)
 	@JoinColumn(name="orderstatus_id")
-	private OrderStatusEntity status;
+	private OrderStatus status;
 
 	@Column(name="deliveryAddress")
 	private String deliveryAddress;
@@ -58,8 +58,9 @@ public class OrderEntity extends BaseEntity implements Order
 
 	@OneToMany(cascade={CascadeType.ALL},
 			fetch=FetchType.EAGER,
-			mappedBy="order")
-	private List<OrderRowEntity> rows;
+			mappedBy="order",
+			targetEntity = OrderRowEntity.class)
+	private List<OrderRow> rows;
 
 	@Override
 	public int getId()
@@ -122,23 +123,25 @@ public class OrderEntity extends BaseEntity implements Order
 	}
 
 	@Override
-	public UsrEntity getUser()
+	public Usr getUser()
 	{
 		return user;
 	}
 
-	public void setUser(UsrEntity user)
+	@Override
+	public void setUser(Usr user)
 	{
 		this.user = user;
 	}
 
 	@Override
-	public OrderStatusEntity getStatus()
+	public OrderStatus getStatus()
 	{
 		return status;
 	}
 
-	public void setStatus(OrderStatusEntity status)
+	@Override
+	public void setStatus(OrderStatus status)
 	{
 		this.status = status;
 	}
@@ -146,12 +149,26 @@ public class OrderEntity extends BaseEntity implements Order
 	@Override
 	public List<OrderRow> getRows()
 	{
-		return Collections.<OrderRow>unmodifiableList(getRowsEntities());
+		return Collections.<OrderRow>unmodifiableList(getRowsCollection());
 	}
 
-	public List<OrderRowEntity> getRowsEntities()
+	@Override
+	public void addRow(OrderRow row)
 	{
-		return rows == null ? new LinkedList<OrderRowEntity>() : rows;
+		row.setOrder(this);
+
+		getRowsCollection().add(row);
+	}
+
+	@Override
+	public void removeRow(OrderRow row)
+	{
+		getRowsCollection().remove(row);
+	}
+
+	private List<OrderRow> getRowsCollection()
+	{
+		return rows == null ? new LinkedList<OrderRow>() : rows;
 	}
 
 	@Override
@@ -159,7 +176,7 @@ public class OrderEntity extends BaseEntity implements Order
 	public Double getTotalValue()
 	{
 		Double res = 0.0;
-		Iterator<OrderRowEntity> iter = rows.iterator();
+		Iterator<OrderRow> iter = rows.iterator();
 
 		while (iter.hasNext())
 		{
@@ -194,6 +211,7 @@ public class OrderEntity extends BaseEntity implements Order
 		return version;
 	}
 
+	@Override
 	public void setSeenbyadmin(int seenbyadmin)
 	{
 		this.seenbyadmin = seenbyadmin;

@@ -8,14 +8,16 @@ import javax.inject.Inject;
 import javax.persistence.Query;
 
 import com.biol.biolbg.business.control.query.builder.OrderQueryBuilder;
+import com.biol.biolbg.business.entity.Order;
 import com.biol.biolbg.business.entity.OrderEntity;
+import com.biol.biolbg.business.entity.OrderStatus;
 import com.biol.biolbg.business.entity.OrderStatusEntity;
 import com.biol.biolbg.business.util.FindOrderCriteria;
 import com.biol.biolbg.business.util.SortCriteria;
 
 @Stateless
 @LocalBean
-public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
+public class OrderDaoBean extends AbstractDaoBean<Order>
 {
 	@Inject
 	private OrderQueryBuilder orderQueryBuilder;
@@ -26,7 +28,7 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 		return OrderEntity.class;
 	}
 
-	public List<OrderEntity> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Order> findAll(final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = orderQueryBuilder.select().sortCriteria(sortCriteria).build();
 
@@ -54,7 +56,7 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 		return Long.valueOf(0);
 	}
 
-	public List<OrderEntity> findByCriteria(final FindOrderCriteria findOrderCriteria, final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
+	public List<Order> findByCriteria(final FindOrderCriteria findOrderCriteria, final int maxResultsLimit, final int firstResult, final SortCriteria sortCriteria)
 	{
 		String queryText = orderQueryBuilder.select().findOrderCriteria(findOrderCriteria).sortCriteria(sortCriteria).build();
 
@@ -82,12 +84,12 @@ public class OrderDaoBean extends AbstractDaoBean<OrderEntity>
 		return Long.valueOf(0);
 	}
 
-	public List<OrderStatusEntity> findAllOrderStatuses()
+	public List<OrderStatus> findAllOrderStatuses()
 	{
 		return this.findObjectsByNamedQuery(OrderStatusEntity.QueryNames.FIND_ALL);
 	}
 
-	public OrderStatusEntity findOrderStatusById(final Integer id)
+	public OrderStatus findOrderStatusById(final Integer id)
 	{
 		return em.find(OrderStatusEntity.class, id);
 	}

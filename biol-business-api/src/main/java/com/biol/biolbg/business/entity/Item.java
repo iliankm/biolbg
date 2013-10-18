@@ -6,7 +6,11 @@ public interface Item
 
 	public Group getGroup();
 
+	public void setGroup(Group group);
+
 	public Producer getProducer();
+
+	public void setProducer(Producer producer);
 
 	public String getNamebg();
 
