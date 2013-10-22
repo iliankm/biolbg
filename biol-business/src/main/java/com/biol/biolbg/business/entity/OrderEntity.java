@@ -3,6 +3,7 @@ package com.biol.biolbg.business.entity;
 import static javax.persistence.TemporalType.DATE;
 import static javax.persistence.TemporalType.TIME;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -168,7 +169,10 @@ public class OrderEntity extends BaseEntity implements Order
 
 	private List<OrderRow> getRowsCollection()
 	{
-		return rows == null ? new LinkedList<OrderRow>() : rows;
+		if (rows == null)
+			rows = new ArrayList<OrderRow>();
+
+		return rows;
 	}
 
 	@Override
@@ -176,7 +180,7 @@ public class OrderEntity extends BaseEntity implements Order
 	public Double getTotalValue()
 	{
 		Double res = 0.0;
-		Iterator<OrderRow> iter = rows.iterator();
+		Iterator<OrderRow> iter = getRowsCollection().iterator();
 
 		while (iter.hasNext())
 		{
