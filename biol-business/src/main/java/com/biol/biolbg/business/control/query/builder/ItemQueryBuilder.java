@@ -23,7 +23,10 @@ public class ItemQueryBuilder
 
 	public ItemQueryBuilder findItemCriteria(final FindItemCriteria findItemCriteria)
 	{
-		queryText = queryText.concat(" WHERE");
+		if (findItemCriteria.getGroupId() != null ||
+			findItemCriteria.getProducerId() != null ||
+			(findItemCriteria.getName() != null && !findItemCriteria.getName().isEmpty()))
+			queryText = queryText.concat(" WHERE");
 
 		if (findItemCriteria.getGroupId() != null)
 		{
@@ -43,7 +46,7 @@ public class ItemQueryBuilder
 
 		if (findItemCriteria.getName() != null && !findItemCriteria.getName().isEmpty())
 		{
-			String nameArg = "%" + findItemCriteria.getName().toUpperCase() + "%";
+			String nameArg = "'%" + findItemCriteria.getName().toUpperCase() + "%'";
 
 			queryText = queryText.concat(String.format(" (UPPER(o.nameen) LIKE %s OR UPPER(o.namebg) LIKE %s)", nameArg, nameArg));
 		}
@@ -53,9 +56,9 @@ public class ItemQueryBuilder
 
 	public ItemQueryBuilder sortCriteria(final SortCriteria sortCriteria)
 	{
-		queryText = queryText.concat(" ORDER BY %s %s");
+		String orderBy = String.format(" ORDER BY %s %s", sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
 
-		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
+		queryText = queryText.concat(orderBy);
 
 		return this;
 	}

@@ -7,19 +7,19 @@ import javax.persistence.*;
 @NamedQueries({
 	@NamedQuery(name=GroupEntity.QueryNames.GET_ALL_COUNT,
 		query="SELECT COUNT(o.id) FROM GroupEntity o"),
-		
+
 	@NamedQuery(name=GroupEntity.QueryNames.GET_GROUP_IDS,
-		query="SELECT o.group.id FROM Item o GROUP BY o.group.id")	
+		query="SELECT o.group.id FROM ItemEntity o GROUP BY o.group.id")
 })
 public class GroupEntity extends BaseEntity implements Group
 {
 
 	private static final long serialVersionUID = 7833652000774985122L;
-	
+
 	public interface QueryNames
 	{
 		public static final String GET_ALL_COUNT = "GroupEntity.getAllCount";
-		public static final String GET_GROUP_IDS = "GroupEntity.getGroupIds"; 
+		public static final String GET_GROUP_IDS = "GroupEntity.getGroupIds";
 	}
 
 	@Id
