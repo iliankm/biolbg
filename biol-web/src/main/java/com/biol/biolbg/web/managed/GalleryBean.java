@@ -2,7 +2,6 @@ package com.biol.biolbg.web.managed;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,8 +58,8 @@ public class GalleryBean extends Base implements Serializable
 
 		producers = getAllProducers();
 
-		Integer groupId = 0;
-		Integer producerId = 0;
+		Integer groupId = null;
+		Integer producerId = null;
 
 		if (getGalleryParamsBean().getParamGroup() != null)
 		{
@@ -72,16 +71,9 @@ public class GalleryBean extends Base implements Serializable
 			producerId = getGalleryParamsBean().getParamProducer().getId();
 		}
 
-		if (groupId == 0 && producerId == 0)
-		{
-			items = new ArrayList<Item>();
-		}
-		else
-		{
-			FindItemCriteria findItemCriteria = new FindItemCriteria(producerId, groupId, null);
-			SortCriteria sortCriteria = new SortCriteria("o.id", SortCriteria.DIRECTION_ASC);
-			items = itemFacade.findByCriteria(findItemCriteria, 1000, 0, sortCriteria);
-		}
+		FindItemCriteria findItemCriteria = new FindItemCriteria(producerId, groupId, null);
+		SortCriteria sortCriteria = new SortCriteria("o.id", SortCriteria.DIRECTION_ASC);
+		items = itemFacade.findByCriteria(findItemCriteria, 1000, 0, sortCriteria);
 	}
 
 	public void setParamGroup(Group paramGroup)
