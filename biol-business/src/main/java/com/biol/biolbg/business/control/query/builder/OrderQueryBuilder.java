@@ -28,41 +28,56 @@ public class OrderQueryBuilder
 	{
 		queryText = queryText.concat(" WHERE");
 
+		boolean hasConditions = false;
+
 		if (findOrderCriteria.getFromDate() != null)
 		{
+			if (hasConditions)
+				queryText = concatAnd(queryText);
+
 			queryText = queryText.concat(" o.postdate>=").concat(dateToLiteral((findOrderCriteria.getFromDate())));
 
-			if (findOrderCriteria.getToDate() != null)
-				queryText = queryText.concat(" AND");
+			hasConditions = true;
 		}
 
 		if (findOrderCriteria.getToDate() != null)
 		{
+			if (hasConditions)
+				queryText = concatAnd(queryText);
+
 			queryText = queryText.concat(" o.postdate<=").concat(dateToLiteral((findOrderCriteria.getToDate())));
 
-			if (findOrderCriteria.getUserId() != null)
-				queryText = queryText.concat(" AND");
+			hasConditions = true;
 		}
 
 		if (findOrderCriteria.getUserId() != null)
 		{
+			if (hasConditions)
+				queryText = concatAnd(queryText);
+
 			queryText = queryText.concat(" o.user.id=").concat(findOrderCriteria.getUserId().toString());
 
-			if (findOrderCriteria.getUsername() != null && !findOrderCriteria.getUsername().isEmpty())
-				queryText = queryText.concat(" AND");
+			hasConditions = true;
 		}
 
 		if (findOrderCriteria.getUsername() != null && !findOrderCriteria.getUsername().isEmpty())
 		{
-			queryText = queryText.concat(" UPPER(o.user.username) LIKE ").concat("%" + findOrderCriteria.getUsername().toUpperCase() + "%");
+			if (hasConditions)
+				queryText = concatAnd(queryText);
 
-			if (findOrderCriteria.getOrganization() != null && !findOrderCriteria.getOrganization().isEmpty())
-				queryText = queryText.concat(" AND");
+			queryText = queryText.concat(" UPPER(o.user.username) LIKE ").concat("'%" + findOrderCriteria.getUsername().toUpperCase() + "%'");
+
+			hasConditions = true;
 		}
 
 		if (findOrderCriteria.getOrganization() != null && !findOrderCriteria.getOrganization().isEmpty())
 		{
-			queryText = queryText.concat(" UPPER(o.user.organisation) LIKE ").concat("%" + findOrderCriteria.getOrganization().toUpperCase() + "%");
+			if (hasConditions)
+				queryText = concatAnd(queryText);
+
+			queryText = queryText.concat(" UPPER(o.user.organisation) LIKE ").concat("'%" + findOrderCriteria.getOrganization().toUpperCase() + "%'");
+
+			hasConditions = true;
 		}
 
 		return this;
@@ -70,9 +85,9 @@ public class OrderQueryBuilder
 
 	public OrderQueryBuilder sortCriteria(final SortCriteria sortCriteria)
 	{
-		queryText = queryText.concat(" ORDER BY %s %s");
+		String orderBy = String.format(" ORDER BY %s %s", sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
 
-		queryText = String.format(queryText, sortCriteria.getPropertyName(), sortCriteria.getSortDirectionForJPA());
+		queryText = queryText.concat(orderBy);
 
 		return this;
 	}
@@ -91,6 +106,11 @@ public class OrderQueryBuilder
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		return String.format("{d '%s'}", simpleDateFormat.format(date));
+	}
+
+	private String concatAnd(String queryText)
+	{
+		return queryText.concat(" AND");
 	}
 
 }

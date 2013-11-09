@@ -75,7 +75,7 @@ public class CurrentOrderBean extends Base implements Serializable
 	@PostConstruct
 	public void postConstruct()
 	{
-		order = orderFacade.createLocal((Usr)appBean.getLoggedUser());
+		order = orderFacade.createLocal(appBean.getLoggedUser());
 
 		order.setDeliveryAddress(getLastDeliveryAddressForUser());
 
@@ -144,6 +144,8 @@ public class CurrentOrderBean extends Base implements Serializable
 			order.setFortime(fortime);
 		}
 
+		order.setUser(appBean.getLoggedUser());
+
 		//save the order
 		try
 		{
@@ -167,7 +169,7 @@ public class CurrentOrderBean extends Base implements Serializable
 			return;
 		}
 
-		order = orderFacade.createLocal((Usr)appBean.getLoggedUser());
+		order = orderFacade.createLocal(appBean.getLoggedUser());
 
 		order.setDeliveryAddress(getLastDeliveryAddressForUser());
 
