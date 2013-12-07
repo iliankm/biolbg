@@ -9,7 +9,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 
-import com.biol.biolbg.entity.BaseEntity;
+import com.biol.biolbg.business.entity.BaseEntity;
+
 
 public abstract class BaseList extends Base
 {

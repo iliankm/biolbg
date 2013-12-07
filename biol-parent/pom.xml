@@ -92,9 +92,6 @@
 
 	<modules>
 		<module>../biol-util</module>
-		<module>../biol-jpa</module>
-		<module>../biol-ejb-client</module>
-		<module>../biol-ejb</module>
 		<module>../biol-web</module>
 		<module>../biol-ear</module>
 		<module>../biol-business-api</module>

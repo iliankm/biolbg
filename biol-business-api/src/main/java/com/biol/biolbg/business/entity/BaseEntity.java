@@ -13,20 +13,22 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public abstract class BaseEntity implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Transient
 	private Boolean checked;
 
-	public Boolean getChecked() 
+	public abstract int getId();
+
+	public Boolean getChecked()
 	{
 		return checked;
 	}
 
-	public void setChecked(Boolean checked) 
+	public void setChecked(Boolean checked)
 	{
 		this.checked = checked;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -50,11 +52,11 @@ public abstract class BaseEntity implements Serializable
 			return super.toString();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Override this method if you have specific fields in the entity which are not needed in toString result.
-	 * 
+	 *
 	 * @param f the entity Field that is checked
 	 * @return true if the field is to be included in toString result
 	 */
@@ -62,5 +64,5 @@ public abstract class BaseEntity implements Serializable
 	{
 		return true;
 	}
-	
+
 }
