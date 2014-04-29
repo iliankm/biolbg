@@ -37,6 +37,16 @@ public class GalleryParamsBean extends Base implements Serializable
 	{
 		return paramGroup;
 	}
+	
+	public String getGroupId()
+	{
+	    return paramGroup == null ? "0" : Integer.valueOf(paramGroup.getId()).toString();
+	}
+	
+	public String getProducerId()
+	{
+	    return paramProducer == null ? "0" : Integer.valueOf(paramProducer.getId()).toString();
+	}
 
 	public void setParamGroup(Group paramGroup)
 	{
