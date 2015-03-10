@@ -107,14 +107,20 @@
 		  		<version>${project.version}</version>
 		  		<scope>provided</scope>
 		  	</dependency>
-
+		  	<dependency>
+		  		<groupId>com.biol.biolbg</groupId>
+		  		<artifactId>biol-saml-ip</artifactId>
+		  		<type>war</type>
+		  		<version>${project.version}</version>
+		  		<scope>provided</scope>
+		  	</dependency>
 		   	<dependency>
 	           <groupId>javax</groupId>
 	           <artifactId>javaee-api</artifactId>
 	           <version>7.0</version>
 	           <scope>provided</scope>
 		   	</dependency>
-		   	
+
 			<dependency>
 				<groupId>com.sun.faces</groupId>
 				<artifactId>jsf-api</artifactId>
@@ -158,5 +164,6 @@
 		<module>../biol-ear</module>
 		<module>../biol-business-api</module>
 		<module>../biol-business</module>
+		<module>../biol-saml-ip</module>
 	</modules>
 </project>

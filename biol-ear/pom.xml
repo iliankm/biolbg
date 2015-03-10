@@ -53,6 +53,13 @@
             		<contextRoot>/${appWebContext}</contextRoot>
           		</webModule>
 
+				<webModule>
+            		<groupId>com.biol.biolbg</groupId>
+            		<artifactId>biol-saml-ip</artifactId>
+        			<bundleFileName>biol-saml-ip.war</bundleFileName>
+            		<contextRoot>${appWebContext}/sso</contextRoot>
+          		</webModule>
+
           		<jarModule>
 			  		<groupId>com.biol.biolbg</groupId>
 			  		<artifactId>biol-util</artifactId>
@@ -159,6 +166,12 @@
   	<dependency>
   		<groupId>com.biol.biolbg</groupId>
   		<artifactId>biol-web</artifactId>
+  		<type>war</type>
+  	</dependency>
+
+  	<dependency>
+  		<groupId>com.biol.biolbg</groupId>
+  		<artifactId>biol-saml-ip</artifactId>
   		<type>war</type>
   	</dependency>
 
