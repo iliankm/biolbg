@@ -6,6 +6,7 @@
 		<properties>
 			<property name="hibernate.cache.use_second_level_cache" value="true"/>
 			<property name="hibernate.cache.use_query_cache" value="true"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 		</properties>	
 	</persistence-unit>
 </persistence>
