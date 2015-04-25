@@ -105,7 +105,8 @@ public class OrderQueryBuilder
 	{
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-		return String.format("{d '%s'}", simpleDateFormat.format(date));
+		//return String.format("{d '%s'}", simpleDateFormat.format(date));
+		return String.format("'%s'", simpleDateFormat.format(date));
 	}
 
 	private String concatAnd(String queryText)
