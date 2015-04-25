@@ -156,7 +156,7 @@ public class OrderFacadeBean implements OrderFacade
 
 		if (orders != null && orders.size() > 0)
 		{
-			return orders.get(1).getDeliveryAddress();
+			return orders.get(0).getDeliveryAddress();
 		}
 
 		return "";
