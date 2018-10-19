@@ -1,11 +1,5 @@
 biolbg
 ======
-This is the source code of www.biolbg.com web site, cms and ordering center. 
-Developed with Java EE 6 - EJB3 and JPA for backend and JSF 2 for frontend.
-The project is fully mavenized.
-The parent module is biol-parent.
-After import the modules in your workspace, build from biol-parent folder with:
-
 mvn clean install -D build=%your_build_config_file%
 
 %your_build_config_file% is a .properties file for build configuration - must exist in biol-parent folder.
